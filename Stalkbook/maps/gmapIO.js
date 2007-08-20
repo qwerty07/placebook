@@ -20,6 +20,7 @@ var StalkBook = {
   locality: "christchurch, new zealand",
   geocoder: new GClientGeocoder(),
   map: undefined,
+  markerFunc: undefined,
   
   /*
   Loads up the map requires map element. Define interfaces here.
@@ -33,14 +34,9 @@ var StalkBook = {
 
       StalkBook.map.enableScrollWheelZoom();
 
-      GEvent.addListener(StalkBook.map, "click", function(marker, point) {
+      GEvent.addListener(StalkBook.map, "dblclick", function(marker, point) {
         if (StalkBook.map.getZoom() > StalkBook.minZoom){
-          if (marker) {
-            StalkBook.map.removeOverlay(marker);
-          }
-          else {
-            StalkBook.map.addOverlay(StalkBook.createMarker(point));
-          }
+            if(StalkBook.markerFunc)StalkBook.markerFunc(point);
         }
       })
     }
@@ -85,13 +81,23 @@ for areas with more detail.
  /*
  Converts a GLatLng to a point object.
  */ 
-  gpointtopoint: function(latlngpoint) {
+  gPointtoPoint: function(latlngpoint) {
   	var point = {
   	  lat: latlngpoint.lat(),
   	  lng: latlngpoint.lng()
     };
     return point;
+  },
+  
+  
+  /*
+  Function that takes a callback function to be executed when a the map is 
+  double clicked. i.e. When a marker needs added.
+  */
+  addMarkerFunction: function(func){
+  	StalkBook.markerFunc=func;
   }
+  
   
   
 };
