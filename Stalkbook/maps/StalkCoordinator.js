@@ -8,6 +8,8 @@ var StalkCoordinator = {
 		// load the map
 		StalkBook.load();
 		
+		StalkBook.addMarkerFunction(StalkCoordinator.addMarker);
+		
 		// get the user's Facebook name
 		this.setUsername("Crispin Anderton");	/** DEFAULT **/
 
@@ -19,6 +21,8 @@ var StalkCoordinator = {
 			
 			
 			// get all the user's markers and add them to the map
+		} else {
+			// don't have a user name, so set defaults
 		}
 	},
 	
@@ -32,6 +36,8 @@ var StalkCoordinator = {
 		// new marker to the database under their name
 		if (this.username) {
 		}
+		
+		StalkBook.addMarker(latlng, "My point");
 	}	
 };
 
