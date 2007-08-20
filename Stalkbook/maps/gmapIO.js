@@ -28,6 +28,9 @@ var StalkBook = {
   load: function() {
     if (GBrowserIsCompatible()) {
       StalkBook.map=new GMap2(document.getElementById("map"));
+      StalkBook.map.addControl(new GLargeMapControl());
+	  StalkBook.map.addControl(new GMapTypeControl());
+      
       StalkBook.geocoder.getLatLng(StalkBook.locality,function(point){
 		StalkBook.map.setCenter(point, 12);
       });
@@ -79,8 +82,9 @@ This has an optional zoom parameter. This can be between 1-17 possibly more
 for areas with more detail.
 */  
   setPositionXY: function(lat, lng, zoom){
-  if(!zoom)zoom=StalkBook.map.getZoom();
-  	StalkBook.map.setCenter(new GLatLng(lat,lng,true), zoom);
+    if(!zoom){zoom=StalkBook.map.getZoom();}
+    var point=new GLatLng(lat,lng,true);
+  	StalkBook.map.setCenter(point, zoom);
   },
   
  /*
@@ -88,7 +92,7 @@ for areas with more detail.
  parameter. This can be between 1-17 possibly more for areas with more detail.
  */
   setPositionString: function(location, zoom){
-    if(!zoom)zoom=StalkBook.map.getZoom();
+    if(!zoom){zoom=StalkBook.map.getZoom();}
   	StalkBook.geocoder.getLatLng(location,function(point){
 		StalkBook.map.setCenter(point,zoom);
     });
