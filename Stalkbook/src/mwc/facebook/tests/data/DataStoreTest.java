@@ -6,6 +6,7 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 import mwc.facebook.data.DataStore;
 import mwc.facebook.data.Location;
+import mwc.facebook.data.MockDataStore;
 import mwc.facebook.data.Point;
 import mwc.facebook.data.PostgresDataStore;
 import mwc.facebook.data.Rectangle;
@@ -16,10 +17,10 @@ public class DataStoreTest extends TestCase {
 	private DataStore dataStore;
 	protected void setUp() throws Exception {
 		Properties connectionProps = new Properties();
-		connectionProps.setProperty("user", "goddartimo");
+		connectionProps.setProperty("user", "ramsayneil");
 		dataStore = new PostgresDataStore("localhost", "stalkbook", connectionProps, true);
 		
-		//dataStore = new MockDataStore();
+		dataStore = new MockDataStore();
 	}
 
 	public void testUserNotFound(){
@@ -51,7 +52,7 @@ public class DataStoreTest extends TestCase {
 		Location l1 = new Location(new Point(4.4f, 1.2f), "Location 1");
 		dataStore.addLocation(l1);
 		dataStore.addUserToLocation(user, l1);
-		Set<Location> locations = user.getLocations();
+		Set<Location> locations = dataStore.locationsFor(user);
 
 		Assert.assertEquals(1, locations.size());
 		Assert.assertEquals(l1, locations.iterator().next());

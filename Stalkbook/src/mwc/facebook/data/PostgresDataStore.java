@@ -14,7 +14,6 @@ public class PostgresDataStore implements DataStore {
 		try {
 			Class.forName("org.postgresql.Driver");
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -87,5 +86,19 @@ public class PostgresDataStore implements DataStore {
 
 	protected Connection getConnection() {
 		return connection;
+	}
+
+	public void addUserToLocation(User user, Location location) {
+		// TODO Auto-generated method stub
+	}
+
+	public Set<Location> locationsFor(User user) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Set<User> usersAssociatedWith(Location location) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
