@@ -3,23 +3,14 @@
  */
 package mwc;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.Properties;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.w3c.dom.Document;
-
-import com.facebook.api.FacebookException;
 import com.facebook.api.FacebookRestClient;
 
 /**
@@ -66,7 +57,8 @@ public class Stalkbook extends HttpServlet {
 			int clientId = client.users_getLoggedInUser();
 			
 			PrintWriter writer = response.getWriter();
-			writer.printf("<h2>Hi <fb:name firstnameonly=\"true\" uid=\"%d\" useyou=\"false\"/>!</h2>", clientId);
+			//<fb:name firstnameonly=\"true\" uid=\"%d\" useyou=\"false\"/>
+			writer.printf("<h2>Hi !</h2>", clientId);
 			//String auth = client.auth_createToken();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
