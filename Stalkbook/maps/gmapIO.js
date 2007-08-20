@@ -47,5 +47,8 @@ var StalkBook = {
 //method that takes an object
 	//pass the point
 //loadmarker
+
+
+
     
     //]]>
