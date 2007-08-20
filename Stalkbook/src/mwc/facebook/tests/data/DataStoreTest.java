@@ -1,15 +1,14 @@
 package mwc.facebook.tests.data;
-
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.util.Set;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
-import mwc.facebook.data.DataStore;
 import mwc.facebook.data.Location;
 import mwc.facebook.data.MockDataStore;
 import mwc.facebook.data.User;
+import src.mwc.facebook.data.DataStore;
+import src.mwc.facebook.data.Point;
+import src.mwc.facebook.data.Rectangle;
 
 public class DataStoreTest extends TestCase {
 
@@ -27,7 +26,7 @@ public class DataStoreTest extends TestCase {
 	}
 
 	public void testLocationsWithinZeroArea(){
-		Set<Location> temp = dataStore.getLocationsWithin(new Rectangle(0,0));
+		Set<Location> temp = dataStore.getLocationsWithin(new Rectangle(new Point(0,0), new Point(0,0)));
 		Assert.assertNotNull(temp);
 		Assert.assertEquals(0, temp.size());
 	}
@@ -54,25 +53,25 @@ public class DataStoreTest extends TestCase {
 		Location point3 = new Location(new Point(6,3),"Point 3");
 		dataStore.addLocation(point3);
 		
-		Set<Location> temp = dataStore.getLocationsWithin(new Rectangle(0,0,9,7));
+		Set<Location> temp = dataStore.getLocationsWithin(new Rectangle(new Point(0,0), new Point(9,7)));
 		Assert.assertNotNull(temp);
 		Assert.assertEquals(3, temp.size());
 		Assert.assertTrue(temp.contains(point1));
 		Assert.assertTrue(temp.contains(point2));
 		Assert.assertTrue(temp.contains(point3));
-		
-		temp = dataStore.getLocationsWithin(new Rectangle(1,1,3,5));
+
+		temp = dataStore.getLocationsWithin(new Rectangle(new Point(1,1), new Point(4,6)));
 		Assert.assertNotNull(temp);
 		Assert.assertEquals(2, temp.size());
 		Assert.assertTrue(temp.contains(point1));
 		Assert.assertTrue(temp.contains(point2));
 		Assert.assertFalse(temp.contains(point3));
-		
-		temp = dataStore.getLocationsWithin(new Rectangle(3,2,1,1));
+
+		temp = dataStore.getLocationsWithin(new Rectangle(new Point(3,2), new Point(4,3)));
 		Assert.assertNotNull(temp);
 		Assert.assertEquals(0, temp.size());
-		
-		temp = dataStore.getLocationsWithin(new Rectangle(4,2,4,3));
+
+		temp = dataStore.getLocationsWithin(new Rectangle(new Point(4,2), new Point(8,5)));
 		Assert.assertNotNull(temp);
 		Assert.assertEquals(1, temp.size());
 		Assert.assertFalse(temp.contains(point1));

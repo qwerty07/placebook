@@ -1,7 +1,7 @@
-package mwc.facebook.data;
+package src.mwc.facebook.data;
 
-import java.awt.Rectangle;
 import java.util.Set;
+
 
 
 public interface DataStore {
