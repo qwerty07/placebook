@@ -1,5 +1,20 @@
 //<![CDATA[
 
+/**StalkBook is an object for interfacing with the google maps API
+It allows the position to be set by lat,lng and by String (i.e wellington, nz).
+We can set a marker to a given lat,lng.
+
+To use this:
+there must be an element with id=map (i.e <div id="map"></div>)
+This will be the location of the map.
+
+Things to do:
+Be able to change locality (probably from facebook application or db)
+Interface with facebook app.
+Work with wrapper class.
+->Be able to set the string on a marker, with a URL (not completed)
+
+*/
 var StalkBook = {
   minZoom: 15,
   locality: "christchurch, new zealand",
@@ -29,20 +44,20 @@ var StalkBook = {
       })
     }
   },
-  displayInfo: function (marker) {
-	marker.openInfoWindowHtml("Marker #<b> HIHIHI" + "</b>");
+  displayInfo: function(marker,str) {
+	marker.openInfoWindowHtml(str);
   },
 
-  createMarker: function(point) {
+  createMarker: function(point,str) {
 	var marker = new GMarker(point);
 	GEvent.addListener(marker, "click", function(){
-		StalkBook.displayInfo(marker);
+		StalkBook.displayInfo(marker,str);
 	});
 	return marker;
   },
   
-  addMarker: function(x, y){
-  	StalkBook.map.addOverlay(StalkBook.createMarker(new GLatLng(x,y)));
+  addMarker: function(x, y, str){
+  	StalkBook.map.addOverlay(StalkBook.createMarker(new GLatLng(x,y),str));
   },
   
   setPositionXY: function(x, y){
