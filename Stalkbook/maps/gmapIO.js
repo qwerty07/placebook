@@ -36,7 +36,7 @@ var StalkBook = {
 
       GEvent.addListener(StalkBook.map, "dblclick", function(marker, point) {
         if (StalkBook.map.getZoom() > StalkBook.minZoom){
-            if(StalkBook.markerFunc)StalkBook.markerFunc(point);
+            if(StalkBook.markerFunc)StalkBook.markerFunc(point);            
         }
       })
     }
@@ -44,15 +44,32 @@ var StalkBook = {
 
 
 /*
-Add marker at a given point defined by latitude(lat) and longitude(lng) also takes an html 
-formated string(str) that will be displayed when the marker is clicked.
+Add marker at a given point defined by latitude(lat) and longitude(lng) also 
+takes an optional html formated string(str) that will be displayed when the marker is clicked.
 */
-  addMarker: function(lat, lng, str){
+  addMarkerByLatLng: function(lat, lng, str){
     var point= new GLatLng(lat, lng);
     var marker = new GMarker(point);
-	GEvent.addListener(marker, "click", function(){
-		marker.openInfoWindowHtml(str);
-	});
+    if(str){
+		GEvent.addListener(marker, "click", function(){
+			marker.openInfoWindowHtml(str);
+		});
+	}
+  	StalkBook.map.addOverlay(marker);
+  },
+  
+  /*
+Add marker at a given point defined by a GLatLng(point) also takes an 
+optional html formated string(str) that will be displayed when the 
+marker is clicked.
+*/
+  addMarker: function(point, str){
+    var marker = new GMarker(point);
+    if(str){
+		GEvent.addListener(marker, "click", function(){
+			marker.openInfoWindowHtml(str);
+		});
+	}
   	StalkBook.map.addOverlay(marker);
   },
 
