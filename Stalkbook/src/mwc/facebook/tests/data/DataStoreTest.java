@@ -22,7 +22,7 @@ public class DataStoreTest extends TestCase {
 	}
 
 	public void testLocationNotFound(){
-		Assert.assertNull(dataStore.getLocationByName("######"));
+		Assert.assertNull(dataStore.getLocationByPoint(new Point(0f, 0f)));
 	}
 
 	public void testLocationsWithinZeroArea(){
@@ -40,7 +40,7 @@ public class DataStoreTest extends TestCase {
 	
 	public void testAddLocation(){
 		dataStore.addLocation(new Location(new Point(10,10),"Home"));
-		Location location = dataStore.getLocationByName("Home");
+		Location location = dataStore.getLocationByPoint(new Point(10,10));
 		Assert.assertNotNull(location);
 		Assert.assertEquals("Home", location.getLocationName());
 	}

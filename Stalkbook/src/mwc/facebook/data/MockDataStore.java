@@ -8,10 +8,10 @@ import java.util.Set;
 public class MockDataStore implements DataStore{
 
 	private Map<String, User> userMap = new HashMap<String, User>();
-	private Map<String, Location> locationMap = new HashMap<String, Location>();
+	private Map<Point, Location> locationMap = new HashMap<Point, Location>();
 	
-	public Location getLocationByName(String name) {
-		return locationMap.get(name);
+	public Location getLocationByPoint(Point point) {
+		return locationMap.get(point);
 	}
 
 	public Set<Location> getLocationsWithin(Rectangle area) {
@@ -27,7 +27,7 @@ public class MockDataStore implements DataStore{
 	}
 
 	public void addLocation(Location location) {
-		locationMap.put(location.getLocationName(), location);
+		locationMap.put(location.getCoordinates(), location);
 	}
 
 	public void addUser(User user) {

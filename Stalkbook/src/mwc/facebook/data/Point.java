@@ -16,4 +16,15 @@ public class Point {
 	public float getY() {
 		return y;
 	}
+	
+	public boolean equals(Object o){
+		if (o instanceof Point) {
+			return ((Point)o).x == x && ((Point)o).y == y;
+		}
+		return false;
+	}
+	
+	public int hashCode() {
+		return new Float(x).byteValue();
+	}
 }
