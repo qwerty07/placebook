@@ -75,6 +75,22 @@ marker is clicked.
 	}
   	StalkBook.map.addOverlay(marker);
   },
+  
+    /*
+Add marker at a given point defined by latitude(lat) and longitude(lng). 
+It also takes an optional html formated string(str) that will be displayed 
+when the marker is clicked.
+*/
+  addMarkerByLatLng: function(lat, lng, str){
+  	var point= new GLatLng(lat,lng,true);
+    var marker = new GMarker(point);
+    if(str){
+		GEvent.addListener(marker, "click", function(){
+			marker.openInfoWindowHtml(str);
+		});
+	}
+  	StalkBook.map.addOverlay(marker);
+  },
 
 /*
 Centers position to a given point, defined by latitude(lat) and longitude(lng). 
