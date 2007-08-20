@@ -14,6 +14,12 @@ public class DataStoreTest extends TestCase {
 
 	private DataStore dataStore;
 	protected void setUp() throws Exception {
+		/*
+		 * PostgreSQL connection:
+		Properties connectionProps = new Properties();
+		connectionProps.setProperty("user", "goddartimo");
+		dataStore = new PostgresDataStore("localhost", "stalkbook", connectionProps);
+		*/
 		dataStore = new MockDataStore();
 	}
 
