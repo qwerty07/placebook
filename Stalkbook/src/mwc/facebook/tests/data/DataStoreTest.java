@@ -57,8 +57,12 @@ public class DataStoreTest extends TestCase {
 		Assert.assertEquals(1, locations.size());
 		Assert.assertEquals(l1, locations.iterator().next());
 		
+		Set<User> users = dataStore.usersAssociatedWith(l1);
+		Assert.assertEquals(1, users.size());
+		Assert.assertEquals(user, users.iterator().next());
 		
 	}
+	
 	
 	public void testAddLocation(){
 		dataStore.addLocation(new Location(new Point(10,10),"Home"));

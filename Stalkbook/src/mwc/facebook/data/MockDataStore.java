@@ -40,13 +40,22 @@ public class MockDataStore implements DataStore{
 	}
 
 	public Set<Location> locationsFor(User user) {
-		// TODO Auto-generated method stub
-		return null;
+		Set<Location> result = new HashSet<Location>();
+		
+		for(Pair<User, Location> pear : userLocations) {
+			if(pear.a.equals(user))
+				result.add(pear.b);
+		}
+		return result;
 	}
 
 	public Set<User> usersAssociatedWith(Location location) {
-		// TODO Auto-generated method stub
-		return null;
+		Set<User> result = new HashSet<User>();
+		
+		for(Pair<User, Location> pear : userLocations) {
+			if(pear.b.equals(location))
+				result.add(pear.a);
+		}
+		return result;
 	}
-	
 }
