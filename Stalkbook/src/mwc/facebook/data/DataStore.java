@@ -11,4 +11,6 @@ public interface DataStore {
 	
 	public void addUser(User user);
 	public void addLocation(Location location);
+	
+	public void addUserToLocation(User user, Location location);
 }

@@ -34,5 +34,10 @@ public class MockDataStore implements DataStore{
 		userMap.put(user.getUserName(), user);
 		
 	}
+
+	public void addUserToLocation(User user, Location location) {
+		user.addLocation(location);
+		location.addStalker(user);
+	}
 	
 }

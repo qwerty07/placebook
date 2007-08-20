@@ -38,10 +38,26 @@ public class DataStoreTest extends TestCase {
 	}
 
 	public void testAddUser(){
-		dataStore.addUser(new User("Bob"));
+		dataStore.addUser(new User("Bob", new Point(30f,150f)));
 		User user = dataStore.getUserByName("Bob");
 		Assert.assertNotNull(user);
 		Assert.assertEquals("Bob", user.getUserName());
+		Assert.assertEquals(new Point(30f,150f), user.getHomePoint());
+	}
+	
+	public void testAddLocationToUser() {
+		dataStore.addUser(new User("Jim", new Point(30f,150f)));
+		User user = dataStore.getUserByName("Jim");
+		Assert.assertNotNull(user);
+		Location l1 = new Location(new Point(4.4f, 1.2f), "Location 1");
+		dataStore.addLocation(l1);
+		dataStore.addUserToLocation(user, l1);
+		Set<Location> locations = user.getLocations();
+
+		Assert.assertEquals(1, locations.size());
+		Assert.assertEquals(l1, locations.iterator().next());
+		
+		
 	}
 	
 	public void testAddLocation(){
@@ -50,6 +66,7 @@ public class DataStoreTest extends TestCase {
 		Assert.assertNotNull(location);
 		Assert.assertEquals("Home", location.getLocationName());
 	}
+	
 	
 	public void testLocationsWithinArea(){
 		Location point1 = new Location(new Point(2,2),"Point 1");
