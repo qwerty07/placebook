@@ -1,18 +1,37 @@
 
 var StalkCoordinator = {
+	username: "MWC",	// the current user's Facebook name
+	homeloc: "Kelburn, Wellington, New Zealand",
 
+	/* Called when webpage first loaded -- sets up the map to the default */
 	load: function() {
+		// load the map
 		StalkBook.load();
+		
+		// get the user's Facebook name
+		this.setUsername("Crispin Anderton");	/** DEFAULT **/
+
+		// if we have a user name		
+		if (this.username != undefined) {
+			// find the user's home location from the database
+			
+			// tell the map to show the user's home location
+			
+			
+			// get all the user's markers and add them to the map
+		}
 	},
 	
-	addLocation: function(point) {
-		// call this when new location specified on map
-		// send point back to map
-		gmark = StalkBook.createMarker(point);
-		return gmark;
+	setUsername: function(name) {
+		this.username = name;
 	},
 	
-	retrieveLocation: function(point) {
-	}
+	/* A new marker has been added to the map */
+	addMarker: function(latlng) {
+		// if the username is not undefined, then add this 
+		// new marker to the database under their name
+		if (this.username) {
+		}
+	}	
 };
 
