@@ -61,18 +61,18 @@ public class DataStoreTest extends TestCase {
 		Assert.assertTrue(temp.contains(point2));
 		Assert.assertTrue(temp.contains(point3));
 		
-		temp = dataStore.getLocationsWithin(new Rectangle(1,1,4,6));
+		temp = dataStore.getLocationsWithin(new Rectangle(1,1,3,5));
 		Assert.assertNotNull(temp);
 		Assert.assertEquals(2, temp.size());
 		Assert.assertTrue(temp.contains(point1));
 		Assert.assertTrue(temp.contains(point2));
 		Assert.assertFalse(temp.contains(point3));
 		
-		temp = dataStore.getLocationsWithin(new Rectangle(3,2,4,3));
+		temp = dataStore.getLocationsWithin(new Rectangle(3,2,1,1));
 		Assert.assertNotNull(temp);
 		Assert.assertEquals(0, temp.size());
 		
-		temp = dataStore.getLocationsWithin(new Rectangle(4,2,3,5));
+		temp = dataStore.getLocationsWithin(new Rectangle(4,2,4,3));
 		Assert.assertNotNull(temp);
 		Assert.assertEquals(1, temp.size());
 		Assert.assertFalse(temp.contains(point1));

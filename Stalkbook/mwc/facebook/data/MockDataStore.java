@@ -16,8 +16,11 @@ public class MockDataStore implements DataStore{
 	}
 
 	public Set<Location> getLocationsWithin(Rectangle area) {
-		// TODO Auto-generated method stub
-		return new HashSet<Location>();
+		Set<Location> locations = new HashSet<Location>();
+		for (Location l : locationMap.values()) {
+			if (area.contains(l.getCoordinates())) locations.add(l);
+		}
+		return locations;
 	}
 
 	public User getUserByName(String name) {
