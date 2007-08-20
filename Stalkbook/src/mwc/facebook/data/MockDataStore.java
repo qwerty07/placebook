@@ -1,6 +1,5 @@
 package mwc.facebook.data;
 
-import java.awt.Rectangle;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;

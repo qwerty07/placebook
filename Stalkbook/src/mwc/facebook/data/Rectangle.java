@@ -1,4 +1,4 @@
-package src.mwc.facebook.data;
+package mwc.facebook.data;
 
 
 public class Rectangle {

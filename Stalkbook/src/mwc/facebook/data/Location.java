@@ -1,7 +1,5 @@
 package mwc.facebook.data;
 
-import java.awt.Point;
-
 public class Location {
 	private Point coordinates;
 	private String locationName;

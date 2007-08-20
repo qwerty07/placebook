@@ -3,12 +3,12 @@ import java.util.Set;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
+import mwc.facebook.data.DataStore;
 import mwc.facebook.data.Location;
 import mwc.facebook.data.MockDataStore;
+import mwc.facebook.data.Point;
+import mwc.facebook.data.Rectangle;
 import mwc.facebook.data.User;
-import src.mwc.facebook.data.DataStore;
-import src.mwc.facebook.data.Point;
-import src.mwc.facebook.data.Rectangle;
 
 public class DataStoreTest extends TestCase {
 
