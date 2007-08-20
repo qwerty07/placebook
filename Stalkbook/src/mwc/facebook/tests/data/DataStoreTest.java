@@ -1,12 +1,13 @@
 package mwc.facebook.tests.data;
+import java.util.Properties;
 import java.util.Set;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import mwc.facebook.data.DataStore;
 import mwc.facebook.data.Location;
-import mwc.facebook.data.MockDataStore;
 import mwc.facebook.data.Point;
+import mwc.facebook.data.PostgresDataStore;
 import mwc.facebook.data.Rectangle;
 import mwc.facebook.data.User;
 
@@ -14,13 +15,11 @@ public class DataStoreTest extends TestCase {
 
 	private DataStore dataStore;
 	protected void setUp() throws Exception {
-		/*
-		 * PostgreSQL connection:
 		Properties connectionProps = new Properties();
 		connectionProps.setProperty("user", "goddartimo");
-		dataStore = new PostgresDataStore("localhost", "stalkbook", connectionProps);
-		*/
-		dataStore = new MockDataStore();
+		dataStore = new PostgresDataStore("localhost", "stalkbook", connectionProps, true);
+		
+		//dataStore = new MockDataStore();
 	}
 
 	public void testUserNotFound(){
