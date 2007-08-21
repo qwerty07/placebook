@@ -26,6 +26,12 @@ var StalkCoordinator = {
 		// tell the map to centre on the user's home location
 		StalkBook.setPositionString(this.homeloc, this.default_zoom);
 		
+		for (var i = 0; i < User.locations.length; i++) {
+			var location = User.locations[i];
+			var latlong = GLatLng(location.x, location.y);
+			StalkBook.addMarker(latlong, location.location);
+		}
+		
 		// if we have a user name		
 		if (this.username != "MWC") {
 			// alert("Welcome, " + this.username);  // debugging

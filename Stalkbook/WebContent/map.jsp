@@ -48,8 +48,8 @@ if (user != null) {
 	    <% if (userLocations != null) {
 	    	for (Location location : userLocations) {
 	    		Point coords = location.getCoordinates();
-	    		out.println("[" + location.getLocationName() +
-	    	    	          ", [" + coords.x + ", " + coords.y + "]],");
+	    		out.println("{ location: " + location.getLocationName() +
+	    	    	          ", x: " + coords.x + ", y: " + coords.y + "},");
 	    	}
 	    } %>
 	    ]
