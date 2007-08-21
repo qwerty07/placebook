@@ -28,6 +28,7 @@ public class PostgresDataStore implements DataStore {
 	private PreparedStatement getUserByName;
 	private PreparedStatement getLocationByPoint;
 	private PreparedStatement findLocationsInArea;
+	private PreparedStatement associateUserAndLocation;
 	
 	public PostgresDataStore(String server, String database, Properties props) throws SQLException {
 		String url = "jdbc:postgresql://" + server + "/" + database;
@@ -39,11 +40,12 @@ public class PostgresDataStore implements DataStore {
 	private void prepareStatements() throws SQLException {
 		
 		// Create prepared statements
-		insertUser = connection.prepareStatement("INSERT INTO Stalker (fb_username, home_coords) VALUES (?, ?);");
-		insertLocation = connection.prepareStatement("INSERT INTO location (coords, loc_name) VALUES (?, ?)");
-		getUserByName = connection.prepareStatement("SELECT fb_username, home_coords FROM Stalker WHERE fb_username = ?;");
-		getLocationByPoint = connection.prepareStatement("SELECT loc_name, coords FROM Location WHERE coords ~= ?;");
-		findLocationsInArea = connection.prepareStatement("SELECT loc_name, coords FROM Location WHERE box(coords,coords) && ?;");
+		insertUser = connection.prepareStatement("INSERT INTO Stalker (fb_username, home_coord_x, home_coord_y) VALUES (?, ?, ?);");
+		insertLocation = connection.prepareStatement("INSERT INTO location (coord_x, coord_y, loc_name) VALUES (?, ?, ?)");
+		getUserByName = connection.prepareStatement("SELECT fb_username, home_coord_x, home_coord_y FROM Stalker WHERE fb_username = ?;");
+		getLocationByPoint = connection.prepareStatement("SELECT loc_name, coord_x, coord_y FROM Location WHERE coord_x = ? AND coord_y = ?;");
+		findLocationsInArea = connection.prepareStatement("SELECT loc_name, coord_x, coord_y FROM Location WHERE box(point(coord_x, coord_y),point(coord_x, coord_y)) && ?;");
+		associateUserAndLocation = connection.prepareStatement("INSERT INTO stalker_location(fb_username, location_id) VALUES (?, ?);");
 	}
 	
 	public PostgresDataStore(String server, String database, String username, String password) throws SQLException {
@@ -59,8 +61,9 @@ public class PostgresDataStore implements DataStore {
 
 	public synchronized void addLocation(Location location) {
 		try {
-			insertLocation.setObject(1, location.getCoordinates());
-			insertLocation.setString(2, location.getLocationName());
+			insertLocation.setDouble(1, location.getCoordinates().x);
+			insertLocation.setDouble(2, location.getCoordinates().y);
+			insertLocation.setString(3, location.getLocationName());
 			insertLocation.executeUpdate();
 		} catch (SQLException e) {
 			handleError(e);
@@ -70,7 +73,8 @@ public class PostgresDataStore implements DataStore {
 	public synchronized void addUser(User user) {
 		try {
 			insertUser.setString(1, user.getUserName());
-			insertUser.setObject(2, user.getHomePoint());
+			insertUser.setDouble(2, user.getHomePoint().x);
+			insertUser.setDouble(3, user.getHomePoint().y);
 			insertUser.executeUpdate();
 		} catch (SQLException e) {
 			handleError(e);
@@ -94,7 +98,8 @@ public class PostgresDataStore implements DataStore {
 	public synchronized Location getLocationByPoint(Point location) {
 		try
 		{
-			getLocationByPoint.setObject(1, location);
+			getLocationByPoint.setDouble(1, location.x);
+			getLocationByPoint.setDouble(2, location.y);
 			ResultSet result = getLocationByPoint.executeQuery();
 			return createLocationFromResult(result);
 		}
@@ -130,7 +135,7 @@ public class PostgresDataStore implements DataStore {
 	}
 
 	public void addUserToLocation(User user, Location location) {
-		// TODO Auto-generated method stub
+		//associateUserAndLocation.setObject(1, x)
 	}
 
 	public Set<Location> locationsFor(User user) {
@@ -146,9 +151,12 @@ public class PostgresDataStore implements DataStore {
 	private User createUserFromResult(ResultSet result) throws SQLException {
 		if (result.next()) {
 			String username = result.getString("fb_username");
-			PGpoint homeCoords = (PGpoint) result.getObject("home_coords");
-			if (homeCoords == null) return new User(username, null);
-			return new User(username, new Point(homeCoords.x, homeCoords.y));
+			double home_x = result.getDouble("home_coord_x");
+			boolean xWasNull = result.wasNull();
+			double home_y = result.getDouble("home_coord_y");
+			boolean yWasNull = result.wasNull();
+			if (xWasNull || yWasNull) return new User(username, null);
+			return new User(username, new Point(home_x, home_y));
 		} else {
 			return null;
 		}
@@ -157,8 +165,9 @@ public class PostgresDataStore implements DataStore {
 	private Location createLocationFromResult(ResultSet result) throws SQLException {
 		if (result.next()) {
 			String locationName = result.getString("loc_name");
-			PGpoint locationCoords = (PGpoint) result.getObject("coords");
-			return new Location(new Point(locationCoords.x, locationCoords.y), locationName);
+			double loc_x = result.getDouble("coord_x");
+			double loc_y = result.getDouble("coord_y");
+			return new Location(new Point(loc_x, loc_y), locationName);
 		} else {
 			return null;
 		}
