@@ -11,20 +11,34 @@ var async = {
 	/** Location of the application server for requests */
     host: "Async",
     
+    doRequest: function(action, params, callback) {
+    	var data = new Array();
+    	data.push("action=" + escape(action));
+    	for (key in params) {
+    		data.push(key + "=" + escape(params[key]));
+    	}
+    	this.sendRequest(this.host, callback, data.join("&"));
+    },
+    
     setDefaultLocation: function (user, point, callback) {
-    	
-    	var data = "action=setdefault&user="+user+"&x="+point.x+"&y="+point.y;
-    	this.sendRequest(this.host, callback, data);
+    	this.doRequest("setdefault",
+    				   {user: user, x: point.x, y: point.y},
+    				   callback);
     },
     
 	/** assumes that the callback function takes one boolean argument
 	 *  representing the success or failure of the request. */
-	submitPoint: function (user, locName, point, callback) {
+	submitPoint: function (user, info, point, callback) {
 		//this function simply encodes the point in a form request.
 		//we do not handle security or authentication here - TODO
-		var data = "action=addlocation&user="+user+"&location=" + locName + "&x=" + point.x + "&y=" + point.y;
-		//take point, encode in post form, and send to server.
-		this.sendRequest(this.host, callback, data);
+		this.doRequest("addlocation",
+		               {user: user,
+		                location: info.name,
+		                description: info.desc,
+		                x: point.x,
+		                y: point.y
+		                },
+		               callback);
 	},
 	sendRequest: function(url,callback,postData) {
 		var req = this.createXMLHTTPObject();
