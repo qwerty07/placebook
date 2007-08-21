@@ -10,6 +10,7 @@ import mwc.facebook.data.MockDataStore;
 import mwc.facebook.data.Point;
 import mwc.facebook.data.PostgresDataStore;
 import mwc.facebook.data.Rectangle;
+import mwc.facebook.data.TestPGDataStore;
 import mwc.facebook.data.User;
 
 public class DataStoreTest extends TestCase {
@@ -18,7 +19,7 @@ public class DataStoreTest extends TestCase {
 	protected void setUp() throws Exception {
 		Properties connectionProps = new Properties();
 		connectionProps.setProperty("user", "ramsayneil");
-		dataStore = new PostgresDataStore("localhost", "stalkbook", connectionProps, true);
+		//dataStore = new TestPGDataStore("localhost", "stalkbook", connectionProps);
 		
 		dataStore = new MockDataStore();
 	}

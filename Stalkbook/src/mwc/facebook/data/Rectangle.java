@@ -1,5 +1,7 @@
 package mwc.facebook.data;
 
+import org.postgresql.geometric.PGpoint;
+
 
 public class Rectangle {
 	private Point topLeft, bottomRight;
@@ -11,6 +13,14 @@ public class Rectangle {
 	}
 	
 	public boolean contains(Point p) {
-		return (p.getX() >= topLeft.getX() && p.getX() < bottomRight.getX() && p.getY() >= topLeft.getY() && p.getY() < bottomRight.getY());
+		return (p.x >= topLeft.x && p.x < bottomRight.x && p.y >= topLeft.y && p.y < bottomRight.y);
+	}
+
+	public PGpoint getTopLeft() {
+		return topLeft;
+	}
+
+	public PGpoint getBottomRight() {
+		return bottomRight;
 	}
 }

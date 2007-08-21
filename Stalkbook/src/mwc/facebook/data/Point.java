@@ -1,30 +1,22 @@
 package mwc.facebook.data;
 
-public class Point {
-	private float x, y;
+import org.postgresql.geometric.PGpoint;
+import org.postgresql.util.MD5Digest;
 
-	public Point(float x, float y) {
+public class Point extends PGpoint{
+	public Point(double x, double y) {
 		super();
 		this.x = x;
 		this.y = y;
 	}
-
-	public float getX() {
-		return x;
-	}
-
-	public float getY() {
-		return y;
-	}
-	
-	public boolean equals(Object o){
-		if (o instanceof Point) {
-			return ((Point)o).x == x && ((Point)o).y == y;
-		}
-		return false;
-	}
 	
 	public int hashCode() {
-		return new Float(x).byteValue();
+		return new Double(Math.log(2) * x + Math.log(3) * y).hashCode();
+	}
+	
+	public boolean equals(Object other) {
+		if (!(other instanceof Point)) return false;
+		Point o = (Point) other;
+		return x == o.x && y == o.y;
 	}
 }

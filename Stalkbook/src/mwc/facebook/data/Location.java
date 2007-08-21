@@ -16,4 +16,14 @@ public class Location {
 	public Point getCoordinates() {
 		return coordinates;
 	}
+	
+	public int hashCode() {
+		return coordinates.hashCode();
+	}
+	
+	public boolean equals(Object other) {
+		if (!(other instanceof Location)) return false;
+		Location o = (Location) other;
+		return coordinates.equals(o.getCoordinates()) && locationName.equals(o.getLocationName());
+	}
 }	
