@@ -19,7 +19,7 @@ public class ObjectManager {
 	
 	public ObjectManager() {
 		try {
-			store = new PostgresDataStore("localhost", "stalkbook", "facebook", "");
+			store = new PostgresDataStore("localhost", "stalkbook", "facebook", "i| li;t abe/ Oim he*k tu$e myr- v`to st*w g*ll");
 		}
 		catch (SQLException ex) {
 			System.err.println("Error opening SQL Database");
