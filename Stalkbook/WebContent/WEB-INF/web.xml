@@ -11,9 +11,22 @@
 		<servlet-class>
 		mwc.Stalkbook</servlet-class>
 	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>
+		Async</display-name>
+		<servlet-name>Async</servlet-name>
+		<servlet-class>
+		mwc.facebook.Async</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>Stalkbook</servlet-name>
 		<url-pattern>/Stalkbook</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Async</servlet-name>
+		<url-pattern>/Async</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
