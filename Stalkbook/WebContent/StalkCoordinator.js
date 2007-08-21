@@ -48,7 +48,7 @@ var StalkCoordinator = {
 	},
 	
 	asyncCallback: function(req) {
-		alert(req.readystate + ", " + req.status);
+		// alert(req.readystate + ", " + req.status);
 	},
 	
 	/* A new marker has been added to the map */
