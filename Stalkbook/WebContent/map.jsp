@@ -36,68 +36,90 @@ if (user != null) {
 <style type="text/css">
 #map {
 	width: 100%;
-	height: 100%;
+	height: 500px;
 }
 </style>
 
 <script type="text/javascript">
-	var User = {
-		username: "<%= uid %>",
-		<% if (userHome != null) { %>
-		homeLocation: { x: <%= userHome.x %>, y: <%= userHome.y %> },
-		<% } %>
-	    locations: [
-	    <% if (userLocations != null) {
-	    	for (Location location : userLocations) {
-	    		Point coords = location.getCoordinates();
-	    		out.println("{ name: '" + location.getLocationName() +
-	    	    	          "', x: " + coords.x + ", y: " + coords.y + "},");
-	    	}
-	    } %>
-	    ]
-	};
+var User = {
+	username: "<%= uid %>",
+<% if (userHome != null) { %>
+	homeLocation: { x: <%= userHome.x %>, y: <%= userHome.y %> },
+<% } %>
+	locations: [
+<% if (userLocations != null) {
+		for (Location location : userLocations) {
+			Point coords = location.getCoordinates();
+			out.println("{ name: '" + location.getLocationName() +
+					"', x: " + coords.x + ", y: " + coords.y + "},");
+	}
+} %>
+	]
+};
+
 </script>
 <%
 if (user == null) {
 %>
 <script type="text/javascript">
-var trueStalkCoordinator = stalkCoordinator;
-stalkCoordinator = new StalkCoordinator();
 
-stalkCoordinator.addMarker: function (latlng) {
-	var point = {
-		x: latlng.lat(),
-		y: latlng.lng()
-	};
-		
-	User.homeLocation = point;
-
-	async.setDefaultLocation(StalkCoordinator.username, point, function(req){StalkCoordinator.complete(req)});
-};
-
-stalkCoordinator.load: = function () {
-	alert("Welcome to Stalkbook, please select your default location.");
-		
-	// load the map
-	StalkBook.load();
+function doOnload() {
 	
-	// Set the callback function for StalkBook to call when adding
-	// a new marker
-	StalkBook.addMarkerFunction(stalkCoordinator.addMarker);
-	// get the user's Facebook name & home location
-	this.setUsername(User.username);
-};
-
-stalkCoordinator.complete = function (req) {
-	stalkCoordinator = trueStalkCoordinator;
+	stalkCoordinator = new StalkCoordinator();
+	
+	stalkCoordinator.addMarker = function (latlng) {
+		var point = {
+			x: latlng.lat(),
+			y: latlng.lng()
+		};
+			
+		User.homeLocation = point;
+	
+		async.setDefaultLocation(stalkCoordinator.username, point, function (req) { stalkCoordinator.complete(req) });
+	};
+	
+	stalkCoordinator.load = function () {
+		alert("Welcome to Stalkbook, please select your default location.");
+			
+		// load the map
+		StalkBook.load();
+		
+		// Set the callback function for StalkBook to call when adding
+		// a new marker
+		StalkBook.setMarkerFunction(stalkCoordinator.addMarker);
+		
+		// get the user's Facebook name & home location
+		this.setUsername(User.username);
+	};
+	
+	stalkCoordinator.complete = function (req) {
+		stalkCoordinator = new StalkCoordinator();
+		stalkCoordinator.load();
+	};
+	
 	stalkCoordinator.load();
-};
+}
+</script>
+<%
+}
+else {
+%>
+<script type="text/javascript">
+
+function doOnload() {
+	
+	stalkCoordinator = new StalkCoordinator();
+	
+	stalkCoordinator.load();
+}
 </script>
 <%
 }
 %>
 </head>
-<body onload="stalkCoordinator.load()" onunload="GUnload()">
+<body onload="doOnload()" onunload="GUnload()">
 	<div id="map"></div>
 </body>
+
+
 </html>

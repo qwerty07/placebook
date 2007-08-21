@@ -16,9 +16,15 @@
 	width: 500px; height: 500px
 }
 </style>
-   
+<script type="text/javascript">
+function doOnload() {
+	stalkCoordinator = new StalkCoordinator();
+	gmapTest.test()
+	stalkCoordinator.load();
+}
+</script>
   </head>
-  <body onload="gmapTest.test(); stalkCoordinator.load()" onunload="GUnload()">
+  <body onload="doOnload()" onunload="GUnload()">
     <div id="map"></div>
 <div id="test">
 <a href="#" onclick="gmapTest.testxy()">Click to call setPositionXY</a><br />

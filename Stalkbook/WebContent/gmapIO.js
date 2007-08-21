@@ -133,11 +133,9 @@ for areas with more detail.
   Function that takes a callback function to be executed when a the map is 
   double clicked. i.e. When a marker needs added.
   */
-  addMarkerFunction: function(func){
+  setMarkerFunction: function(func){
   	StalkBook.markerFunc=func;
   }
-  
-  
   
 };
 //]]>

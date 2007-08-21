@@ -5,7 +5,7 @@
  * and the Google Maps interface object (reg gmapIO.js)
 */
 
-function StalkCoordinator () {
+function StalkCoordinator() {
 	this.username = undefined;	// the current user's Facebook name
 	this.homeloc = undefined;	// user's home location -- where the map will centre when loaded
 	this.default_zoom = 15;	// default zoom level
@@ -17,7 +17,7 @@ function StalkCoordinator () {
 		
 		// Set the callback function for StalkBook to call when adding
 		// a new marker
-		StalkBook.addMarkerFunction(stalkCoordinator.addMarker);
+		StalkBook.setMarkerFunction(stalkCoordinator.addMarker);
 		
 		// get the user's Facebook name & home location
 		this.setUsername(User.username);
@@ -72,4 +72,4 @@ function StalkCoordinator () {
 	};
 };
 
-var stalkCoordinator = new StalkCoordinator();
+var stalkCoordinator;
