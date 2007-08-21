@@ -17,10 +17,12 @@ User user = db.getUserByName(String.valueOf(uid)); // someone will fix this late
 Point userHome = null;
 Set<Location> userLocations = null;
 
-if (user != null) {
-	userHome = user.getHomePoint();
-	userLocations = db.locationsFor(user);
+if (user == null) {
+	user = new User(String.valueOf(uid), new Point(-41.26, 174.77));
+	db.addUser(user);
 }
+userHome = user.getHomePoint();
+userLocations = db.locationsFor(user);
 
 %>
 
