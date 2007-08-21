@@ -63,18 +63,22 @@ var StalkCoordinator = {
 			x: latlng.lat(),
 			y: latlng.lng()
 		};
-				
-		var markerText = prompt("Name of location");
-		if(markerText){		
-			if (markerText == "") { 
-				markerText = "My marker"; 
-			}
-				
-			StalkBook.addMarker(latlng, markerText);
-			
-			async.submitPoint(StalkCoordinator.username, markerText, point, function(req){StalkCoordinator.asyncCallback(req)});
-			// alert("Marker added at " + latlng.lat() + ", " + latlng.lng()); // debugging
+	
+		var markerName = prompt("Enter marker text");
+		if (markerName == undefined) return;
+		if (markerName == "") { 
+			markerName = "My marker"; 
 		}
+		
+		var markerDesc = prompt("Enter description");
+		if (markerDesc == ""){
+			markerDesc = "Desc";
+		}
+
+		StalkBook.addMarker(latlng, {name: markerName, desc: markerDesc});
+		
+		async.submitPoint(StalkCoordinator.username, markerText, point, function(req){StalkCoordinator.asyncCallback(req)});
+		// alert("Marker added at " + latlng.lat() + ", " + latlng.lng()); // debugging
 	}
 };
 
