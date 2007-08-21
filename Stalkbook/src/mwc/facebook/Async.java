@@ -16,16 +16,23 @@ public class Async extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest arg0, HttpServletResponse arg1) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		super.doGet(arg0, arg1);
+		doPost(arg0, arg1);
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String name = (String)request.getAttribute("user");
-		float x = Float.parseFloat((String)request.getAttribute("x"));
-		float y = Float.parseFloat((String)request.getAttribute("y"));
+		String name = request.getParameter("user");
+		String sx = request.getParameter("x");
+		String sy = request.getParameter("y");
+		
+		if (name == null || sx == null || sy == null) {
+			response.getWriter().println("fail");
+			return;
+		}
+		
+		float x = Float.parseFloat(sx);
+		float y = Float.parseFloat(sy);
 		
 		Point point = new Point(x, y);
 		
@@ -43,7 +50,10 @@ public class Async extends HttpServlet {
 		}
 		store.addUserToLocation(user, location);
 		
+		//TODO return users associate with point 
 		response.getWriter().println("success");
+		
+		
 	}
 
 }

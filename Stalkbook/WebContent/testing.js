@@ -26,7 +26,7 @@ var test = {
 	},
 	output: function (text) {
 		var out = document.getElementById("output");
-		if (out) out.appendChild(document.createTextNode(text));
+		if (out) out.appendChild(document.createTextNode(text + "\n"));
 	},
 	fail: function() {
 		setResult(false);

@@ -67,7 +67,7 @@ var StalkCoordinator = {
 			
 		StalkBook.addMarker(latlng, markerText);
 		
-		async.submitPoint(StalkCoordinator.username, point, this.asyncCallback);
+		async.submitPoint(StalkCoordinator.username, point, function(req){StalkCoordinator.asyncCallback(req)});
 		// alert("Marker added at " + latlng.lat() + ", " + latlng.lng()); // debugging
 	}
 };
