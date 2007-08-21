@@ -9,7 +9,7 @@
 
 var async = {
 	/** Location of the application server for requests */
-    host: "http://facebook.inferface.org.nz/stalkbook/Async",
+    host: "Async",
     
 	/** assumes that the callback function takes one boolean argument
 	 *  representing the success or failure of the request. */

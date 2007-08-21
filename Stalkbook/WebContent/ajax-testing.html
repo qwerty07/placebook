@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Testing for AJAX methods</title>
+<script type="text/javascript" src="ajax.js"></script>
+<script type="text/javascript" src="testing.js"></script>
+<script type="text/javascript">
+test.add(
+function () {
+	var callback = function (response) {
+		test.output("callback returned");
+		test.output(response);
+	};
+	async.submitPoint("test-user",
+		{ x: 0.1, y: 3 },
+		callback
+	);
+	return true;
+});
+test.add(function () { test.output("test succeeded");  return true; });
+</script>
+</head>
+<body onload="test.run()">
+<pre id="output" style="height: 120px"></pre>
+</body>
+</html>
