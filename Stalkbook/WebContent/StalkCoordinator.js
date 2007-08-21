@@ -22,7 +22,7 @@ var StalkCoordinator = {
 		// get the user's Facebook name & home location
 		this.setUsername(User.username);
 		this.setHomeLocation(User.homeLocation);
-
+	
 		// tell the map to centre on the user's home location
 		StalkBook.setPositionString(this.homeloc, this.default_zoom);
 		
@@ -40,35 +40,35 @@ var StalkCoordinator = {
 	},
 	
 	setUsername: function(name) {
-		this.username = name;
+		StalkCoordinator.username = name;
 	},
 	
 	setHomeLocation: function(location) {
-		this.homeloc = location;
+		StalkCoordinator.homeloc = location;
+	},
+	
+	asyncCallback: function(req) {
+		alert(req.readystate + ", " + req.status);
 	},
 	
 	/* A new marker has been added to the map */
 	addMarker: function(latlng) {
-		// if the username is not undefined, then add this 
-		// new marker to the database under their name
+		// add this new marker to the database under the user name
 		var point = {
-			x: lat,
-			y: lng
+			x: latlng.lat(),
+			y: latlng.lng()
 		};
-		
-		if (this.username) {
-			async.submitPoint(this.username, point, function(req) {
-			});
-		}
 		
 		var markerText = prompt("Enter marker text");
 		
 		if (markerText == "") { 
 			markerText = "My marker"; 
 		}
-		
+			
 		StalkBook.addMarker(latlng, markerText);
+		
+		async.submitPoint(StalkCoordinator.username, point, this.asyncCallback);
 		// alert("Marker added at " + latlng.lat() + ", " + latlng.lng()); // debugging
-	}	
+	}
 };
 
