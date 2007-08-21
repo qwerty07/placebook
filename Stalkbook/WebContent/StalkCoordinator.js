@@ -7,8 +7,8 @@
 
 var StalkCoordinator = {
 	username: undefined,	// the current user's Facebook name
-	homeloc: undefined,
-	default_zoom: 15,
+	homeloc: undefined,	// user's home location -- where the map will centre when loaded
+	default_zoom: 15,	// default zoom level
 
 	/* Called when webpage first loaded -- sets up the map to the default */
 	load: function() {
@@ -19,28 +19,32 @@ var StalkCoordinator = {
 		// a new marker
 		StalkBook.addMarkerFunction(StalkCoordinator.addMarker);
 		
-		// get the user's Facebook name
+		// get the user's Facebook name & home location
 		this.setUsername(User.username);
-		this.homeloc = User.homeLocation;
+		this.setHomeLocation(User.homeLocation);
+
+		// tell the map to centre on the user's home location
+		StalkBook.setPositionString(this.homeloc, this.default_zoom);
 		
 		// if we have a user name		
 		if (this.username != "MWC") {
-			// find the user's home location from the database
 			// alert("Welcome, " + this.username);  // debugging
-			
-			// tell the map to centre on the user's home location
-			StalkBook.setPositionString(this.homeloc, this.default_zoom);
 			
 			// get all the user's markers and add them to the map
 		} else {
 			// don't have a user name, so use defaults
 			// alert("Using default location settings");  // debugging
-			StalkBook.setPositionString(this.homeloc, this.default_zoom);
+			
+			// create a new user on the database
 		}
 	},
 	
 	setUsername: function(name) {
 		this.username = name;
+	},
+	
+	setHomeLocation: function(location) {
+		this.homeloc = location;
 	},
 	
 	/* A new marker has been added to the map */
