@@ -8,9 +8,7 @@ import mwc.facebook.data.DataStore;
 import mwc.facebook.data.Location;
 import mwc.facebook.data.MockDataStore;
 import mwc.facebook.data.Point;
-import mwc.facebook.data.PostgresDataStore;
 import mwc.facebook.data.Rectangle;
-import mwc.facebook.data.TestPGDataStore;
 import mwc.facebook.data.User;
 
 public class DataStoreTest extends TestCase {

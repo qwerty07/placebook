@@ -14,6 +14,8 @@ import mwc.facebook.data.User;
 
 public class Async extends HttpServlet {
 
+	private static final long serialVersionUID = 1l;
+	
 	@Override
 	protected void doGet(HttpServletRequest arg0, HttpServletResponse arg1) throws ServletException, IOException {
 		doPost(arg0, arg1);

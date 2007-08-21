@@ -1,4 +1,4 @@
- /*
+/*
   +---------------------------------------------------------------------------+
   | Facebook Development Platform Java Client                                 |
   +---------------------------------------------------------------------------+
@@ -32,16 +32,17 @@
 
 package com.facebook.api;
 
-public class FacebookException
-  extends Exception {
-  private int _code;
+public class FacebookException extends Exception {
 
-  public FacebookException(int code, String msg) {
-    super(msg);
-    _code = code;
-  }
+	private static final long serialVersionUID = 1L;
+	private int _code;
 
-  public int getCode() {
-    return _code;
-  }
+	public FacebookException(int code, String msg) {
+		super(msg);
+		_code = code;
+	}
+
+	public int getCode() {
+		return _code;
+	}
 }
