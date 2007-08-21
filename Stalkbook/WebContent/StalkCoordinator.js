@@ -54,7 +54,13 @@ var StalkCoordinator = {
 		if (this.username) {
 		}
 		
-		StalkBook.addMarker(latlng, "My point");
+		var markerText = prompt("Enter marker text");
+		
+		if (markerText == "") { 
+			markerText = "My marker"; 
+		}
+		
+		StalkBook.addMarker(latlng, markerText);
 		// alert("Marker added at " + latlng.lat() + ", " + latlng.lng()); // debugging
 	}	
 };
