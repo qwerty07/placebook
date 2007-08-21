@@ -63,9 +63,11 @@ function StalkCoordinator () {
 			markerDesc = "Desc";
 		}
 
-		StalkBook.addMarker(latlng, {name: markerName, desc: markerDesc});
+		var loc = {name: markerName, desc: markerDesc};
 		
-		async.submitPoint(stalkCoordinator.username, markerText, point, function(req){stalkCoordinator.asyncCallback(req)});
+		StalkBook.addMarker(latlng, loc);
+		
+		async.submitPoint(stalkCoordinator.username, loc, point, function(req){stalkCoordinator.asyncCallback(req)});
 		// alert("Marker added at " + latlng.lat() + ", " + latlng.lng()); // debugging
 	};
 };
