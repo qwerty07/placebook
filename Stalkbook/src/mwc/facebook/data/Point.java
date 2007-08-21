@@ -19,6 +19,6 @@ public class Point extends PGpoint{
 	public boolean equals(Object other) {
 		if (!(other instanceof Point)) return false;
 		Point o = (Point) other;
-		return x == o.x && y == o.y;
+		return Math.abs(x - o.x) < (x / 100000000) && Math.abs(y - o.y) < (y / 100000000);
 	}
 }

@@ -29,6 +29,8 @@ public class PostgresDataStore implements DataStore {
 	private PreparedStatement getLocationByPoint;
 	private PreparedStatement findLocationsInArea;
 	private PreparedStatement associateUserAndLocation;
+	private PreparedStatement findUsersByLocation;
+	private PreparedStatement findLocationsForUser;
 	
 	public PostgresDataStore(String server, String database, Properties props) throws SQLException {
 		String url = "jdbc:postgresql://" + server + "/" + database;
@@ -45,7 +47,9 @@ public class PostgresDataStore implements DataStore {
 		getUserByName = connection.prepareStatement("SELECT fb_username, home_coord_x, home_coord_y FROM Stalker WHERE fb_username = ?;");
 		getLocationByPoint = connection.prepareStatement("SELECT loc_name, coord_x, coord_y FROM Location WHERE coord_x = ? AND coord_y = ?;");
 		findLocationsInArea = connection.prepareStatement("SELECT loc_name, coord_x, coord_y FROM Location WHERE box(point(coord_x, coord_y),point(coord_x, coord_y)) && ?;");
-		associateUserAndLocation = connection.prepareStatement("INSERT INTO stalker_location(fb_username, location_id) VALUES (?, ?);");
+		associateUserAndLocation = connection.prepareStatement("INSERT INTO location_stalker (fb_username, coord_x, coord_y) VALUES (?, ?, ?);");
+		findUsersByLocation = connection.prepareStatement("SELECT stalker.fb_username, home_coord_x, home_coord_y FROM stalker NATURAL JOIN location_stalker WHERE coord_x = ? AND coord_y = ?;");
+		findLocationsForUser = connection.prepareStatement("SELECT location.coord_x, location.coord_y, location.loc_name FROM location NATURAL JOIN location_stalker WHERE fb_username = ?;");
 	}
 	
 	public PostgresDataStore(String server, String database, String username, String password) throws SQLException {
@@ -134,18 +138,70 @@ public class PostgresDataStore implements DataStore {
 		return connection;
 	}
 
-	public void addUserToLocation(User user, Location location) {
-		//associateUserAndLocation.setObject(1, x)
+	public synchronized void addUserToLocation(User user, Location location) {
+		try
+		{
+			associateUserAndLocation.setString(1, user.getUserName());
+			associateUserAndLocation.setDouble(2, location.getCoordinates().x);
+			associateUserAndLocation.setDouble(3, location.getCoordinates().y);
+		}
+		catch (SQLException e)
+		{
+			handleError(e);
+		}
+		try
+		{
+			associateUserAndLocation.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			if (e.getErrorCode() == 23505) {
+				// TODO: update instead?
+			} else {
+				handleError(e);
+			}
+		}
 	}
 
-	public Set<Location> locationsFor(User user) {
-		// TODO Auto-generated method stub
-		return null;
+	public synchronized Set<Location> locationsFor(User user) {
+		Set<Location> locations = new HashSet<Location>();
+		try
+		{
+			findLocationsForUser.setString(1, user.getUserName());
+			ResultSet result = findLocationsForUser.executeQuery();
+			
+			Location l = createLocationFromResult(result);
+			while(l != null) {
+				locations.add(l);
+				l = createLocationFromResult(result);
+			}
+		}
+		catch (SQLException e)
+		{
+			handleError(e);
+		}
+		
+		return locations;
 	}
 
-	public Set<User> usersAssociatedWith(Location location) {
-		// TODO Auto-generated method stub
-		return null;
+	public synchronized Set<User> usersAssociatedWith(Location location) {
+		Set<User> users = new HashSet<User>();
+		try
+		{
+			findUsersByLocation.setDouble(1, location.getCoordinates().x);
+			findUsersByLocation.setDouble(2, location.getCoordinates().y);
+			ResultSet result = findUsersByLocation.executeQuery();
+			User u = createUserFromResult(result);
+			while (u != null) {
+				users.add(u);
+				u = createUserFromResult(result);
+			}
+		}
+		catch (SQLException e)
+		{
+			handleError(e);
+		}
+		return users;
 	}
 	
 	private User createUserFromResult(ResultSet result) throws SQLException {

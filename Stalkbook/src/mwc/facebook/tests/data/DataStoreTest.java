@@ -2,13 +2,16 @@ package mwc.facebook.tests.data;
 import java.util.Properties;
 import java.util.Set;
 
+import org.postgresql.core.types.PGDouble;
+import org.postgresql.core.types.PGFloat;
+
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import mwc.facebook.data.DataStore;
 import mwc.facebook.data.Location;
-import mwc.facebook.data.MockDataStore;
 import mwc.facebook.data.Point;
 import mwc.facebook.data.Rectangle;
+import mwc.facebook.data.TestPGDataStore;
 import mwc.facebook.data.User;
 
 public class DataStoreTest extends TestCase {
@@ -17,9 +20,9 @@ public class DataStoreTest extends TestCase {
 	protected void setUp() throws Exception {
 		Properties connectionProps = new Properties();
 		connectionProps.setProperty("user", "ramsayneil");
-		//dataStore = new TestPGDataStore("localhost", "stalkbook", connectionProps);
+		dataStore = new TestPGDataStore("localhost", "stalkbook", connectionProps);
 		
-		dataStore = new MockDataStore();
+		//dataStore = new MockDataStore();
 	}
 
 	public void testUserNotFound(){

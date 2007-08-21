@@ -16,4 +16,10 @@ public class User {
 	public Point getHomePoint() {
 		return home;
 	}
+	
+	public boolean equals(Object other) {
+		if (!(other instanceof User)) return false;
+		User o = (User) other;
+		return o.getUserName().equals(userName) && o.getHomePoint().equals(home);
+	}
 }
