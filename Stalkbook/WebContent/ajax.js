@@ -11,12 +11,18 @@ var async = {
 	/** Location of the application server for requests */
     host: "Async",
     
+    setDefaultLocation: function (user, point, callback) {
+    	
+    	var data = "action=setdefault&user="+user+"&x="+point.x+"&y="+point.y;
+    	this.sendRequest(this.host, callback, data);
+    },
+    
 	/** assumes that the callback function takes one boolean argument
 	 *  representing the success or failure of the request. */
 	submitPoint: function (user, locName, point, callback) {
 		//this function simply encodes the point in a form request.
 		//we do not handle security or authentication here - TODO
-		var data = "user="+user+"&location=" + locName + "&x=" + point.x + "&y=" + point.y;
+		var data = "action=addlocation&user="+user+"&location=" + locName + "&x=" + point.x + "&y=" + point.y;
 		//take point, encode in post form, and send to server.
 		this.sendRequest(this.host, callback, data);
 	},
