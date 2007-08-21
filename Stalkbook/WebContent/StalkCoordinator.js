@@ -51,7 +51,14 @@ var StalkCoordinator = {
 	addMarker: function(latlng) {
 		// if the username is not undefined, then add this 
 		// new marker to the database under their name
+		var point = {
+			x: lat,
+			y: lng
+		};
+		
 		if (this.username) {
+			async.submitPoint(this.username, point, function(req) {
+			});
 		}
 		
 		var markerText = prompt("Enter marker text");
