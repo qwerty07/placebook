@@ -5,19 +5,19 @@
  * and the Google Maps interface object (reg gmapIO.js)
 */
 
-var StalkCoordinator = {
-	username: undefined,	// the current user's Facebook name
-	homeloc: undefined,	// user's home location -- where the map will centre when loaded
-	default_zoom: 15,	// default zoom level
+function StalkCoordinator () {
+	this.username = undefined;	// the current user's Facebook name
+	this.homeloc = undefined;	// user's home location -- where the map will centre when loaded
+	this.default_zoom = 15;	// default zoom level
 
 	/* Called when webpage first loaded -- sets up the map to the default */
-	load: function() {
+	this.load = function() {
 		// load the map
 		StalkBook.load();
 		
 		// Set the callback function for StalkBook to call when adding
 		// a new marker
-		StalkBook.addMarkerFunction(StalkCoordinator.addMarker);
+		StalkBook.addMarkerFunction(stalkCoordinator.addMarker);
 		
 		// get the user's Facebook name & home location
 		this.setUsername(User.username);
@@ -30,34 +30,22 @@ var StalkCoordinator = {
 			var location = User.locations[i];
 			StalkBook.addMarkerByLatLng(location.x, location.y, location.name);
 		}
+	};
 	
-		// if we have a user name		
-		if (this.username != "MWC") {
-			// alert("Welcome, " + this.username);  // debugging
-			
-			// get all the user's markers and add them to the map
-		} else {
-			// don't have a user name, so use defaults
-			// alert("Using default location settings");  // debugging
-			
-			// create a new user on the database
-		}
-	},
+	this.setUsername = function(name) {
+		stalkCoordinator.username = name;
+	};
 	
-	setUsername: function(name) {
-		StalkCoordinator.username = name;
-	},
+	this.setHomeLocation = function(location) {
+		stalkCoordinator.homeloc = location;
+	};
 	
-	setHomeLocation: function(location) {
-		StalkCoordinator.homeloc = location;
-	},
-	
-	asyncCallback: function(req) {
+	this.asyncCallback = function(req) {
 		// alert(req.readystate + ", " + req.status);
-	},
+	};
 	
 	/* A new marker has been added to the map */
-	addMarker: function(latlng) {
+	this.addMarker = function(latlng) {
 		// add this new marker to the database under the user name
 		var point = {
 			x: latlng.lat(),
@@ -77,8 +65,9 @@ var StalkCoordinator = {
 
 		StalkBook.addMarker(latlng, {name: markerName, desc: markerDesc});
 		
-		async.submitPoint(StalkCoordinator.username, markerText, point, function(req){StalkCoordinator.asyncCallback(req)});
+		async.submitPoint(stalkCoordinator.username, markerText, point, function(req){stalkCoordinator.asyncCallback(req)});
 		// alert("Marker added at " + latlng.lat() + ", " + latlng.lng()); // debugging
-	}
+	};
 };
 
+var stalkCoordinator = new StalkCoordinator();
