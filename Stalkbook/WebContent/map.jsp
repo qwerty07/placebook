@@ -17,12 +17,10 @@ User user = db.getUserByName(String.valueOf(uid)); // someone will fix this late
 Point userHome = null;
 Set<Location> userLocations = null;
 
-if (user == null) {
-	user = new User(String.valueOf(uid), new Point(-41.26, 174.77));
-	db.addUser(user);
+if (user != null) {
+	userHome = user.getHomePoint();
+	userLocations = db.locationsFor(user);
 }
-userHome = user.getHomePoint();
-userLocations = db.locationsFor(user);
 
 %>
 
@@ -30,14 +28,15 @@ userLocations = db.locationsFor(user);
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
-<title>Insert title here</title>
+<title>Facebook Places</title>
 <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAjLUGBU2KYPSE-QiX4gc3nhQaIaxgZFO_HyGm4sK6rU1DjshnHBQZEhZXdK-FSkrkhldgO6eTm6dXRw"></script>
 <script src="gmapIO.js" type="text/javascript"></script>
 <script src="ajax.js" type="text/javascript"></script>
 <script src="StalkCoordinator.js" type="text/javascript"></script>
 <style type="text/css">
 #map {
-	width: 500px; height: 500px
+	width: 100%;
+	height: 100%;
 }
 </style>
 
@@ -58,11 +57,47 @@ userLocations = db.locationsFor(user);
 	    ]
 	};
 </script>
+<%
+if (user == null) {
+%>
+<script type="text/javascript">
+var trueStalkCoordinator = stalkCoordinator;
+stalkCoordinator = new StalkCoordinator();
 
+stalkCoordinator.addMarker: function (latlng) {
+	var point = {
+		x: latlng.lat(),
+		y: latlng.lng()
+	};
+		
+	User.homeLocation = point;
+
+	async.setDefaultLocation(StalkCoordinator.username, point, function(req){StalkCoordinator.complete(req)});
+};
+
+stalkCoordinator.load: = function () {
+	alert("Welcome to Stalkbook, please select your default location.");
+		
+	// load the map
+	StalkBook.load();
+	
+	// Set the callback function for StalkBook to call when adding
+	// a new marker
+	StalkBook.addMarkerFunction(stalkCoordinator.addMarker);
+	// get the user's Facebook name & home location
+	this.setUsername(User.username);
+};
+
+stalkCoordinator.complete = function (req) {
+	stalkCoordinator = trueStalkCoordinator;
+	stalkCoordinator.load();
+};
+</script>
+<%
+}
+%>
 </head>
- <body onload="StalkCoordinator.load()" onunload="GUnload()">
-<div id="map"></div>
-
-
+<body onload="stalkCoordinator.load()" onunload="GUnload()">
+	<div id="map"></div>
 </body>
 </html>

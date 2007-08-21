@@ -1,5 +1,5 @@
 var User = {
 	username: "MWC",
-	homeLocation: "Kelburn Parade, Wellington, New Zealand",
+	homeLocation: {x: -41.26, y: 174.77},
 	locations: []
 };
