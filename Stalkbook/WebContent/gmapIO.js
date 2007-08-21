@@ -7,13 +7,6 @@ We can set a marker to a given lat,lng.
 To use this:
 there must be an element with id=map (i.e <div id="map"></div>)
 This will be the location of the map.
-
-Things to do:
-Be able to change locality (probably from facebook application or db)
-Interface with facebook app.
-Work with wrapper class.
-->Be able to set the string on a marker, with a URL (not completed)
-
 */
 var StalkBook = {
   minZoom: 15,
@@ -21,6 +14,7 @@ var StalkBook = {
   geocoder: new GClientGeocoder(),
   map: undefined,
   markerFunc: undefined,
+  typeImages: new Array(5),
   
   /*
   Loads up the map requires map element. Define interfaces here.
@@ -30,6 +24,24 @@ var StalkBook = {
       StalkBook.map=new GMap2(document.getElementById("map"));
       StalkBook.map.addControl(new GLargeMapControl());
 	  StalkBook.map.addControl(new GMapTypeControl());
+	  
+	  StalkBook.typeImages[0]= new GIcon();
+	  StalkBook.typeImages[0].image = "./images/map/home.png";
+      StalkBook.typeImages[0].shadow = "http://labs.google.com/ridefinder/images/mm_20_shadow.png";
+	  StalkBook.typeImages[0].iconSize = new GSize(25, 25);
+	  StalkBook.typeImages[0].shadowSize = new GSize(22, 20);
+  	  StalkBook.typeImages[0].iconAnchor = new GPoint(6, 20);
+	  StalkBook.typeImages[0].infoWindowAnchor = new GPoint(5, 1);
+	  StalkBook.typeImages[0].type="Home";
+	 
+	  StalkBook.typeImages[1]= new GIcon();
+	  StalkBook.typeImages[1].image = "./images/map/eat.png";
+      StalkBook.typeImages[1].shadow = "http://labs.google.com/ridefinder/images/mm_20_shadow.png";
+	  StalkBook.typeImages[1].iconSize = new GSize(25, 25);
+	  StalkBook.typeImages[1].shadowSize = new GSize(22, 20);
+  	  StalkBook.typeImages[1].iconAnchor = new GPoint(6, 20);
+	  StalkBook.typeImages[1].infoWindowAnchor = new GPoint(5, 1);
+	  StalkBook.typeImages[1].type="Eat";	  
       
       StalkBook.geocoder.getLatLng(StalkBook.locality,function(point){
 		StalkBook.map.setCenter(point, 12);
@@ -47,12 +59,22 @@ var StalkBook = {
 
 
 /*
-Add marker at a given point defined by latitude(lat) and longitude(lng) also 
-takes an optional html formated string(str) that will be displayed when the marker is clicked.
+Add marker at a given point defined by latitude(lat) and longitude(lng) also takes an 
+optional html formated string(str) that will be displayed when the marker is clicked, 
+as well as an optional type which changes the marker image to what is associated to the 
+given type.
 */
-  addMarkerByLatLng: function(lat, lng, str){
+  addMarkerByLatLng: function(lat, lng, str, type){
     var point= new GLatLng(lat, lng);
     var marker = new GMarker(point);
+    if(type){
+	  	for (i=0;i<StalkBook.typeImages.length;i++){	
+	  		if(StalkBook.typeImages[i].type==type){
+  				marker = new GMarker(point, StalkBook.typeImages[i]);
+  				break;
+  			}
+  		}
+  	}
     if(str){
 		GEvent.addListener(marker, "click", function(){
 			marker.openInfoWindowHtml(str);
@@ -61,13 +83,22 @@ takes an optional html formated string(str) that will be displayed when the mark
   	StalkBook.map.addOverlay(marker);
   },
   
-  /*
+/*
 Add marker at a given point defined by a GLatLng(point) also takes an 
 optional html formated string(str) that will be displayed when the 
-marker is clicked.
+marker is clicked, as well as an optional type which changes the 
+marker image to what is associated to the given type.
 */
-  addMarker: function(point, str){
+  addMarker: function(point, str,type){
     var marker = new GMarker(point);
+     if(type){
+	  	for (i=0;i<StalkBook.typeImages.length;i++){	
+	  		if(StalkBook.typeImages[i].type==type){
+  				marker = new GMarker(point, StalkBook.typeImages[i]);
+  				break;
+  			}
+  		}
+  	}
     if(str){
 		GEvent.addListener(marker, "click", function(){
 			marker.openInfoWindowHtml(str);
@@ -75,23 +106,7 @@ marker is clicked.
 	}
   	StalkBook.map.addOverlay(marker);
   },
-  
-    /*
-Add marker at a given point defined by latitude(lat) and longitude(lng). 
-It also takes an optional html formated string(str) that will be displayed 
-when the marker is clicked.
-*/
-  addMarkerByLatLng: function(lat, lng, str){
-  	var point= new GLatLng(lat,lng,true);
-    var marker = new GMarker(point);
-    if(str){
-		GEvent.addListener(marker, "click", function(){
-			marker.openInfoWindowHtml(str);
-		});
-	}
-  	StalkBook.map.addOverlay(marker);
-  },
-
+    
 /*
 Centers position to a given point, defined by latitude(lat) and longitude(lng). 
 This has an optional zoom parameter. This can be between 1-17 possibly more 
@@ -107,7 +122,7 @@ for areas with more detail.
  Centers position to a place defined by a string. This has an optional zoom 
  parameter. This can be between 1-17 possibly more for areas with more detail.
  */
-  setPositionString: function(location, zoom){
+  setPositionString: function(location, zoom, type){
     if(!zoom){zoom=StalkBook.map.getZoom();}
   	StalkBook.geocoder.getLatLng(location,function(point){
 		StalkBook.map.setCenter(point,zoom);
