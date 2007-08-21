@@ -33,6 +33,7 @@ userLocations = db.locationsFor(user);
 <title>Insert title here</title>
 <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAjLUGBU2KYPSE-QiX4gc3nhQaIaxgZFO_HyGm4sK6rU1DjshnHBQZEhZXdK-FSkrkhldgO6eTm6dXRw"></script>
 <script src="gmapIO.js" type="text/javascript"></script>
+<script src="ajax.js" type="text/javascript"></script>
 <script src="StalkCoordinator.js" type="text/javascript"></script>
 <style type="text/css">
 #map {
@@ -44,18 +45,18 @@ userLocations = db.locationsFor(user);
 	var User = {
 		username: "<%= uid %>",
 		<% if (userHome != null) { %>
-		homeLocation: [<%= userHome.x %>, <%= userHome.y %>].join(" "),
+		homeLocation: { x: <%= userHome.x %>, y: <%= userHome.y %> },
 		<% } %>
 	    locations: [
 	    <% if (userLocations != null) {
 	    	for (Location location : userLocations) {
 	    		Point coords = location.getCoordinates();
-	    		out.println("{ location: " + location.getLocationName() +
-	    	    	          ", x: " + coords.x + ", y: " + coords.y + "},");
+	    		out.println("{ name: '" + location.getLocationName() +
+	    	    	          "', x: " + coords.x + ", y: " + coords.y + "},");
 	    	}
 	    } %>
 	    ]
-	];
+	};
 </script>
 
 </head>

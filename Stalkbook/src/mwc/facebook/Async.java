@@ -23,6 +23,7 @@ public class Async extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String name = request.getParameter("user");
+		String locName = request.getParameter("location");
 		String sx = request.getParameter("x");
 		String sy = request.getParameter("y");
 		
@@ -46,9 +47,11 @@ public class Async extends HttpServlet {
 		
 		Location location = store.getLocationByPoint(point);
 		if (location == null) {
-			location = new Location(point, "location");
+			location = new Location(point, locName);
 		}
 		store.addUserToLocation(user, location);
+		
+		System.out.println("added point: " + locName+ ", " + x + ", " + y);
 		
 		//TODO return users associate with point 
 		response.getWriter().println("success");

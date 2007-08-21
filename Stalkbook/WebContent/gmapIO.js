@@ -10,7 +10,7 @@ This will be the location of the map.
 */
 var StalkBook = {
   minZoom: 15,
-  locality: "christchurch, new zealand",
+  locality: "wellington, new zealand",
   geocoder: new GClientGeocoder(),
   map: undefined,
   markerFunc: undefined,
@@ -91,7 +91,7 @@ marker image to what is associated to the given type.
 */
   addMarker: function(point, str,type){
     var marker = new GMarker(point);
-     if(type){
+    if(type){
 	  	for (i=0;i<StalkBook.typeImages.length;i++){	
 	  		if(StalkBook.typeImages[i].type==type){
   				marker = new GMarker(point, StalkBook.typeImages[i]);

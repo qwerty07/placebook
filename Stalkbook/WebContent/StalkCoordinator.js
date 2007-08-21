@@ -22,16 +22,15 @@ var StalkCoordinator = {
 		// get the user's Facebook name & home location
 		this.setUsername(User.username);
 		this.setHomeLocation(User.homeLocation);
-	
+
 		// tell the map to centre on the user's home location
-		StalkBook.setPositionString(this.homeloc, this.default_zoom);
-		
+		StalkBook.setPositionXY(this.homeloc.x, this.homeloc.y, this.default_zoom);
+
 		for (var i = 0; i < User.locations.length; i++) {
 			var location = User.locations[i];
-			var latlong = GLatLng(location.x, location.y);
-			StalkBook.addMarker(latlong, location.location);
+			StalkBook.addMarkerByLatLng(location.x, location.y, location.name);
 		}
-		
+	
 		// if we have a user name		
 		if (this.username != "MWC") {
 			// alert("Welcome, " + this.username);  // debugging
@@ -73,7 +72,9 @@ var StalkCoordinator = {
 			
 		StalkBook.addMarker(latlng, markerText);
 		
-		async.submitPoint(StalkCoordinator.username, point, function(req){StalkCoordinator.asyncCallback(req)});
+		alert(markerText + " " + point);
+		
+		async.submitPoint(StalkCoordinator.username, markerText, point, function(req){StalkCoordinator.asyncCallback(req)});
 		// alert("Marker added at " + latlng.lat() + ", " + latlng.lng()); // debugging
 	}
 };
