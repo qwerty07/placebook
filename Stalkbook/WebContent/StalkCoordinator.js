@@ -20,7 +20,7 @@ var StalkCoordinator = {
 		StalkBook.addMarkerFunction(StalkCoordinator.addMarker);
 		
 		// get the user's Facebook name
-		this.username = User.username;
+		this.setUsername(User.username);
 		this.homeloc = User.homeLocation;
 		
 		// if we have a user name		
