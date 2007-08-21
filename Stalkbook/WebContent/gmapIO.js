@@ -10,7 +10,7 @@ This will be the location of the map.
 */
 var StalkBook = {
   minZoom: 15,
-  locality: "wellington, new zealand",
+  locality: "Wellington, New Zealand",
   geocoder: new GClientGeocoder(),
   map: undefined,
   markerFunc: undefined,
@@ -64,23 +64,10 @@ optional html formated string(str) that will be displayed when the marker is cli
 as well as an optional type which changes the marker image to what is associated to the 
 given type.
 */
-  addMarkerByLatLng: function(lat, lng, str, type){
+  
+  addMarkerByLatLng: function(lat, lng, info, type){
     var point= new GLatLng(lat, lng);
-    var marker = new GMarker(point);
-    if(type){
-	  	for (i=0;i<StalkBook.typeImages.length;i++){	
-	  		if(StalkBook.typeImages[i].type==type){
-  				marker = new GMarker(point, StalkBook.typeImages[i]);
-  				break;
-  			}
-  		}
-  	}
-    if(str){
-		GEvent.addListener(marker, "click", function(){
-			marker.openInfoWindowHtml(str);
-		});
-	}
-  	StalkBook.map.addOverlay(marker);
+	StalkBook.addMarker(point,info,type);
   },
   
 /*
@@ -89,7 +76,7 @@ optional html formated string(str) that will be displayed when the
 marker is clicked, as well as an optional type which changes the 
 marker image to what is associated to the given type.
 */
-  addMarker: function(point, str,type){
+  addMarker: function(point, info,type){
     var marker = new GMarker(point);
     if(type){
 	  	for (i=0;i<StalkBook.typeImages.length;i++){	
@@ -99,9 +86,9 @@ marker image to what is associated to the given type.
   			}
   		}
   	}
-    if(str){
+    if(info.name){
 		GEvent.addListener(marker, "click", function(){
-			marker.openInfoWindowHtml(str);
+			marker.openInfoWindowHtml("<b>Name:</b> " + info.name + "<br/><br/><b>Description</b><br/>" + info.desc);
 		});
 	}
   	StalkBook.map.addOverlay(marker);
