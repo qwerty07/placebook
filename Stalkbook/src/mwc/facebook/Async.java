@@ -253,13 +253,14 @@ public class Async extends HttpServlet {
 			
 			StringBuffer sb = new StringBuffer();
 			
-			sb.append("{\"locations\":");
+			sb.append("[ ");
 			
 			for(Location l : locations){
-				sb.append("{\"locations\":");
 				sb.append(l.toJSON());
 				sb.append(",");
 			}
+			
+			sb.append(" ]");
 						
 			writer.println(sb);
 
