@@ -19,7 +19,8 @@ Set<Location> userLocations = null;
 
 if (user != null) {
 	userHome = user.getHomePoint();
-	userLocations = db.locationsFor(user);
+	userLocations = db.getLocationsWithin(new Point(-39.989747,174.177246), 100);
+	//userLocations = db.getLocationsWithin(new Rectangle(new Point(-39.989747,174.177246), new Point(-40.212441,174.320068)));
 }
 
 %>
