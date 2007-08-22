@@ -1,0 +1,60 @@
+body {
+	font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+	
+}
+
+
+#addLocationContainer {
+	position: absolute;
+	top: 100px;
+	left: 100px;
+	background: url(images/formback.png) transparent ;
+	border: 1px #BBBBBB solid;
+	width: 500px;
+	padding: 0;
+	
+
+}
+
+#addLocationContainer h2 {
+	background: #7f93bc;
+	color: #fff;
+	margin: 0;
+	padding: 5px;
+	
+		
+	
+	
+}
+
+#formWrap {
+	padding: 20px;
+	
+	}
+
+label {
+	padding-top: 15px;
+	float: left;
+	font-weight: bold;
+	width: 100px;
+
+}
+
+input {
+	margin-top: 15px;
+	margin-left: 10px;
+	padding-left: 0px;
+
+}
+
+textarea {
+	margin-top: 15px;
+	margin-left: 10px;
+	padding-left: 0px;
+
+}
+
+.buttons {
+	float: right;
+
+}
