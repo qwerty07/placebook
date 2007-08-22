@@ -1,16 +1,27 @@
 package mwc.facebook.data;
 
+import java.awt.Image;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
+import org.postgresql.ds.common.PGObjectFactory;
 import org.postgresql.geometric.PGbox;
 import org.postgresql.geometric.PGpoint;
+import org.postgresql.largeobject.LargeObject;
+import org.postgresql.largeobject.LargeObjectManager;
+
+import com.sun.org.apache.bcel.internal.util.ByteSequence;
 
 public class PostgresDataStore implements DataStore {
 	static {
@@ -31,6 +42,8 @@ public class PostgresDataStore implements DataStore {
 	private PreparedStatement associateUserAndLocation;
 	private PreparedStatement findUsersByLocation;
 	private PreparedStatement findLocationsForUser;
+	private PreparedStatement addPhotoToLocation;
+	private PreparedStatement getPhotosFromLocation;
 	private PreparedStatement findLocationsInCircle;
 	
 	public PostgresDataStore(String server, String database, Properties props) throws SQLException {
@@ -52,6 +65,8 @@ public class PostgresDataStore implements DataStore {
 		associateUserAndLocation = connection.prepareStatement("INSERT INTO location_stalker (fb_username, coord_x, coord_y) VALUES (?, ?, ?);");
 		findUsersByLocation = connection.prepareStatement("SELECT stalker.fb_username, home_coord_x, home_coord_y FROM stalker NATURAL JOIN location_stalker WHERE coord_x = ? AND coord_y = ?;");
 		findLocationsForUser = connection.prepareStatement("SELECT location.coord_x, location.coord_y, location.loc_name, location.description FROM location NATURAL JOIN location_stalker WHERE fb_username = ?;");
+		addPhotoToLocation = connection.prepareStatement("INSERT INTO photo(coord_x, coord_y, fb_username, description, image) VALUES (?, ?, ?, ?, ?);");
+		getPhotosFromLocation = connection.prepareStatement("SELECT fb_username, description, image, contributed FROM photo WHERE coord_x = ? AND coord_y = ?;");
 	}
 	
 	public PostgresDataStore(String server, String database, String username, String password) throws SQLException {
@@ -165,6 +180,63 @@ public class PostgresDataStore implements DataStore {
 			}
 		}
 	}
+	
+	public synchronized void addPhotoTo(User user, Location location, byte[] photo, String description) {
+		try
+		{
+			connection.setAutoCommit(false);
+			LargeObjectManager manager = ((org.postgresql.PGConnection)connection).getLargeObjectAPI();
+			long oid =manager.createLO();
+			System.out.printf("Large object created with oid (%d)\n", oid);
+			LargeObject image = manager.open(oid);
+			image.write(photo);
+			image.close();
+			
+			addPhotoToLocation.setDouble(1, location.getCoordinates().x);
+			addPhotoToLocation.setDouble(2, location.getCoordinates().y);
+			addPhotoToLocation.setString(3, user.getUserName());
+			addPhotoToLocation.setString(4, description);
+			addPhotoToLocation.setLong(5, oid);
+			addPhotoToLocation.execute();
+			connection.commit();
+			connection.setAutoCommit(true);
+		}
+		catch (SQLException e)
+		{
+			handleError(e);
+		}
+	}
+	
+	public synchronized Set<PhotoContribution> getPhotosFrom(Location location) {
+		Set<PhotoContribution> photos = new HashSet<PhotoContribution>();
+		
+		try
+		{
+			getPhotosFromLocation.setDouble(1, location.getCoordinates().x);
+			getPhotosFromLocation.setDouble(2, location.getCoordinates().y);
+			ResultSet result = getPhotosFromLocation.executeQuery();
+			
+			PhotoContribution p = createPhotoFromResult(result);
+			while(p != null) {
+				photos.add(p);
+				p = createPhotoFromResult(result);
+			}
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return photos;
+	}
+
+	public synchronized void addCommentTo(User user, Location location, String comment) {
+		// TODO
+	}
+	
+	public synchronized Set<CommentContribution> getCommentsFrom(Location location) {
+		// TODO 
+		return null;
+	}
 
 	public synchronized Set<Location> locationsFor(User user) {
 		Set<Location> locations = new HashSet<Location>();
@@ -231,6 +303,33 @@ public class PostgresDataStore implements DataStore {
 		} else {
 			return null;
 		}
+	}
+	
+	private PhotoContribution createPhotoFromResult(ResultSet result) throws SQLException {
+		if(result.next()) {
+			// fb_username, description, image, contributed 
+			connection.setAutoCommit(false);
+			
+			String username = result.getString("fb_username");
+			String description = result.getString("description");
+			Date contributed = result.getDate("contributed");
+			long oid = result.getLong("image");
+			
+			LargeObjectManager manager = ((org.postgresql.PGConnection)connection).getLargeObjectAPI();
+			LargeObject l = manager.open(oid);
+			byte[] image = l.read(l.size());
+			l.close();
+			
+			PhotoContribution photo = new PhotoContribution(image, description, contributed, username);
+			
+			connection.commit();
+			connection.setAutoCommit(true);
+			return photo;
+			
+		} else {
+			return null;
+		}
+			
 	}
 
 	public Set<Location> getLocationsWithin(Point centre, double radius) {

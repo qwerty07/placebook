@@ -1,5 +1,6 @@
 package mwc.facebook.data;
 
+import java.awt.Image;
 import java.util.Set;
 
 public interface DataStore {
@@ -21,4 +22,9 @@ public interface DataStore {
 	public void addUserToLocation(User user, Location location);
 	public Set<Location> locationsFor(User user);
 	public Set<User> usersAssociatedWith(Location location);
+	
+	public void addPhotoTo(User user, Location location, byte[] photo, String description);
+	public Set<PhotoContribution> getPhotosFrom(Location location);
+	public void addCommentTo(User user, Location location, String comment);
+	public Set<CommentContribution> getCommentsFrom(Location location);
 }

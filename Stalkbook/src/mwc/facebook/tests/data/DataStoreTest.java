@@ -1,11 +1,31 @@
 package mwc.facebook.tests.data;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.Set;
+
+import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageInputStream;
+import javax.imageio.stream.ImageInputStream;
+
+import org.postgresql.core.types.PGDouble;
+import org.postgresql.core.types.PGFloat;
+
+import com.facebook.api.PhotoTag;
+import com.sun.imageio.plugins.common.ImageUtil;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import mwc.facebook.data.DataStore;
 import mwc.facebook.data.Location;
+import mwc.facebook.data.PhotoContribution;
 import mwc.facebook.data.Point;
 import mwc.facebook.data.Rectangle;
 import mwc.facebook.data.TestPGDataStore;
@@ -14,14 +34,13 @@ import mwc.facebook.data.User;
 public class DataStoreTest extends TestCase {
 
 	private DataStore dataStore;
-	protected void setUp() throws Exception {
+	
+	public DataStoreTest() throws Exception {
 		Properties connectionProps = new Properties();
 		connectionProps.setProperty("user", "ramsayneil");
 		dataStore = new TestPGDataStore("localhost", "stalkbook", connectionProps);
-		
-		//dataStore = new MockDataStore();
 	}
-
+	
 	public void testUserNotFound(){
 		Assert.assertNull(dataStore.getUserByName("######"));
 	}
@@ -48,7 +67,7 @@ public class DataStoreTest extends TestCase {
 		dataStore.addUser(new User("Jim", new Point(30f,150f)));
 		User user = dataStore.getUserByName("Jim");
 		Assert.assertNotNull(user);
-		Location l1 = new Location(new Point(4.4f, 1.2f), "Location 1");
+		Location l1 = new Location(new Point(14.4f, 11.2f), "Location 1");
 		dataStore.addLocation(l1);
 		dataStore.addUserToLocation(user, l1);
 		Set<Location> locations = dataStore.locationsFor(user);
@@ -61,7 +80,6 @@ public class DataStoreTest extends TestCase {
 		Assert.assertEquals(user, users.iterator().next());
 		
 	}
-	
 	
 	public void testAddLocation(){
 		dataStore.addLocation(new Location(new Point(10,10),"Home", "Place where you live"));
@@ -117,5 +135,50 @@ public class DataStoreTest extends TestCase {
 		Assert.assertTrue(temp.contains(point1));
 		Assert.assertFalse(temp.contains(point2));
 		Assert.assertTrue(temp.contains(point3));
+	}
+	
+	
+	public void testPhoto() {
+			// Add referenced entries
+			User u = new User("Kodak", new Point(30f,150f));
+			dataStore.addUser(u);
+			Location l = new Location(new Point(15,15),"Photo probe", "Photo test");
+			dataStore.addLocation(l);
+			
+			// Load and store "pondy"
+			byte[] image = null;
+			try
+			{			
+				FileImageInputStream stream = new FileImageInputStream(new File("PeterAndreae.jpg"));
+				image = new byte[(int)stream.length()]; 
+				stream.readFully(image);
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+				Assert.fail();
+			}
+			dataStore.addPhotoTo(u, l, image, "Test photo");
+			
+			// Retrieve entry
+			Set<PhotoContribution> photos = dataStore.getPhotosFrom(l);
+			Assert.assertEquals(1, photos.size());
+			PhotoContribution p = photos.iterator().next();
+			
+			// Check nulls
+			Assert.assertNotNull(p);
+			Assert.assertNotNull(p.contributedBy);
+			Assert.assertNotNull(p.contributedWhen);
+			Assert.assertNotNull(p.image);
+			Assert.assertNotNull(p.description);
+			
+			// Check data
+			Assert.assertEquals("Test photo", p.description);
+			Assert.assertEquals(u.getUserName(), p.contributedBy);
+			Assert.assertTrue(Arrays.equals(image, p.image));
+	}
+	
+	public void testComment() {
+		Assert.fail();
 	}
 }

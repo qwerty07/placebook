@@ -59,6 +59,30 @@ public class MockDataStore implements DataStore{
 		return result;
 	}
 
+	public void addCommentTo(User user, Location location, String comment)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addPhotoTo(User user, Location location, byte[] photo, String description)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Set<CommentContribution> getCommentsFrom(Location location)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Set<PhotoContribution> getPhotosFrom(Location location)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	public Set<Location> getLocationsWithin(Point centre, double radius) {
 		Set<Location> result = new HashSet<Location>();
 		

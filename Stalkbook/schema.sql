@@ -1,4 +1,6 @@
 DROP TABLE location_stalker;
+DROP TABLE photo;
+DROP TABLE comment;
 DROP TABLE location;
 DROP TABLE stalker;
 
@@ -30,4 +32,25 @@ CREATE TABLE location_stalker (
   PRIMARY KEY (coord_x, coord_y, fb_username),
   FOREIGN KEY (fb_username) REFERENCES stalker ON DELETE CASCADE,
   FOREIGN KEY (coord_x, coord_y) REFERENCES location ON DELETE CASCADE
+);
+
+CREATE TABLE photo (
+  coord_x float8,
+  coord_y float8,
+  fb_username varchar(255) REFERENCES stalker(fb_username),
+  description text,
+  image OID,
+  contributed timestamp with time zone DEFAULT now(),
+  PRIMARY KEY (coord_x, coord_y, fb_username),
+  FOREIGN KEY (coord_x, coord_y) REFERENCES location(coord_x, coord_y)
+);
+
+CREATE TABLE comment (
+  coord_x float8,
+  coord_y float8,
+  fb_username varchar(255) REFERENCES stalker(fb_username),
+  comment text,
+  contributed timestamp with time zone DEFAULT now(),
+  PRIMARY KEY (coord_x, coord_y, fb_username),
+  FOREIGN KEY (coord_x, coord_y) REFERENCES location(coord_x, coord_y)
 );
