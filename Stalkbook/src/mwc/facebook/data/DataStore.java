@@ -7,6 +7,14 @@ public interface DataStore {
 	public Location getLocationByPoint(Point location);
 	public Set<Location> getLocationsWithin(Rectangle area);
 	
+	/**
+	 * Gets all locations within a certain distance of a point.
+	 * @param centre The centre point of the circle
+	 * @param radius The maximum distance from the centre
+	 * @return All locations within the circle described
+	 */
+	public Set<Location> getLocationsWithin(Point centre, double radius);
+	
 	public void addUser(User user);
 	public void addLocation(Location location);
 	

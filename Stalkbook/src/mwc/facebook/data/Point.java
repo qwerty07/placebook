@@ -26,4 +26,8 @@ public class Point extends PGpoint implements JSONable{
 	public String toJSON() {
 		return "{x:" + this.x + ", y:" + this.y +"}";
 	}
+
+	public double distanceTo(Point o) {
+		return Math.sqrt(Math.pow(x - o.x, 2) + Math.pow(y - o.y, 2));
+	}
 }

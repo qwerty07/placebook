@@ -2,16 +2,13 @@ package mwc.facebook.tests.data;
 import java.util.Properties;
 import java.util.Set;
 
-import org.postgresql.core.types.PGDouble;
-import org.postgresql.core.types.PGFloat;
-
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import mwc.facebook.data.DataStore;
 import mwc.facebook.data.Location;
+import mwc.facebook.data.MockDataStore;
 import mwc.facebook.data.Point;
 import mwc.facebook.data.Rectangle;
-import mwc.facebook.data.TestPGDataStore;
 import mwc.facebook.data.User;
 
 public class DataStoreTest extends TestCase {
@@ -20,9 +17,9 @@ public class DataStoreTest extends TestCase {
 	protected void setUp() throws Exception {
 		Properties connectionProps = new Properties();
 		connectionProps.setProperty("user", "ramsayneil");
-		dataStore = new TestPGDataStore("localhost", "stalkbook", connectionProps);
+		//dataStore = new TestPGDataStore("localhost", "stalkbook", connectionProps);
 		
-		//dataStore = new MockDataStore();
+		dataStore = new MockDataStore();
 	}
 
 	public void testUserNotFound(){
@@ -73,7 +70,7 @@ public class DataStoreTest extends TestCase {
 		Assert.assertEquals("Home", location.getLocationName());
 		Assert.assertEquals("Place where you live", location.getDescription());
 		
-		dataStore.addLocation(new Location(new Point (-10000,10000), "Indescribable"));
+		dataStore.addLocation(new Location(new Point(-10000,10000), "Indescribable"));
 		location = dataStore.getLocationByPoint(new Point(-10000,10000));
 		Assert.assertNotNull(location);
 		Assert.assertEquals("Indescribable", location.getLocationName());
@@ -111,6 +108,13 @@ public class DataStoreTest extends TestCase {
 		Assert.assertNotNull(temp);
 		Assert.assertEquals(1, temp.size());
 		Assert.assertFalse(temp.contains(point1));
+		Assert.assertFalse(temp.contains(point2));
+		Assert.assertTrue(temp.contains(point3));
+
+		temp = dataStore.getLocationsWithin(new Point(4,1), 4);
+		Assert.assertNotNull(temp);
+		Assert.assertEquals(2, temp.size());
+		Assert.assertTrue(temp.contains(point1));
 		Assert.assertFalse(temp.contains(point2));
 		Assert.assertTrue(temp.contains(point3));
 	}

@@ -230,4 +230,9 @@ public class PostgresDataStore implements DataStore {
 			return null;
 		}
 	}
+
+	public Set<Location> getLocationsWithin(Point centre, double radius) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

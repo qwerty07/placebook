@@ -58,4 +58,15 @@ public class MockDataStore implements DataStore{
 		}
 		return result;
 	}
+
+	public Set<Location> getLocationsWithin(Point centre, double radius) {
+		Set<Location> result = new HashSet<Location>();
+		
+		for(Location l : locationMap.values()) {
+			if (l.getCoordinates().distanceTo(centre) <= radius) {
+				result.add(l);
+			}
+		}
+		return result;
+	}
 }
