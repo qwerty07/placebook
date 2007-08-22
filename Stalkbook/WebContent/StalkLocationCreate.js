@@ -21,7 +21,6 @@ var StalkLocationCreate={
 			
 		if(locCreator==""){alert("Creator not defined");return false;}
 		if(locName==""){alert("Location name not defined");return false;}
-		if(locTags==""){alert("Location type not defined");return false;}
 		if(locDesc==""){alert("Location description not defined");return false;}
 				
 		var point={
@@ -31,7 +30,7 @@ var StalkLocationCreate={
 				
 
 		stalkBook.addMarkerByLatLng(point.x, point.y, {name: locName, desc: locDesc});
-		async.submitPoint(locCreator, locName, point, function(req){StalkCoordinator.asyncCallback(req)});
+		// async.submitPoint(locCreator, locName, point, function(req){StalkCoordinator.asyncCallback(req)});
 
 		form.name.value='';
 		form.tags.value='';
