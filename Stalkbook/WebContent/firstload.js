@@ -1,4 +1,4 @@
-var fistload = function () {
+var firstload = function () {
 
 	stalkCoordinator = new StalkCoordinator();
 	
