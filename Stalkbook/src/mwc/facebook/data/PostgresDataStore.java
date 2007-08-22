@@ -15,6 +15,8 @@ import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
+import junit.framework.Assert;
+
 import org.postgresql.ds.common.PGObjectFactory;
 import org.postgresql.geometric.PGbox;
 import org.postgresql.geometric.PGpoint;
@@ -45,6 +47,8 @@ public class PostgresDataStore implements DataStore {
 	private PreparedStatement addPhotoToLocation;
 	private PreparedStatement getPhotosFromLocation;
 	private PreparedStatement findLocationsInCircle;
+	private PreparedStatement addCommentToLocation;
+	private PreparedStatement getCommentsFromLocation;
 	
 	public PostgresDataStore(String server, String database, Properties props) throws SQLException {
 		String url = "jdbc:postgresql://" + server + "/" + database;
@@ -67,6 +71,8 @@ public class PostgresDataStore implements DataStore {
 		findLocationsForUser = connection.prepareStatement("SELECT location.coord_x, location.coord_y, location.loc_name, location.description FROM location NATURAL JOIN location_stalker WHERE fb_username = ?;");
 		addPhotoToLocation = connection.prepareStatement("INSERT INTO photo(coord_x, coord_y, fb_username, description, image) VALUES (?, ?, ?, ?, ?);");
 		getPhotosFromLocation = connection.prepareStatement("SELECT fb_username, description, image, contributed FROM photo WHERE coord_x = ? AND coord_y = ?;");
+		addCommentToLocation = connection.prepareStatement("INSERT INTO comment(coord_x, coord_y, fb_username, comment) VALUES (?, ?, ?, ?);");
+		getCommentsFromLocation = connection.prepareStatement("SELECT fb_username, comment, contributed FROM comment WHERE coord_x = ? AND coord_y = ?;");
 	}
 	
 	public PostgresDataStore(String server, String database, String username, String password) throws SQLException {
@@ -150,6 +156,7 @@ public class PostgresDataStore implements DataStore {
 	
 	private void handleError(SQLException e) {
 		e.printStackTrace();
+		Assert.fail();
 	}
 
 	protected Connection getConnection() {
@@ -197,7 +204,7 @@ public class PostgresDataStore implements DataStore {
 			addPhotoToLocation.setString(3, user.getUserName());
 			addPhotoToLocation.setString(4, description);
 			addPhotoToLocation.setLong(5, oid);
-			addPhotoToLocation.execute();
+			addPhotoToLocation.executeUpdate();
 			connection.commit();
 			connection.setAutoCommit(true);
 		}
@@ -224,18 +231,46 @@ public class PostgresDataStore implements DataStore {
 		}
 		catch (SQLException e)
 		{
-			e.printStackTrace();
+			handleError(e);
 		}
 		return photos;
 	}
 
 	public synchronized void addCommentTo(User user, Location location, String comment) {
-		// TODO
+		try
+		{
+			addCommentToLocation.setDouble(1, location.getCoordinates().x);
+			addCommentToLocation.setDouble(2, location.getCoordinates().y);
+			addCommentToLocation.setString(3, user.getUserName());
+			addCommentToLocation.setString(4, comment);
+			addCommentToLocation.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			handleError(e);
+		}
+		
 	}
 	
 	public synchronized Set<CommentContribution> getCommentsFrom(Location location) {
-		// TODO 
-		return null;
+		Set<CommentContribution> comments = new HashSet<CommentContribution>();
+		try
+		{
+			getCommentsFromLocation.setDouble(1, location.getCoordinates().x);
+			getCommentsFromLocation.setDouble(2, location.getCoordinates().y);
+			ResultSet result = getCommentsFromLocation.executeQuery();
+			
+			CommentContribution comment = createCommentFromResult(result);
+			while(comment != null) {
+				comments.add(comment);
+				comment = createCommentFromResult(result);
+			}
+		}
+		catch (SQLException e)
+		{
+			handleError(e);
+		}
+		return comments;
 	}
 
 	public synchronized Set<Location> locationsFor(User user) {
@@ -329,7 +364,19 @@ public class PostgresDataStore implements DataStore {
 		} else {
 			return null;
 		}
+	}
+	
+	private CommentContribution createCommentFromResult(ResultSet result) throws SQLException
+	{
+		if(result.next()) {
+			String comment = result.getString("comment");
+			String username = result.getString("fb_username");
+			Date contributed = result.getDate("contributed");
 			
+			return new CommentContribution(comment, contributed, username);
+		} else {
+			return null;
+		}
 	}
 
 	public Set<Location> getLocationsWithin(Point centre, double radius) {

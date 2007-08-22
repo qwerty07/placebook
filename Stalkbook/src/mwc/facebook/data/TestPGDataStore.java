@@ -17,9 +17,10 @@ public class TestPGDataStore extends PostgresDataStore {
 		connection.createStatement().executeUpdate("DELETE FROM location_stalker;");
 		connection.createStatement().executeUpdate("DELETE FROM stalker;");
 		connection.createStatement().executeUpdate("DELETE FROM location;");
-
 	}
 
+	
+	
 	private synchronized void deletePhotos() {
 		try {
 			connection.setAutoCommit(false);
@@ -31,7 +32,7 @@ public class TestPGDataStore extends PostgresDataStore {
 				System.out.printf("Photo with oid (%d) deleted\n", oid);
 				manager.delete(oid);
 			}
-			connection.createStatement().execute("DELETE FROM photo;");
+			connection.createStatement().executeUpdate("DELETE FROM photo;");
 			connection.commit();
 			connection.setAutoCommit(true);
 		}

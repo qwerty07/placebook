@@ -23,6 +23,7 @@ import com.sun.imageio.plugins.common.ImageUtil;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
+import mwc.facebook.data.CommentContribution;
 import mwc.facebook.data.DataStore;
 import mwc.facebook.data.Location;
 import mwc.facebook.data.PhotoContribution;
@@ -35,12 +36,15 @@ public class DataStoreTest extends TestCase {
 
 	private DataStore dataStore;
 	
-	public DataStoreTest() throws Exception {
+	@Override
+	protected void setUp() throws Exception
+	{
 		Properties connectionProps = new Properties();
 		connectionProps.setProperty("user", "ramsayneil");
 		dataStore = new TestPGDataStore("localhost", "stalkbook", connectionProps);
+
 	}
-	
+
 	public void testUserNotFound(){
 		Assert.assertNull(dataStore.getUserByName("######"));
 	}
@@ -179,6 +183,21 @@ public class DataStoreTest extends TestCase {
 	}
 	
 	public void testComment() {
-		Assert.fail();
+		// Add referenced entries
+		User u = new User("Commenter", new Point(32f,154f));
+		dataStore.addUser(u);
+		Location l = new Location(new Point(15,15),"Comment monkey", "Why not?");
+		dataStore.addLocation(l);
+		
+		// Add and retrieve comment
+		dataStore.addCommentTo(u, l, "Chew on this!");
+		Set<CommentContribution> comments = dataStore.getCommentsFrom(l);
+		
+		Assert.assertNotNull(comments);
+		Assert.assertEquals(1, comments.size());
+		CommentContribution comment = comments.iterator().next();
+		Assert.assertEquals(u.getUserName(), comment.contributedBy);
+		Assert.assertEquals("Chew on this!", comment.comment);
+		Assert.assertNotNull(comment.contributedWhen);
 	}
 }

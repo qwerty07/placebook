@@ -3,7 +3,8 @@
  */
 package mwc.facebook.data;
 
-import java.sql.Time;
+import java.util.Date;
+
 
 /**
  * @author ramsayneil
@@ -12,10 +13,10 @@ import java.sql.Time;
 public class CommentContribution
 {
 	public String comment;
-	public Time contributedWhen;
+	public Date contributedWhen;
 	public String contributedBy;
 	
-	public CommentContribution(String comment, Time contributedWhen, String contributedBy)
+	public CommentContribution(String comment, Date contributedWhen, String contributedBy)
 	{
 		this.comment = comment;
 		this.contributedWhen = contributedWhen;
