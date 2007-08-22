@@ -1,11 +1,11 @@
 var hooks = {
 	onloadhooks: [],
 	onload: function () {
-		for (var i = 0; i < onloadhooks.length; i++) {
-			onloadhooks[i]();
+		for (var i = 0; i < this.onloadhooks.length; i++) {
+			this.onloadhooks[i]();
 		}
 	},
 	addHook: function (hook) {
-		onloadhooks[] = hook;
+		this.onloadhooks.push(hook);
 	}
 };
