@@ -13,23 +13,22 @@ function StalkCoordinator() {
 	/* Called when webpage first loaded -- sets up the map to the default */
 	this.load = function() {
 		// load the map
-		StalkBook.load();
+		stalkBook.load();
 		
-		// Set the callback function for StalkBook to call when adding
+		// Set the callback function for stalkBook to call when adding
 		// a new marker
-		StalkBook.setMarkerFunction(stalkCoordinator.addMarker);
+		stalkBook.setMarkerFunction(stalkCoordinator.addMarker);
 		
 		// get the user's Facebook name & home location
 		this.setUsername(User.username);
 		this.setHomeLocation(User.homeLocation);
 
 		// tell the map to centre on the user's home location
-		StalkBook.setPositionXY(this.homeloc.x, this.homeloc.y, this.default_zoom);
+		stalkBook.setPositionXY(this.homeloc.x, this.homeloc.y, this.default_zoom);
 
 		for (var i = 0; i < User.locations.length; i++) {
 			var location = User.locations[i];
-			var coordinates = location.coordinates;
-			StalkBook.addMarkerByLatLng(coordinates.x, coordinates.y, location);
+			stalkBook.addMarkerByLatLng(location.x, location.y, location.name);
 		}
 	};
 	
@@ -66,7 +65,7 @@ function StalkCoordinator() {
 
 		var loc = {name: markerName, desc: markerDesc};
 		
-		StalkBook.addMarker(latlng, loc);
+		stalkBook.addMarker(latlng, loc);
 		
 		async.submitPoint(stalkCoordinator.username, loc, point, function(req){stalkCoordinator.asyncCallback(req)});
 		// alert("Marker added at " + latlng.lat() + ", " + latlng.lng()); // debugging

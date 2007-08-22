@@ -41,7 +41,7 @@ if (user != null) {
 </style>
 
 <script type="text/javascript">
-var User = {
+var user = {
 	username: "<%= uid %>",
 <% if (userHome != null) { %>
 	homeLocation: <%= userHome.toJSON() %>,
@@ -56,68 +56,20 @@ var User = {
 };
 
 </script>
-<%
-if (user == null) {
-%>
+<% if (user == null) { %>
+<script type="text/javascript" src="firstload.js"></script>
+<% } else { %>
 <script type="text/javascript">
-
 function doOnload() {
-	
 	stalkCoordinator = new StalkCoordinator();
-	
-	stalkCoordinator.addMarker = function (latlng) {
-		var point = {
-			x: latlng.lat(),
-			y: latlng.lng()
-		};
-			
-		User.homeLocation = point;
-	
-		async.setDefaultLocation(stalkCoordinator.username, point, function (req) { stalkCoordinator.complete(req) });
-	};
-	
-	stalkCoordinator.load = function () {
-		alert("Welcome to Stalkbook, please select your default location.");
-			
-		// load the map
-		StalkBook.load();
-		
-		// Set the callback function for StalkBook to call when adding
-		// a new marker
-		StalkBook.setMarkerFunction(stalkCoordinator.addMarker);
-		
-		// get the user's Facebook name & home location
-		this.setUsername(User.username);
-	};
-	
-	stalkCoordinator.complete = function (req) {
-		stalkCoordinator = new StalkCoordinator();
-		stalkCoordinator.load();
-	};
-	
 	stalkCoordinator.load();
 }
 </script>
-<%
-}
-else {
-%>
-<script type="text/javascript">
-
-function doOnload() {
-	
-	stalkCoordinator = new StalkCoordinator();
-	
-	stalkCoordinator.load();
-}
-</script>
-<%
-}
-%>
+<% } %>
 </head>
+
 <body onload="doOnload()" onunload="GUnload()">
 	<div id="map"></div>
 </body>
-
 
 </html>
