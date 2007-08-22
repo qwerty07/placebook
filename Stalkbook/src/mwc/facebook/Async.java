@@ -1,6 +1,7 @@
 package mwc.facebook;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -41,6 +42,11 @@ public class Async extends HttpServlet {
 					&& sx != null && sy != null) {
 			if (addLocation(name, locName, locDesc, sx, sy)) {
 				response.getWriter().println("success");
+				return;
+			}
+		}
+		else if (action.equals("getlocation") && sx != null && sy != null) {
+			if (getLocation(sx, sy, response.getWriter())) {
 				return;
 			}
 		}
@@ -98,6 +104,32 @@ public class Async extends HttpServlet {
 
 			System.out.println("added point: " + locName+ ", " + x + ", " + y);
 
+			return true;
+		}
+		catch (NumberFormatException ex) {
+			System.err.println("error parsing point: " + sx + ", " + sy);
+		}
+		
+		return false;
+	}
+	
+	private boolean getLocation(String sx, String sy, PrintWriter writer) {
+		
+		try {
+			float x = Float.parseFloat(sx);
+			float y = Float.parseFloat(sy);
+
+			Point point = new Point(x, y);
+
+			DataStore store = ObjectManager.instance().store();
+
+			Location location = store.getLocationByPoint(point);
+			if (location == null) {
+				return false;
+			}
+			
+			writer.println(location.toJSON());
+			
 			return true;
 		}
 		catch (NumberFormatException ex) {
