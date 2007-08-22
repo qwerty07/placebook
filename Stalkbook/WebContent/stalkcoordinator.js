@@ -50,24 +50,20 @@ function StalkCoordinator() {
 			y: latlng.lng()
 		};
 	
-		var markerName = prompt("Enter marker text");
-		if (markerName == undefined) return;
-		if (markerName == "") { 
-			markerName = "My marker"; 
-		}
+		var form=document.getElementById("addLocationForm");
+		form.creator.value=StalkCoordinator.username; 
+		form.pointLat.value=point.x;	
+		form.pointLng.value=point.y;
+		document.getElementById("addLocationContainer").style.display='block';
 		
-		var markerDesc = prompt("Enter description");
-		if (markerDesc == ""){
-			markerDesc = "Desc";
-		}
-
-		var loc = {name: markerName, desc: markerDesc};
-		
-		stalkBook.addMarker(latlng, loc);
-		
-		async.submitPoint(stalkCoordinator.username, loc, point, function(req){stalkCoordinator.asyncCallback(req)});
 		// alert("Marker added at " + latlng.lat() + ", " + latlng.lng()); // debugging
 	};
 };
+
+function hideForm(){
+	var form=document.getElementById("addLocationContainer");		
+	form.style.display = 'none';
+	return false;	
+}
 
 var stalkCoordinator;

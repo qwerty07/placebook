@@ -5,10 +5,6 @@ var StalkLocationCreate={
 	locDesc: undefined,
 	
 	
-	openForm: function(){}
-	submitForm: function(){}
-	cancelForm: function(){}
-	
 	createLocation: function(){
 	
 		var form=document.getElementById("addLocationForm");
