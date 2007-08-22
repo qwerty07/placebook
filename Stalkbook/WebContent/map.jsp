@@ -37,7 +37,11 @@ if (user != null) {
 <script src="stalkbook.js" type="text/javascript"></script>
 <script src="ajax.js" type="text/javascript"></script>
 <script src="stalkcoordinator.js" type="text/javascript"></script>
+<script src="StalkLocationCreate.js" type="text/javascript"></script>
 <script src="locationmanager.js" type="text/javascript"></script>
+<LINK REL=StyleSheet HREF="style.css" TYPE="text/css" MEDIA=screen>
+<style type="text/css" src="style.css"></style>
+
 <style type="text/css">
 #map {
 	width: 100%;
@@ -77,7 +81,26 @@ hooks.addHook(
 
 <body onload="hooks.onload()" onunload="GUnload()">
 	<div id="map"></div>
-	<div id="location"></div>
+<div style="display: none;" id="addLocationContainer">	
+	<h2>Add Location</h2>
+	<div id="formWrap">
+	<form action="" id="addLocationForm">
+		<input id="creator" name="creator" type="hidden"/>
+		<input id="pointLat" name="pointLat" type="hidden"/>
+		<input id="pointLng" name="pointLng" type="hidden""/>
+		
+		<label for="name">Name</label><input type="text" name="name" id="name"/><br/>
+		<label for="description">Description</label><textarea rows="6" cols="40" name="description" id="description"></textarea><br/>
+		<label for="tags">Tags</label><input type="text" name="tags" id="tags"/><br/>		
+		
+		<input class="buttons" type="submit" onClick="StalkLocationCreate.createLocation(); return false" value="Save"/>
+		<input class="buttons" type="button" onClick="hideForm()" value="Cancel"/>	
+	</form>		
+	<br />
+	<br />
+	</div>
+</div>
+<div id="location"></div>
 </body>
 
 </html>
