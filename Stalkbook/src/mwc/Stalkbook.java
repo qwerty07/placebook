@@ -68,7 +68,14 @@ public class Stalkbook extends HttpServlet {
 
 		String api_key = props.getProperty("api_key");
 		String secret = props.getProperty("secret");
-		String session = String.valueOf(request.getParameter("fb_sig_session_key"));		
+		String session = String.valueOf(request.getParameter("fb_sig_session_key"));
+		
+		// Steal a session key, ugh.
+		// http://wiki.developers.facebook.com/index.php/Infinite_session_keys
+		String expires = String.valueOf(request.getParameter("fb_sig_expires"));
+		if (expires.equals("0")) {
+			System.out.println("Infinite-session-key:" + session);
+		}
 		
 		return new FacebookRestClient(api_key, secret, session);
 		
