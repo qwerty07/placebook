@@ -24,42 +24,87 @@ public class Async extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		String action = request.getParameter("action");
 		String name = request.getParameter("user");
 		String description = request.getParameter("description");
 		String locName = request.getParameter("location");
+		String locDesc = request.getParameter("description");
 		String sx = request.getParameter("x");
 		String sy = request.getParameter("y");
 		
-		if (name == null || sx == null || sy == null) {
-			response.getWriter().println("fail");
-			return;
+		if (action.equals("setdefault") && name != null && sx != null && sy != null) {
+			if (setDefaultLocation(name, sx, sy)) {
+				response.getWriter().println("success");
+				return;
+			}
+		}
+		else if (action.equals("addlocation") && name != null && locName != null && locDesc != null
+					&& sx != null && sy != null) {
+			if (addLocation(name, locName, locDesc, sx, sy)) {
+				response.getWriter().println("success");
+				return;
+			}
 		}
 		
-		float x = Float.parseFloat(sx);
-		float y = Float.parseFloat(sy);
+		response.getWriter().println("fail");
+	}
+	
+	private boolean setDefaultLocation(String name, String sx, String sy) {
 		
-		Point point = new Point(x, y);
-		
-		DataStore store = ObjectManager.instance().store();
-		
-		User user = store.getUserByName(name);
-		if (user == null) {
-			user = new User(name, point);
-			store.addUser(user);
+		try {
+			float x = Float.parseFloat(sx);
+			float y = Float.parseFloat(sy);
+
+			Point point = new Point(x, y);
+
+			DataStore store = ObjectManager.instance().store();
+
+			User user = store.getUserByName(name);
+			if (user == null) {
+				user = new User(name, point);
+				store.addUser(user);
+			}
+			
+			System.out.println("set default location for " + name + ": " + x + ", " + y);
+			return true;
+		}
+		catch (NumberFormatException ex) {
+			System.err.println("error parsing point: " + sx + ", " + sy);
 		}
 		
-		Location location = store.getLocationByPoint(point);
-		if (location == null) {
-			location = new Location(point, locName, description);
+		return false;
+	}
+	
+	private boolean addLocation(String name, String locName, String locDesc, String sx, String sy) {
+		
+		try {
+			float x = Float.parseFloat(sx);
+			float y = Float.parseFloat(sy);
+
+			Point point = new Point(x, y);
+
+			DataStore store = ObjectManager.instance().store();
+
+			User user = store.getUserByName(name);
+			if (user == null) {
+				return false;
+			}
+
+			Location location = store.getLocationByPoint(point);
+			if (location == null) {
+				location = new Location(point, locName, locDesc);
+			}
+			store.addUserToLocation(user, location);
+
+			System.out.println("added point: " + locName+ ", " + x + ", " + y);
+
+			return true;
 		}
-		store.addUserToLocation(user, location);
+		catch (NumberFormatException ex) {
+			System.err.println("error parsing point: " + sx + ", " + sy);
+		}
 		
-		System.out.println("added point: " + locName+ ", " + x + ", " + y);
-		
-		//TODO return users associate with point 
-		response.getWriter().println("success");
-		
-		
+		return false;
 	}
 
 }
