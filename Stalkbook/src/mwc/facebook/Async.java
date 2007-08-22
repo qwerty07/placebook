@@ -93,6 +93,7 @@ public class Async extends HttpServlet {
 			Location location = store.getLocationByPoint(point);
 			if (location == null) {
 				location = new Location(point, locName, locDesc);
+				store.addLocation(location);
 			}
 			store.addUserToLocation(user, location);
 
