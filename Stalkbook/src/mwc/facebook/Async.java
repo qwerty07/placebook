@@ -26,7 +26,6 @@ public class Async extends HttpServlet {
 		
 		String action = request.getParameter("action");
 		String name = request.getParameter("user");
-		String description = request.getParameter("description");
 		String locName = request.getParameter("location");
 		String locDesc = request.getParameter("description");
 		String sx = request.getParameter("x");
