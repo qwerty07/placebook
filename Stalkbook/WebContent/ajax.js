@@ -40,6 +40,9 @@ var async = {
 		                },
 		               callback);
 	},
+	retrieveLocation: function (point, callback) {
+		this.doRequest("getlocation", point, callback);
+	},
 	sendRequest: function(url,callback,postData) {
 		var req = this.createXMLHTTPObject();
 		if (!req) return;
