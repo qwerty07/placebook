@@ -7,6 +7,7 @@ CREATE TABLE location (
   coord_x float8,
   coord_y float8,
   loc_name VARCHAR(255),
+  description TEXT,
   PRIMARY KEY (coord_x, coord_y)
 );
 

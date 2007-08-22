@@ -67,10 +67,17 @@ public class DataStoreTest extends TestCase {
 	
 	
 	public void testAddLocation(){
-		dataStore.addLocation(new Location(new Point(10,10),"Home"));
+		dataStore.addLocation(new Location(new Point(10,10),"Home", "Place where you live"));
 		Location location = dataStore.getLocationByPoint(new Point(10,10));
 		Assert.assertNotNull(location);
 		Assert.assertEquals("Home", location.getLocationName());
+		Assert.assertEquals("Place where you live", location.getDescription());
+		
+		dataStore.addLocation(new Location(new Point (-10000,10000), "Indescribable"));
+		location = dataStore.getLocationByPoint(new Point(-10000,10000));
+		Assert.assertNotNull(location);
+		Assert.assertEquals("Indescribable", location.getLocationName());
+		Assert.assertNull(location.getDescription());
 	}
 	
 	

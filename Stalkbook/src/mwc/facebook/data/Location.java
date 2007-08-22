@@ -34,8 +34,6 @@ public class Location {
 	public boolean equals(Object other) {
 		if (!(other instanceof Location)) return false;
 		Location o = (Location) other;
-		return coordinates.equals(o.getCoordinates()) && 
-				locationName.equals(o.getLocationName()) &&
-				description.equals(o.getDescription());
+		return coordinates.equals(o.getCoordinates());
 	}
 }	

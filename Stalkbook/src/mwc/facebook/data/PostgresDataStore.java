@@ -43,13 +43,13 @@ public class PostgresDataStore implements DataStore {
 		
 		// Create prepared statements
 		insertUser = connection.prepareStatement("INSERT INTO Stalker (fb_username, home_coord_x, home_coord_y) VALUES (?, ?, ?);");
-		insertLocation = connection.prepareStatement("INSERT INTO location (coord_x, coord_y, loc_name) VALUES (?, ?, ?)");
+		insertLocation = connection.prepareStatement("INSERT INTO location (coord_x, coord_y, loc_name, description) VALUES (?, ?, ?, ?);");
 		getUserByName = connection.prepareStatement("SELECT fb_username, home_coord_x, home_coord_y FROM Stalker WHERE fb_username = ?;");
-		getLocationByPoint = connection.prepareStatement("SELECT loc_name, coord_x, coord_y FROM Location WHERE coord_x = ? AND coord_y = ?;");
-		findLocationsInArea = connection.prepareStatement("SELECT loc_name, coord_x, coord_y FROM Location WHERE box(point(coord_x, coord_y),point(coord_x, coord_y)) && ?;");
+		getLocationByPoint = connection.prepareStatement("SELECT loc_name, coord_x, coord_y, description FROM Location WHERE coord_x = ? AND coord_y = ?;");
+		findLocationsInArea = connection.prepareStatement("SELECT loc_name, coord_x, coord_y, description FROM Location WHERE box(point(coord_x, coord_y),point(coord_x, coord_y)) && ?;");
 		associateUserAndLocation = connection.prepareStatement("INSERT INTO location_stalker (fb_username, coord_x, coord_y) VALUES (?, ?, ?);");
 		findUsersByLocation = connection.prepareStatement("SELECT stalker.fb_username, home_coord_x, home_coord_y FROM stalker NATURAL JOIN location_stalker WHERE coord_x = ? AND coord_y = ?;");
-		findLocationsForUser = connection.prepareStatement("SELECT location.coord_x, location.coord_y, location.loc_name FROM location NATURAL JOIN location_stalker WHERE fb_username = ?;");
+		findLocationsForUser = connection.prepareStatement("SELECT location.coord_x, location.coord_y, location.loc_name, location.description FROM location NATURAL JOIN location_stalker WHERE fb_username = ?;");
 	}
 	
 	public PostgresDataStore(String server, String database, String username, String password) throws SQLException {
@@ -68,6 +68,7 @@ public class PostgresDataStore implements DataStore {
 			insertLocation.setDouble(1, location.getCoordinates().x);
 			insertLocation.setDouble(2, location.getCoordinates().y);
 			insertLocation.setString(3, location.getLocationName());
+			insertLocation.setString(4, location.getDescription());
 			insertLocation.executeUpdate();
 		} catch (SQLException e) {
 			handleError(e);
@@ -221,9 +222,10 @@ public class PostgresDataStore implements DataStore {
 	private Location createLocationFromResult(ResultSet result) throws SQLException {
 		if (result.next()) {
 			String locationName = result.getString("loc_name");
+			String description = result.getString("description");
 			double loc_x = result.getDouble("coord_x");
 			double loc_y = result.getDouble("coord_y");
-			return new Location(new Point(loc_x, loc_y), locationName);
+			return new Location(new Point(loc_x, loc_y), locationName, description);
 		} else {
 			return null;
 		}
