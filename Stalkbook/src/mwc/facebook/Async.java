@@ -8,6 +8,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.util.Set;
+
+import com.facebook.api.FacebookException;
+import com.facebook.api.FacebookRestClient;
+
+import mwc.Stalkbook;
 import mwc.facebook.data.DataStore;
 import mwc.facebook.data.Location;
 import mwc.facebook.data.Point;
@@ -41,6 +47,7 @@ public class Async extends HttpServlet {
 		else if (action.equals("addlocation") && name != null && locName != null && locDesc != null
 					&& sx != null && sy != null) {
 			if (addLocation(name, locName, locDesc, sx, sy)) {
+				try { updateProfile(request); } catch (Exception e) {e.printStackTrace();}
 				response.getWriter().println("success");
 				return;
 			}
@@ -101,7 +108,7 @@ public class Async extends HttpServlet {
 				store.addLocation(location);
 			}
 			store.addUserToLocation(user, location);
-
+			
 			System.out.println("added point: " + locName+ ", " + x + ", " + y);
 
 			return true;
@@ -112,9 +119,34 @@ public class Async extends HttpServlet {
 		
 		return false;
 	}
+
 	
-	private boolean getLocation(String sx, String sy, PrintWriter writer) {
+	public void updateProfile(HttpServletRequest request) throws FacebookException, IOException{
+
+		FacebookRestClient client = Stalkbook.getClient(request);
+		client.setDebug(true);
+		int uid = client.users_getLoggedInUser();
+
+		DataStore db = ObjectManager.instance().store();
+
+		User user = db.getUserByName(String.valueOf(uid)); // someone will fix this later
+		Point userHome = null;
+		Set<Location> userLocations = null;
+		StringBuffer fbmlMarkup = new StringBuffer();
 		
+		if (user != null) {
+			userHome = user.getHomePoint();
+			userLocations = db.locationsFor(user);
+			fbmlMarkup.append("These are the uber places");
+		} else {
+			fbmlMarkup.append("You have no places moooo!!!!");
+		}
+
+		client.profile_setFBML(fbmlMarkup.toString(), uid);
+	}
+
+	private boolean getLocation(String sx, String sy, PrintWriter writer) {
+
 		try {
 			float x = Float.parseFloat(sx);
 			float y = Float.parseFloat(sy);
@@ -127,16 +159,15 @@ public class Async extends HttpServlet {
 			if (location == null) {
 				return false;
 			}
-			
+
 			writer.println(location.toJSON());
-			
+
 			return true;
 		}
 		catch (NumberFormatException ex) {
 			System.err.println("error parsing point: " + sx + ", " + sy);
 		}
-		
+
 		return false;
 	}
-
 }
