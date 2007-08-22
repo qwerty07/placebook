@@ -31,7 +31,7 @@ var StalkLocationCreate={
 				
 
 		stalkBook.addMarkerByLatLng(point.x, point.y, {name: locName, desc: locDesc});
-		//async.submitPoint(locCreator, locName, point, function(req){StalkCoordinator.asyncCallback(req)});
+		async.submitPoint(locCreator, locName, point, function(req){StalkCoordinator.asyncCallback(req)});
 
 		form.name.value='';
 		form.tags.value='';
