@@ -31,6 +31,7 @@ public class PostgresDataStore implements DataStore {
 	private PreparedStatement associateUserAndLocation;
 	private PreparedStatement findUsersByLocation;
 	private PreparedStatement findLocationsForUser;
+	private PreparedStatement findLocationsInCircle;
 	
 	public PostgresDataStore(String server, String database, Properties props) throws SQLException {
 		String url = "jdbc:postgresql://" + server + "/" + database;
@@ -47,6 +48,7 @@ public class PostgresDataStore implements DataStore {
 		getUserByName = connection.prepareStatement("SELECT fb_username, home_coord_x, home_coord_y FROM Stalker WHERE fb_username = ?;");
 		getLocationByPoint = connection.prepareStatement("SELECT loc_name, coord_x, coord_y, description FROM Location WHERE coord_x = ? AND coord_y = ?;");
 		findLocationsInArea = connection.prepareStatement("SELECT loc_name, coord_x, coord_y, description FROM Location WHERE box(point(coord_x, coord_y),point(coord_x, coord_y)) && ?;");
+		findLocationsInCircle = connection.prepareStatement("SELECT loc_name, coord_x, coord_y, description FROM Location WHERE box(point(coord_x, coord_y),point(coord_x, coord_y)) && box(circle(?,?)) AND (point(coord_x, coord_y) <-> ?) < ?;");
 		associateUserAndLocation = connection.prepareStatement("INSERT INTO location_stalker (fb_username, coord_x, coord_y) VALUES (?, ?, ?);");
 		findUsersByLocation = connection.prepareStatement("SELECT stalker.fb_username, home_coord_x, home_coord_y FROM stalker NATURAL JOIN location_stalker WHERE coord_x = ? AND coord_y = ?;");
 		findLocationsForUser = connection.prepareStatement("SELECT location.coord_x, location.coord_y, location.loc_name, location.description FROM location NATURAL JOIN location_stalker WHERE fb_username = ?;");
@@ -232,7 +234,21 @@ public class PostgresDataStore implements DataStore {
 	}
 
 	public Set<Location> getLocationsWithin(Point centre, double radius) {
-		// TODO Auto-generated method stub
-		return null;
+		Set<Location> locations = new HashSet<Location>();
+		try {
+			findLocationsInCircle.setObject(1, centre);
+			findLocationsInCircle.setDouble(2, radius);
+			findLocationsInCircle.setObject(3, centre);
+			findLocationsInCircle.setDouble(4, radius);
+			ResultSet result = findLocationsInCircle.executeQuery();
+			Location loc = createLocationFromResult(result);
+			while (loc != null) {
+				locations.add(loc);
+				loc = createLocationFromResult(result);
+			}
+		} catch (SQLException e) {
+			handleError(e);
+		}
+		return locations;
 	}
 }
