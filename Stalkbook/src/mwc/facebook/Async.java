@@ -125,11 +125,14 @@ public class Async extends HttpServlet {
 
 		FacebookRestClient client = Stalkbook.getClient(request);
 		client.setDebug(true);
-		int uid = client.users_getLoggedInUser();
+		// int uid = client.users_getLoggedInUser();
 
+		String username = request.getParameter("user");
+		int uid = Integer.valueOf(username);
+		
 		DataStore db = ObjectManager.instance().store();
 
-		User user = db.getUserByName(String.valueOf(uid)); // someone will fix this later
+		User user = db.getUserByName(username); 
 		Point userHome = null;
 		Set<Location> userLocations = null;
 		StringBuffer fbmlMarkup = new StringBuffer();
