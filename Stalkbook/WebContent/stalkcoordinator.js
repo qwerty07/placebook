@@ -14,8 +14,8 @@ function StalkCoordinator() {
 	this.load = function() {
 		
 		// get the user's Facebook name & home location
-		this.setUsername(user.username);
-		this.setHomeLocation(user.homeLocation);
+		//this.setUsername(user.username);
+		//this.setHomeLocation(user.homeLocation);
 		
 		// load the map
 		stalkBook.load();
@@ -54,14 +54,16 @@ function StalkCoordinator() {
 		form.creator.value=StalkCoordinator.username; 
 		form.pointLat.value=point.x;	
 		form.pointLng.value=point.y;
-		document.getElementById("addLocationContainer").style.display='block';
+		document.getElementById("blocker").style.display = 'block';
+		// document.getElementById("addLocationContainer").style.display='block';
+		form.name.focus();
 		
 		// alert("Marker added at " + latlng.lat() + ", " + latlng.lng()); // debugging
 	};
 };
 
 function hideForm(){
-	var form=document.getElementById("addLocationContainer");		
+	var form=document.getElementById("blocker");		
 	form.style.display = 'none';
 	return false;	
 }

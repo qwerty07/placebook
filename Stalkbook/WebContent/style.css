@@ -1,6 +1,5 @@
 body {
 	font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
-	
 }
 
 
@@ -12,8 +11,6 @@ body {
 	border: 1px #BBBBBB solid;
 	width: 500px;
 	padding: 0;
-	
-
 }
 
 #addLocationContainer h2 {
@@ -21,40 +18,39 @@ body {
 	color: #fff;
 	margin: 0;
 	padding: 5px;
-	
-		
-	
-	
 }
 
 #formWrap {
 	padding: 20px;
-	
-	}
+}
+
+#blocker {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 800px;
+	height: 800px;
+}
 
 label {
 	padding-top: 15px;
 	float: left;
 	font-weight: bold;
 	width: 100px;
-
 }
 
 input {
 	margin-top: 15px;
 	margin-left: 10px;
 	padding-left: 0px;
-
 }
 
 textarea {
 	margin-top: 15px;
 	margin-left: 10px;
 	padding-left: 0px;
-
 }
 
 .buttons {
 	float: right;
-
 }

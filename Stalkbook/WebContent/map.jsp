@@ -37,7 +37,7 @@ if (user != null) {
 <script src="stalkbook.js" type="text/javascript"></script>
 <script src="ajax.js" type="text/javascript"></script>
 <script src="stalkcoordinator.js" type="text/javascript"></script>
-<script src="StalkLocationCreate.js" type="text/javascript"></script>
+<script src="stalklocationcreate.js" type="text/javascript"></script>
 <script src="locationmanager.js" type="text/javascript"></script>
 <link rel=StyleSheet href="style.css" type="text/css" media=screen />
 
@@ -80,25 +80,29 @@ hooks.addHook(
 
 <body onload="hooks.onload()" onunload="GUnload()">
 	<div id="map"></div>
-<div style="display: none;" id="addLocationContainer">	
-	<h2>Add Location</h2>
-	<div id="formWrap">
-	<form action="" id="addLocationForm">
-		<input id="creator" name="creator" type="hidden"/>
-		<input id="pointLat" name="pointLat" type="hidden"/>
-		<input id="pointLng" name="pointLng" type="hidden""/>
-		
-		<label for="name">Name</label><input type="text" name="name" id="name"/><br/>
-		<label for="description">Description</label><textarea rows="6" cols="40" name="description" id="description"></textarea><br/>
-		<label for="tags">Tags</label><input type="text" name="tags" id="tags"/><br/>		
-		
-		<input class="buttons" type="submit" onclick="StalkLocationCreate.createLocation(); return false" value="Save" />
-		<input class="buttons" type="button" onclick="hideForm()" value="Cancel" />	
-	</form>		
-	<br />
-	<br />
+	
+<div style="display: none;" id="blocker">
+	<div id="addLocationContainer">	
+		<h2>Add Location</h2>
+		<div id="formWrap">
+		<form action="" id="addLocationForm">
+			<input id="creator" name="creator" type="hidden"/>
+			<input id="pointLat" name="pointLat" type="hidden"/>
+			<input id="pointLng" name="pointLng" type="hidden""/>
+			
+			<label for="name">Name</label><input type="text" name="name" id="name"/><br/>
+			<label for="description">Description</label><textarea rows="6" cols="40" name="description" id="description"></textarea><br/>
+			<label for="tags">Tags</label><input type="text" name="tags" id="tags"/><br/>		
+			
+			<input class="buttons" type="submit" onClick="StalkLocationCreate.createLocation(); return false" value="Save"/>
+			<input class="buttons" type="button" onClick="hideForm()" value="Cancel"/>	
+		</form>		
+		<br />
+		<br />
+		</div>
 	</div>
 </div>
+
 <div id="location"></div>
 </body>
 
