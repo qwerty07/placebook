@@ -20,7 +20,7 @@ public class Point extends PGpoint implements JSONable{
 	public boolean equals(Object other) {
 		if (!(other instanceof Point)) return false;
 		Point o = (Point) other;
-		return Math.abs(x - o.x) < (x / 100000000) && Math.abs(y - o.y) < (y / 100000000);
+		return Math.abs(x - o.x) < (Math.abs(x) / 100000000) && Math.abs(y - o.y) < (Math.abs(y) / 100000000);
 	}
 
 	public String toJSON() {
