@@ -29,7 +29,7 @@ function StalkCoordinator() {
 		for (var i = 0; i < User.locations.length; i++) {
 			var location = User.locations[i];
 			var coordinates = location.coordinates;
-			StalkBook.addMarkerByLatLng(coordinates.x, coordinates.y, location.name);
+			StalkBook.addMarkerByLatLng(coordinates.x, coordinates.y, location);
 		}
 	};
 	

@@ -46,7 +46,7 @@ public class Location implements JSONable {
 			sb.append(", name: \"" + this.locationName + "\"");
 		}
 		if (description != null) {
-			sb.append(", description: \"" + this.description + "\"");
+			sb.append(", desc: \"" + this.description + "\"");
 		}
 		sb.append("}");
 		return sb.toString();

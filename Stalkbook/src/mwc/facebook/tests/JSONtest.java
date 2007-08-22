@@ -13,7 +13,7 @@ public class JSONtest extends TestCase {
 	}
 	
 	public void testLocations() {
-		Assert.assertEquals("{coordinates: {x:0.0, y:0.0}, name: \"Location\", description: \"Desc\"}",
+		Assert.assertEquals("{coordinates: {x:0.0, y:0.0}, name: \"Location\", desc: \"Desc\"}",
 				new Location(new Point(0,0), "Location", "Desc").toJSON());
 		
 		Assert.assertEquals("{coordinates: {x:0.0, y:0.0}}",
@@ -22,7 +22,7 @@ public class JSONtest extends TestCase {
 		Assert.assertEquals("{coordinates: {x:0.0, y:0.0}, name: \"NameOnly\"}",
 				new Location(new Point(0,0), "NameOnly").toJSON());
 		
-		Assert.assertEquals("{coordinates: {x:0.0, y:0.0}, description: \"DescOnly\"}",
+		Assert.assertEquals("{coordinates: {x:0.0, y:0.0}, desc: \"DescOnly\"}",
 				new Location(new Point(0,0), null, "DescOnly").toJSON());
 	}
 }
