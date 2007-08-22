@@ -31,16 +31,13 @@ var StalkLocationCreate={
 				
 
 		stalkBook.addMarkerByLatLng(point.x, point.y, {name: locName, desc: locDesc});
-				alert("After marker Addition");
-//		async.submitPoint(locCreator, locName, point, function(req){StalkCoordinator.asyncCallback(req)});
+		async.submitPoint(locCreator, locName, point, function(req){StalkCoordinator.asyncCallback(req)});
 
 		form.name.value='';
 		form.tags.value='';
 		form.description.value='';
 		
 		return hideForm();			
-		alert("About to leave...");
-		return false;		
 	}
 
 };
