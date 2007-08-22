@@ -28,6 +28,6 @@ CREATE TABLE location_stalker (
   coord_y float8,
   fb_username VARCHAR(255),
   PRIMARY KEY (coord_x, coord_y, fb_username),
-  FOREIGN KEY (fb_username) REFERENCES stalker,
-  FOREIGN KEY (coord_x, coord_y) REFERENCES location
+  FOREIGN KEY (fb_username) REFERENCES stalker ON DELETE CASCADE,
+  FOREIGN KEY (coord_x, coord_y) REFERENCES location ON DELETE CASCADE
 );

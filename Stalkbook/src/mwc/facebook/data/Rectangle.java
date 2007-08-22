@@ -6,10 +6,14 @@ import org.postgresql.geometric.PGpoint;
 public class Rectangle {
 	private Point topLeft, bottomRight;
 
-	public Rectangle(Point topLeft, Point bottomRight) {
+	public Rectangle(Point pt1, Point pt2) {
 		super();
-		this.topLeft = topLeft;
-		this.bottomRight = bottomRight;
+		double minX = Math.min(pt1.x, pt2.x);
+		double maxX = Math.max(pt1.x, pt2.x);
+		double minY = Math.min(pt1.y, pt2.y);
+		double maxY = Math.max(pt1.y, pt2.y);
+		this.topLeft = new Point(minX, minY);
+		this.bottomRight = new Point(maxX, maxY);
 	}
 	
 	public boolean contains(Point p) {
