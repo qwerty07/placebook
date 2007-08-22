@@ -5,7 +5,7 @@ testY: 174.771634,
 testString: "Constable St, Newtown, Wellington, New Zealand",
 
 test: function() {
-	stalkBook.addMarkerFunction(function(point){
+	stalkBook.setMarkerFunction(function(point){
 	alert(point);
 	});
 },
