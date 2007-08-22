@@ -8,7 +8,7 @@ function doOnload() {
 			y: latlng.lng()
 		};
 			
-		User.homeLocation = point;
+		user.homeLocation = point;
 	
 		async.setDefaultLocation(stalkCoordinator.username, point, function (req) { stalkCoordinator.complete(req) });
 	};

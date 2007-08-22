@@ -30,9 +30,9 @@ if (user != null) {
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 <title>Facebook Places</title>
 <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAjLUGBU2KYPSE-QiX4gc3nhQaIaxgZFO_HyGm4sK6rU1DjshnHBQZEhZXdK-FSkrkhldgO6eTm6dXRw"></script>
-<script src="gmapIO.js" type="text/javascript"></script>
+<script src="stalkbook.js" type="text/javascript"></script>
 <script src="ajax.js" type="text/javascript"></script>
-<script src="StalkCoordinator.js" type="text/javascript"></script>
+<script src="stalkcoordinator.js" type="text/javascript"></script>
 <style type="text/css">
 #map {
 	width: 100%;

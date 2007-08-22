@@ -43,9 +43,14 @@ var stalkBook = {
 	  stalkBook.typeImages[1].infoWindowAnchor = new GPoint(5, 1);
 	  stalkBook.typeImages[1].type="Eat";	  
       
-      stalkBook.geocoder.getLatLng(stalkBook.locality,function(point){
-		stalkBook.map.setCenter(point, 12);
-      });
+      if (stalkCoordinator && stalkCoordinator.homeloc) {
+      	stalkBook.setPositionXY(stalkCoordinator.homeloc.x, stalkCoordinator.homeloc.y, stalkCoordinator.default_zoom);
+      }
+      else {
+      	stalkBook.geocoder.getLatLng(stalkBook.locality,function(point){
+			stalkBook.map.setCenter(point, 12);
+      	});
+      }
 
       stalkBook.map.enableScrollWheelZoom();
 

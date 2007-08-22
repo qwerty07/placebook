@@ -20,15 +20,16 @@ function StalkCoordinator() {
 		stalkBook.setMarkerFunction(stalkCoordinator.addMarker);
 		
 		// get the user's Facebook name & home location
-		this.setUsername(User.username);
-		this.setHomeLocation(User.homeLocation);
+		this.setUsername(user.username);
+		this.setHomeLocation(user.homeLocation);
 
 		// tell the map to centre on the user's home location
+		alert('x: ' + this.homeloc.x + ', y:' + this.homeloc.y);
 		stalkBook.setPositionXY(this.homeloc.x, this.homeloc.y, this.default_zoom);
-
-		for (var i = 0; i < User.locations.length; i++) {
-			var location = User.locations[i];
-			stalkBook.addMarkerByLatLng(location.x, location.y, location.name);
+		
+		for (var i = 0; i < user.locations.length; i++) {
+			var location = user.locations[i];
+			stalkBook.addMarkerByLatLng(location.coordinates.x, location.coordinates.y, location);
 		}
 	};
 	
