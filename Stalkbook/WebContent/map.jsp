@@ -44,14 +44,12 @@ if (user != null) {
 var User = {
 	username: "<%= uid %>",
 <% if (userHome != null) { %>
-	homeLocation: { x: <%= userHome.x %>, y: <%= userHome.y %> },
+	homeLocation: <%= userHome.toJSON() %>,
 <% } %>
 	locations: [
 <% if (userLocations != null) {
 		for (Location location : userLocations) {
-			Point coords = location.getCoordinates();
-			out.println("{ name: '" + location.getLocationName() +
-					"', x: " + coords.x + ", y: " + coords.y + "},");
+			out.println(location.toJSON() + ",");
 	}
 } %>
 	]

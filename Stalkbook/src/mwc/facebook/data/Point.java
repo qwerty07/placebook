@@ -1,8 +1,9 @@
 package mwc.facebook.data;
 
+import mwc.facebook.JSONable;
 import org.postgresql.geometric.PGpoint;
 
-public class Point extends PGpoint{
+public class Point extends PGpoint implements JSONable{
 
 	private static final long serialVersionUID = 1L;
 
@@ -20,5 +21,9 @@ public class Point extends PGpoint{
 		if (!(other instanceof Point)) return false;
 		Point o = (Point) other;
 		return Math.abs(x - o.x) < (x / 100000000) && Math.abs(y - o.y) < (y / 100000000);
+	}
+
+	public String toJSON() {
+		return "{x:" + this.x + ", y:" + this.y +"}";
 	}
 }

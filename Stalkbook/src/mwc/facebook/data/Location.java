@@ -1,6 +1,8 @@
 package mwc.facebook.data;
 
-public class Location {
+import mwc.facebook.JSONable;
+
+public class Location implements JSONable {
 	private Point coordinates;
 	private String locationName;
 	private String description;
@@ -35,5 +37,18 @@ public class Location {
 		if (!(other instanceof Location)) return false;
 		Location o = (Location) other;
 		return coordinates.equals(o.getCoordinates());
+	}
+
+	public String toJSON() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("{coordinates: " + coordinates.toJSON());
+		if (locationName != null) {
+			sb.append(", name: \"" + this.locationName + "\"");
+		}
+		if (description != null) {
+			sb.append(", description: \"" + this.description + "\"");
+		}
+		sb.append("}");
+		return sb.toString();
 	}
 }	
