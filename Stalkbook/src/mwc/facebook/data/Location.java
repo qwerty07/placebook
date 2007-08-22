@@ -43,12 +43,17 @@ public class Location implements JSONable {
 		StringBuffer sb = new StringBuffer();
 		sb.append("{coordinates: " + coordinates.toJSON());
 		if (locationName != null) {
-			sb.append(", name: \"" + this.locationName + "\"");
+			sb.append(", name: \"" + escapeString(this.locationName) + "\"");
 		}
 		if (description != null) {
-			sb.append(", desc: \"" + this.description + "\"");
+			sb.append(", desc: \"" + escapeString(this.description) + "\"");
 		}
 		sb.append("}");
 		return sb.toString();
+	}
+	
+	public static String escapeString(String source) {
+		// Make this method escape all possible strings
+		return source.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\'", "\\\'");
 	}
 }	

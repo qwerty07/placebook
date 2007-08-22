@@ -24,5 +24,11 @@ public class JSONtest extends TestCase {
 		
 		Assert.assertEquals("{coordinates: {x:0.0, y:0.0}, desc: \"DescOnly\"}",
 				new Location(new Point(0,0), null, "DescOnly").toJSON());
+		
+		Assert.assertEquals("\\n", Location.escapeString("\n"));
+		Assert.assertEquals("\\\'", Location.escapeString("\'"));
+		Assert.assertEquals("\\\"", Location.escapeString("\""));
+		Assert.assertEquals("\\\\", Location.escapeString("\\"));
+		Assert.assertEquals("\\\\\\n", Location.escapeString("\\\n"));
 	}
 }
