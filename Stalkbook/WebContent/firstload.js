@@ -1,4 +1,4 @@
-function doOnload() {
+var fistload = function () {
 
 	stalkCoordinator = new StalkCoordinator();
 	
@@ -34,3 +34,5 @@ function doOnload() {
 	
 	stalkCoordinator.load();
 }
+
+hooks.addHook(firstload);

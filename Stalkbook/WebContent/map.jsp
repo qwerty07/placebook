@@ -29,10 +29,14 @@ if (user != null) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 <title>Facebook Places</title>
+
+<script src="onload.js"></script>
+
 <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAjLUGBU2KYPSE-QiX4gc3nhQaIaxgZFO_HyGm4sK6rU1DjshnHBQZEhZXdK-FSkrkhldgO6eTm6dXRw"></script>
 <script src="stalkbook.js" type="text/javascript"></script>
 <script src="ajax.js" type="text/javascript"></script>
 <script src="stalkcoordinator.js" type="text/javascript"></script>
+<script src="locationmanager.js" type="text/javascript"></script>
 <style type="text/css">
 #map {
 	width: 100%;
@@ -60,16 +64,19 @@ var user = {
 <script type="text/javascript" src="firstload.js"></script>
 <% } else { %>
 <script type="text/javascript">
-function doOnload() {
-	stalkCoordinator = new StalkCoordinator();
-	stalkCoordinator.load();
-}
+hooks.addHook(
+	function () {
+		stalkCoordinator = new StalkCoordinator();
+		stalkCoordinator.load();
+	}
+);
 </script>
 <% } %>
 </head>
 
-<body onload="doOnload()" onunload="GUnload()">
+<body onload="hooks.onload()" onunload="GUnload()">
 	<div id="map"></div>
+	<div id="location"></div>
 </body>
 
 </html>
