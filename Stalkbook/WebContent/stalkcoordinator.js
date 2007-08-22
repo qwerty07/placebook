@@ -51,11 +51,14 @@ function StalkCoordinator() {
 		};
 	
 		var form=document.getElementById("addLocationForm");
-		form.creator.value=StalkCoordinator.username; 
+		form.creator.value=stalkCoordinator.username; 
 		form.pointLat.value=point.x;	
 		form.pointLng.value=point.y;
+		form.name.value = '';
+		form.description.value = '';
+		form.tags.value = '';
 		document.getElementById("blocker").style.display = 'block';
-		// document.getElementById("addLocationContainer").style.display='block';
+
 		form.name.focus();
 		
 		// alert("Marker added at " + latlng.lat() + ", " + latlng.lng()); // debugging
