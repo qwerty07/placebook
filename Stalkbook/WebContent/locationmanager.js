@@ -9,8 +9,7 @@ function LocationManager () {
 		
 		var close = document.createElement("A");
 		close.className="closeButton";
-		close.href="javascript:void(0)";
-		close.onclick="locationManager.hide()";
+		close.href="javascript:locationManager.hide()";
 		close.innerHTML="close";
 		
 		this.location.appendChild(this.title);
