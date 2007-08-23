@@ -25,7 +25,7 @@ function StalkCoordinator() {
 		// Set the callback function for stalkBook to call when adding
 		// a new marker
 		stalkBook.setMarkerFunction(stalkCoordinator.addMarker);
-		stalkBook.moveFunction(stalkCoordinator.moveView);
+		//stalkBook.moveFunction(stalkCoordinator.moveView);
 
 		for (var i = 0; i < user.locations.length; i++) {
 			var location = user.locations[i];
