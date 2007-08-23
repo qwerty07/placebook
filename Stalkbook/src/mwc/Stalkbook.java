@@ -115,6 +115,8 @@ public class Stalkbook extends HttpServlet {
 
 	/** Get a FacbookRestClient from the given session key */
 	public static FacebookRestClient getClient(String session) {
+		System.out.printf("Creating REST client\n secret: %s\n api:%s\n session: %s\n",
+							SECRET_KEY, API_KEY, session);
 		return new FacebookRestClient(API_KEY, SECRET_KEY, session);
 	}
 	
