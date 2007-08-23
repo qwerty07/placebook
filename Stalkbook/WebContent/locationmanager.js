@@ -3,7 +3,7 @@ var locationManager;
 function LocationManager () {
 	this.load = function () {
 		this.location = document.getElementById("location");
-		this.title = document.createElement("H2");
+		this.title = document.createElement("H4");
 		this.description = document.createElement("DIV");
 		this.users = document.createElement("UL");
 		this.comments = document.createElement("UL");
@@ -14,35 +14,40 @@ function LocationManager () {
 		close.innerHTML="<span>[close]</span>";
 		
 		var join = document.createElement("A");
-		join.className="joinButton locationButton";
+		join.className="join locationButton";
 		join.href="javascript:locationManager.join()";
-		join.innerHTML="join";
+		join.innerHTML="Join this Location";
 		
 		var content = document.createElement("DIV");
 		content.className = "content";
 		var inner = document.createElement("DIV");
 		inner.className = "inner";
 		
+		var ddiv = document.createElement("DIV");
+		ddiv.className = "item first";
+		ddiv.appendChild(document.createElement("H5"));
+		ddiv.firstChild.textContent="Description";
+		ddiv.appendChild(this.description);
+		ddiv.appendChild(join);
+		
 		var udiv = document.createElement("DIV");
-		udiv.className = "users";
-		udiv.appendChild(document.createElement("H3"));
+		udiv.className = "item users";
+		udiv.appendChild(document.createElement("H5"));
 		udiv.firstChild.textContent="Users";
 		udiv.appendChild(this.users);
 		
 		var cdiv = document.createElement("DIV");
-		cdiv.className = "comments";
-		cdiv.appendChild(document.createElement("H3"));
+		cdiv.className = "item comments";
+		cdiv.appendChild(document.createElement("H5"));
 		cdiv.firstChild.textContent="Comments";
 		cdiv.appendChild(this.comments);
 		
 		this.location.appendChild(close);
 		this.location.appendChild(this.title);
 		this.location.appendChild(content);
-		content.appendChild(inner);
-		inner.appendChild(this.description);
-		inner.appendChild(udiv);
-		inner.appendChild(cdiv);
-		inner.appendChild(join);
+		content.appendChild(ddiv);
+		content.appendChild(udiv);
+		content.appendChild(cdiv);
 	};
 	this.setLocation = function (point) {
 		async.retrieveLocation(point, function (req) { locationManager.callback(req); });
@@ -72,6 +77,9 @@ function LocationManager () {
 				var li = document.createElement("LI");
 				li.appendChild(text);
 				this.users.appendChild(li);
+				if (i == response.users.length-1) {
+					li.className = "last";
+				}
 			}
 		}
 		

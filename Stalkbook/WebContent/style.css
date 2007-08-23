@@ -16,6 +16,8 @@ body {
 	width: 322px;
 }
 
+/* 10px between map and location, 10 px around all */
+
 #location {
 	position: absolute;
 	display: none;
@@ -23,14 +25,13 @@ body {
 	margin: 5px;
 	top: 0px;
 	left: 322px;
-	border: 1px #bbb solid;
 	height: 100%;
 }
 
 #location .closeButton {
 	background-image: url("images/close.png");
-	width: 24px;
-	height: 24px;
+	width: 20px;
+	height: 20px;
 	float: right;
 	margin: 5px;
 }
@@ -43,23 +44,105 @@ body {
 	display: block;
 }
 
-#location h2{
+#location h4 {
 	/* total height is 35px */
-	background: #7f93bc;
-	color: #fff;
+	background: #6d84b4;
+	color: white;
 	margin: 0;
 	border-bottom: solid 1px white;
-	padding: 5px;
-	line-height: 24px;
+	padding: 5px 10px;
+	line-height: 20px;
 }
 
 #location .content {
 	height: 465px;
 	overflow: auto;
+    border: solid 1px #bbb;
+    border-top: none;
+    font-size: 11px;
 }
 
-#location .content .inner {
-	margin: 5px;
+#location .content .item {
+	border-top: 1px solid #E5E5E5;
+	padding: 10px;
+}
+
+#location .content .item.first {
+	border-top: none;
+}
+
+#location .content .item h5 {
+	background: #D8DFEA none repeat scroll 0%;
+	border-top: 1px solid #3B5998;
+	margin: 0px;
+	padding: 2px 8px;
+	color:#3B5998;
+	font-size:11px;
+	font-weight:bold;
+}
+
+#location .content .join {
+	display: block;
+	color:#3B5998;
+	text-decoration:none;
+	margin:0px;
+	padding:2px 3px;
+}
+
+#location .content .join:hover {
+	background:#3B5998 none repeat scroll 0%;
+	color:white;
+	text-decoration:none;
+}
+
+#location .content .users ul {
+	color: #3B5998;
+	padding: 0;
+}
+
+#location .content .users li {
+	display: inline;
+	padding: 0 5px;
+	list-style: none;
+}
+
+#location .content .users li:after {
+	content: ",";
+}
+
+#location .content .users li.last:after {
+	content: "";
+}
+
+#location .content .comments ul {
+	display: block;
+	margin: 0;
+	padding: 0;
+}
+
+#location .content .comments li {
+	display: block;
+	margin: 0;
+	text-decoration: none;
+	list-style: none;
+	padding: 10px;
+}
+
+#location .content .comments li dl {
+	border-top: 1px solid #3B5998;
+	border-bottom: 1px solid #E5E5E5;
+	padding-bottom: 2ex;
+}
+
+#location .content .comments li dt {
+	background:#F7F7F7 none repeat scroll 0%;
+	border-bottom:1px solid #D8DFEA;
+	padding:3px 5px;
+}
+
+#location .content .comments li dd {
+	margin: 0;
+	padding: 5px;
 }
 
 #bubbleHead {
@@ -136,3 +219,19 @@ textarea {
 .buttons {
 	float: right;
 }
+
+
+/* facebook imported styles */
+
+.lists .list .list_item { border-top:1px solid #E5E5E5; padding: 10px; }
+.lists .list .list_item.first { border-top: none; }
+
+.lists .see_all {
+     background:white none repeat scroll 0%;
+     border-color:-moz-use-text-color #BBBBBB rgb(187, 187, 187);
+     border-style:none solid solid;
+     border-width:medium 1px 1px;
+     text-align:left;
+}
+
+.lists .see_all div { border-top:1px solid #E5E5E5; padding:5px 10px; }
