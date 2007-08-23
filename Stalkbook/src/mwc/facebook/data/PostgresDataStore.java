@@ -1,15 +1,10 @@
 package mwc.facebook.data;
 
-import java.awt.Image;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Properties;
@@ -17,13 +12,9 @@ import java.util.Set;
 
 import junit.framework.Assert;
 
-import org.postgresql.ds.common.PGObjectFactory;
 import org.postgresql.geometric.PGbox;
-import org.postgresql.geometric.PGpoint;
 import org.postgresql.largeobject.LargeObject;
 import org.postgresql.largeobject.LargeObjectManager;
-
-import com.sun.org.apache.bcel.internal.util.ByteSequence;
 
 public class PostgresDataStore implements DataStore {
 	static {
@@ -161,7 +152,8 @@ public class PostgresDataStore implements DataStore {
 	public synchronized Set<Location> getLocationsWithin(Rectangle area) {
 		Set<Location> locations = new HashSet<Location>();
 		try {
-			findLocationsInArea.setObject(1, new PGbox(area.getTopLeft(), area.getBottomRight()));
+			PGbox box = new PGbox(area.getTopLeft(), area.getBottomRight());
+			findLocationsInArea.setObject(1, box);
 			ResultSet result = findLocationsInArea.executeQuery();
 			Location loc = createLocationFromResult(result);
 			while (loc != null) {
@@ -214,7 +206,7 @@ public class PostgresDataStore implements DataStore {
 			connection.setAutoCommit(false);
 			LargeObjectManager manager = ((org.postgresql.PGConnection)connection).getLargeObjectAPI();
 			long oid =manager.createLO();
-			System.out.printf("Large object created with oid (%d)\n", oid);
+			//System.out.printf("Large object created with oid (%d)\n", oid);
 			LargeObject image = manager.open(oid);
 			image.write(photo);
 			image.close();

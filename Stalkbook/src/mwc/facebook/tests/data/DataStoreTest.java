@@ -5,6 +5,8 @@ import java.awt.image.Raster;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
@@ -42,7 +44,6 @@ public class DataStoreTest extends TestCase {
 		Properties connectionProps = new Properties();
 		connectionProps.setProperty("user", "ramsayneil");
 		dataStore = new TestPGDataStore("localhost", "stalkbook", connectionProps);
-
 	}
 
 	public void testUserNotFound(){
@@ -96,11 +97,12 @@ public class DataStoreTest extends TestCase {
 	}
 	
 	public void testAddLocation(){
-		dataStore.addLocation(new Location(new Point(10,10),"Home", "Place where you live"));
-		Location location = dataStore.getLocationByPoint(new Point(10,10));
+		dataStore.addLocation(new Location(new Point(10.0215986321578945,10.0215986321578945),"Home", "Place where you live"));
+		Location location = dataStore.getLocationByPoint(new Point(10.0215986321578945,10.0215986321578945));
 		Assert.assertNotNull(location);
 		Assert.assertEquals("Home", location.getLocationName());
 		Assert.assertEquals("Place where you live", location.getDescription());
+		Assert.assertTrue(location.equals(new Location(new Point(10.0215986321578945,10.0215986321578945),"Home", "Place where you live")));
 		
 		dataStore.addLocation(new Location(new Point(-10000,10000), "Indescribable"));
 		location = dataStore.getLocationByPoint(new Point(-10000,10000));
