@@ -75,7 +75,7 @@ public class Stalkbook extends HttpServlet {
 			// response printed to System.out.
 			client.setDebug(true);
 			int clientId = client.users_getLoggedInUser();
-			String name = Stalkbook.getUserName(clientId);
+			String name = Stalkbook.getUserName(request, clientId);
 			
 			PrintWriter writer = response.getWriter();
 			//writer.printf("<h2>Hi <fb:name firstnameonly=\"true\" uid=\"%d\" useyou=\"false\"/>!</h2>", clientId);
@@ -118,14 +118,14 @@ public class Stalkbook extends HttpServlet {
 		return new FacebookRestClient(API_KEY, SECRET_KEY, session);
 	}
 	
-	public static String getUserName(int user) {
+	public static String getUserName(HttpServletRequest request, int user) {
 		
 		try {
 			Collection<Integer> ids = new Vector<Integer>();
 			ids.add(user);
 			Set<CharSequence> fields = new TreeSet<CharSequence>();
 			fields.add("name");
-			Document document = Stalkbook.getClient().users_getInfo(ids, fields);
+			Document document = Stalkbook.getClient(request).users_getInfo(ids, fields);
 			
 			NodeList list = document.getElementsByTagName("name");
 			
