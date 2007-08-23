@@ -2,6 +2,7 @@ package mwc.facebook;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.servlet.ServletException;
@@ -72,6 +73,12 @@ public class Async extends HttpServlet {
 		}
 		else if (action.equals("getLocationsByRec") && sx != null && sy != null  && sx2 != null && sy2 != null) {
 			if (getLocationsByRec(sx, sy, sx2, sy2, response.getWriter())) {
+				return;
+			}
+		
+		}		
+		else if (action.equals("getuserlocrec") && sx != null && sy != null  && sx2 != null && sy2 != null && name !=null) {
+			if (getUserLocationsByRec(sx, sy, sx2, sy2,name, response.getWriter())) {
 				return;
 			}
 		
@@ -324,6 +331,57 @@ public class Async extends HttpServlet {
 			sb.append("[ ");
 			
 			for(Location l : locations){
+				sb.append(l.toJSON());
+				sb.append(",");
+			}
+			
+			sb.append(" ]");
+						
+			writer.println(sb);
+
+			return true;
+		}
+		catch (NumberFormatException ex) {
+			System.err.println("error parsing point");
+		}
+
+		return false;
+	}
+	
+	private boolean getUserLocationsByRec(
+			String sTopLeftx, String sTopLefty, String sBottomRightx, String sBottomRighty, String name,
+			PrintWriter writer) {
+
+		try {
+			float tlx = Float.parseFloat(sTopLeftx);
+			float tly = Float.parseFloat(sTopLefty);
+			
+			float brx = Float.parseFloat(sBottomRightx);
+			float bry = Float.parseFloat(sBottomRighty);
+
+			Point tlPoint = new Point(tlx, tly);
+			Point brPoint = new Point(brx, bry);
+			Rectangle rectangle = new Rectangle(tlPoint, brPoint);
+			
+			DataStore store = ObjectManager.instance().store();
+
+			User user = store.getUserById(name);
+			if(user == null){
+				return false;	
+			}
+			
+			Set<Location> locations = store.getLocationsWithin(rectangle);
+			Set<Location> userLocations = store.locationsFor(user);
+			Set<Location> userRecLoc=new HashSet<Location>();
+			for(Location location:locations){
+				if(userLocations.contains(location))userRecLoc.add(location);
+			}
+			
+			StringBuffer sb = new StringBuffer();
+			
+			sb.append("[ ");
+			
+			for(Location l : userRecLoc){
 				sb.append(l.toJSON());
 				sb.append(",");
 			}
