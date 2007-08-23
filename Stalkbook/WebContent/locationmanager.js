@@ -36,11 +36,17 @@ function LocationManager () {
 		udiv.firstChild.textContent="Users";
 		udiv.appendChild(this.users);
 		
+		var addComment = document.createElement("A");
+		addComment.className = "addComment locationButton";
+		addComment.href="javascript:locationManager.addComment()";
+		addComment.innerHTML="Add a Comment";
+		
 		var cdiv = document.createElement("DIV");
 		cdiv.className = "item comments";
 		cdiv.appendChild(document.createElement("H5"));
 		cdiv.firstChild.textContent="Comments";
 		cdiv.appendChild(this.comments);
+		cdiv.appendChild(addComment);
 		
 		this.location.appendChild(close);
 		this.location.appendChild(this.title);
@@ -114,6 +120,9 @@ function LocationManager () {
 	}
 	this.join = function () {
 		async.joinLocation(user.user, this.coordinates, function (req) {});
+	}
+	this.addComment = function() {
+		// add a comment to this locations
 	}
 };
 
