@@ -74,6 +74,22 @@ function LocationManager () {
 				this.users.appendChild(li);
 			}
 		}
+		
+		if (response.comments) {
+			for (var i = 0; i < response.comments.length; i++) {
+				var container = document.createElement("DL");
+				var user = document.createElement("DT");
+				user.innerHTML=response.comments[i].user.name;
+				var text = document.createElement("DD");
+				text.innerHTML=response.comments[i].text;
+				var li = document.createElement("LI");
+				container.appendChild(user);
+				container.appendChild(text);
+				li.appendChild(container);
+				this.comments.appendChild(li);
+			}
+		}
+		
 		this.show();
 	};
 	this.show = function () {
