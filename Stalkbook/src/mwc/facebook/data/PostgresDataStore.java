@@ -64,7 +64,7 @@ public class PostgresDataStore implements DataStore {
 		
 		// Create prepared statements
 		insertUser = connection.prepareStatement("INSERT INTO Stalker (fb_id, fb_name, home_coord_x, home_coord_y) VALUES (?, ?, ?, ?);");
-		updateUser = connection.prepareStatement("UPDATE stalker SET fb_id = ?, fb_name = ?, home_coord_x = ?, home_coord_y = ?;");
+		updateUser = connection.prepareStatement("UPDATE stalker SET fb_id = ?, fb_name = ?, home_coord_x = ?, home_coord_y = ? WHERE fb_id = ?;");
 		insertLocation = connection.prepareStatement("INSERT INTO location (coord_x, coord_y, loc_name, description) VALUES (?, ?, ?, ?);");
 		getUserById = connection.prepareStatement("SELECT fb_id, fb_name, home_coord_x, home_coord_y FROM Stalker WHERE fb_id = ?;");
 		getLocationByPoint = connection.prepareStatement("SELECT loc_name, coord_x, coord_y, description FROM Location WHERE coord_x = ? AND coord_y = ?;");
@@ -122,6 +122,7 @@ public class PostgresDataStore implements DataStore {
 			updateUser.setString(2, user.getName());
 			updateUser.setDouble(3, user.getHomePoint().x);
 			updateUser.setDouble(4, user.getHomePoint().y);
+			updateUser.setString(5, user.getUser());
 			updateUser.executeUpdate();
 		} catch (SQLException e) {
 			handleError(e);
