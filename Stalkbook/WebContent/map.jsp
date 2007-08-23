@@ -13,6 +13,17 @@ int uid = client.users_getLoggedInUser();
 
 DataStore db = ObjectManager.instance().store();
 
+String viewLocationX = request.getParameter("x");
+String viewLocationY = request.getParameter("y");
+
+try {
+	Float.valueOf(viewLocationX);
+	Float.valueOf(viewLocationY);
+} catch (Exception e) {
+	viewLocationX = null;
+	viewLocationY = null;
+}
+
 User user = db.getUserById(String.valueOf(uid)); // someone will fix this later
 Point userHome = null;
 Set<Location> userLocations = null;
@@ -56,6 +67,12 @@ var user = {
 	}
 } %>
 	]
+};
+
+var view = {
+<% if (viewLocationX != null && viewLocationY != null) { %>
+	location: {x: <%= viewLocationX %>, y: <%= viewLocationY %>}
+<% } %>	
 };
 
 </script>
