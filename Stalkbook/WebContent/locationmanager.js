@@ -135,12 +135,14 @@ function LocationManager () {
 	}
 	this.addComment = function() {
 		// add a comment to this location
-		alert("If this was working, you could add a comment to this location.");
+		var comment = prompt("Enter your comment");
+		async.addComment(user.user, comment, function(req) {});
 	}
 	
 	this.addPhoto = function() {
 		// add a photo to this location
-		alert("If this was working, you could add a photo to this location.");
+		var filename = prompt("Enter photo filename");
+		async.addPhoto(user.user, filename, function(req) {});
 	}
 };
 

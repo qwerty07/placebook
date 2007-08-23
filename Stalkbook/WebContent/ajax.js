@@ -32,6 +32,14 @@ var async = {
     				   callback);
     },
     
+    addComment: function(user, comment, callback) {
+    	this.doRequest("addComment", { user: user, comment: comment}, callback);
+    },
+    
+    addPhoto: function(user, photo, callback) {
+     	this.doRequest("addPhoto", { user: user, filename: photo}, callback);
+    },
+    
 	/** assumes that the callback function takes one boolean argument
 	 *  representing the success or failure of the request. */
 	submitPoint: function (user, info, point, callback) {
