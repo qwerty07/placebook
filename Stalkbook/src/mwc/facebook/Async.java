@@ -94,8 +94,7 @@ public class Async extends HttpServlet {
 
 			User u = store.getUserById(user);
 			if (u == null) {
-				String name = Stalkbook.getUserName(user);
-				u = new User(user, name, point);
+				u = new User(user, "", point);
 				store.addUser(u);
 			}
 			

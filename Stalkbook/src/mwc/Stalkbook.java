@@ -75,9 +75,11 @@ public class Stalkbook extends HttpServlet {
 			// response printed to System.out.
 			client.setDebug(true);
 			int clientId = client.users_getLoggedInUser();
+			String name = Stalkbook.getUserName(clientId);
 			
 			PrintWriter writer = response.getWriter();
-			writer.printf("<h2>Hi <fb:name firstnameonly=\"true\" uid=\"%d\" useyou=\"false\"/>!</h2>", clientId);
+			//writer.printf("<h2>Hi <fb:name firstnameonly=\"true\" uid=\"%d\" useyou=\"false\"/>!</h2>", clientId);
+			writer.printf("<h2>Hi %s!</h2>", name);
 			writer.printf("<fb:iframe smartsize=\"true\" src=\"%s\"/>", "http://facebook.interface.org.nz/stalkbook/map.jsp");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -116,11 +118,11 @@ public class Stalkbook extends HttpServlet {
 		return new FacebookRestClient(API_KEY, SECRET_KEY, session);
 	}
 	
-	public static String getUserName(String user) {
+	public static String getUserName(int user) {
 		
 		try {
 			Collection<Integer> ids = new Vector<Integer>();
-			ids.add(Integer.parseInt(user));
+			ids.add(user);
 			Set<CharSequence> fields = new TreeSet<CharSequence>();
 			fields.add("name");
 			Document document = Stalkbook.getClient().users_getInfo(ids, fields);
