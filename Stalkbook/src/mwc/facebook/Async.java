@@ -95,16 +95,17 @@ public class Async extends HttpServlet {
 			DataStore store = ObjectManager.instance().store();
 
 			User u = store.getUserById(user);
-			if (u == null) {
-				u = new User(user, "", point);
-				store.addUser(u);
-			}
+			u.setHomePoint(point);
+			store.updateUser(u);
 			
 			System.out.println("set default location for " + u.getUser() + ": " + x + ", " + y);
 			return true;
 		}
 		catch (NumberFormatException ex) {
 			System.err.println("error parsing point: " + sx + ", " + sy);
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
 		}
 		
 		return false;

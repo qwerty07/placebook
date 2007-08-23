@@ -17,11 +17,13 @@ User user = db.getUserById(String.valueOf(uid)); // someone will fix this later
 Point userHome = null;
 Set<Location> userLocations = null;
 
-if (user != null) {
-	userHome = user.getHomePoint();
-	//userLocations = db.getLocationsWithin(new Point(174.177246, -39.989747), 100);
-	userLocations = db.getLocationsWithin(new Rectangle(new Point(-180, -90), new Point(180, 90)));
+userHome = user.getHomePoint();
+
+if (userHome.x == 0 && userHome.y == 0) {
+	userHome = null;
 }
+
+userLocations = db.getLocationsWithin(new Rectangle(new Point(-180, -90), new Point(180, 90)));
 
 %>
 
@@ -57,7 +59,7 @@ var user = {
 };
 
 </script>
-<% if (user == null) { %>
+<% if (userHome == null) { %>
 <script type="text/javascript" src="firstload.js"></script>
 <% } else { %>
 <script type="text/javascript">

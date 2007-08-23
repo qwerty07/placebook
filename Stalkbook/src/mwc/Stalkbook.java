@@ -19,6 +19,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import mwc.facebook.ObjectManager;
+import mwc.facebook.data.DataStore;
+import mwc.facebook.data.Point;
+import mwc.facebook.data.User;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
@@ -78,17 +83,24 @@ public class Stalkbook extends HttpServlet {
 			
 			Collection<Integer> ids = new Vector<Integer>();
 			ids.add(clientId);
-			Set<CharSequence> fields = new TreeSet<CharSequence>();
-			fields.add("name");
-			Document document = Stalkbook.getClient(request).users_getInfo(ids, fields);
-			System.err.println("to string: " + document.getTextContent());
-			NodeList list = document.getElementsByTagName("name");
-			System.err.println("list of nodes: " + list);
-			String name = list.item(0).getNodeValue();
+			
+			DataStore store = ObjectManager.instance().store();
+			User user = store.getUserById(""+clientId);
+			
+			if (user == null) {
+				Set<CharSequence> fields = new TreeSet<CharSequence>();
+				fields.add("name");
+				Document document = Stalkbook.getClient(request).users_getInfo(ids, fields);
+				NodeList list = document.getElementsByTagName("name");
+				String name = list.item(0).getTextContent();
+				
+				user = new User(""+clientId, name, new Point(0,0));
+				store.addUser(user);
+			}
 			
 			PrintWriter writer = response.getWriter();
 			//writer.printf("<h2>Hi <fb:name firstnameonly=\"true\" uid=\"%d\" useyou=\"false\"/>!</h2>", clientId);
-			writer.printf("<h2>Hi %s!</h2>", name);
+			writer.printf("<h2>Hi %s!</h2>", user.getName());
 			writer.printf("<fb:iframe smartsize=\"true\" src=\"%s\"/>", "http://facebook.interface.org.nz/stalkbook/map.jsp");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
