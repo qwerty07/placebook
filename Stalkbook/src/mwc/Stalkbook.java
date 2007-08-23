@@ -75,7 +75,16 @@ public class Stalkbook extends HttpServlet {
 			// response printed to System.out.
 			client.setDebug(true);
 			int clientId = client.users_getLoggedInUser();
-			String name = Stalkbook.getUserName(request, clientId);
+			
+			Collection<Integer> ids = new Vector<Integer>();
+			ids.add(clientId);
+			Set<CharSequence> fields = new TreeSet<CharSequence>();
+			fields.add("name");
+			Document document = Stalkbook.getClient(request).users_getInfo(ids, fields);
+			System.err.println("to string: " + document.getTextContent());
+			NodeList list = document.getElementsByTagName("name");
+			System.err.println("list of nodes: " + list);
+			String name = list.item(0).getNodeValue();
 			
 			PrintWriter writer = response.getWriter();
 			//writer.printf("<h2>Hi <fb:name firstnameonly=\"true\" uid=\"%d\" useyou=\"false\"/>!</h2>", clientId);
@@ -118,29 +127,6 @@ public class Stalkbook extends HttpServlet {
 		System.out.printf("Creating REST client\n secret: %s\n api:%s\n session: %s\n",
 							SECRET_KEY, API_KEY, session);
 		return new FacebookRestClient(API_KEY, SECRET_KEY, session);
-	}
-	
-	public static String getUserName(HttpServletRequest request, int user) {
-		
-		try {
-			Collection<Integer> ids = new Vector<Integer>();
-			ids.add(user);
-			Set<CharSequence> fields = new TreeSet<CharSequence>();
-			fields.add("name");
-			Document document = Stalkbook.getClient(request).users_getInfo(ids, fields);
-			
-			NodeList list = document.getElementsByTagName("name");
-			
-			String name = list.item(0).getNodeValue();
-			
-			return name;
-		}
-		catch (Exception ex) {
-			System.err.println("Error getting username");
-			ex.printStackTrace();
-		}
-		
-		return null;
 	}
 
 }
