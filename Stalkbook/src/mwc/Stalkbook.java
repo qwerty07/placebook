@@ -50,6 +50,11 @@ public class Stalkbook extends HttpServlet {
 			SECRET_KEY = props.getProperty("secret");
 			API_KEY = props.getProperty("api_key");
 			INFINITE_SESSION_KEY = props.getProperty("infinite_session_key");
+			
+			System.out
+					.printf(
+							"Keys initialized:\n secret: %s\n api:%s\n infinite session: %s\n",
+							SECRET_KEY, API_KEY, INFINITE_SESSION_KEY);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.err.println("API_KEY and SECRET_KEY not initialized.\n"
