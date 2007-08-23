@@ -98,11 +98,13 @@ marker image to what is associated to the given type.
     if(info.name){
 		GEvent.addListener(marker, "click", function(){
 			marker.openInfoWindowHtml(
-				"<dl>" +
-				"<dt>Name:</dt><dd>" + info.name + "</dd>" +
-				"<dt>Description</dt><dd>" + info.desc + "</dd>" +
-				"</dl>" +
-				"<a href='javascript:void(0)' onclick='locationManager.setLocation({x:"+latlng.lng()+", y:"+latlng.lat()+"})'>[view]</a>"
+				
+				"<h2 id=\"bubbleHead\">" + info.name + "</h2>" +
+				"<div  id=\"bubbleText\">" +
+				"<p>" + info.desc + "</p>" +
+				
+				"<p class=\"openLink\"><a href='javascript:void(0)' onclick='locationManager.setLocation({x:"+latlng.lng()+", y:"+latlng.lat()+"})'>[view]</a></p>" +
+				"</div>"
 			);
 		});
 	}

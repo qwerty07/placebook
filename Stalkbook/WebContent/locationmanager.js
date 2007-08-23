@@ -12,8 +12,8 @@ function LocationManager () {
 		close.href="javascript:locationManager.hide()";
 		close.innerHTML="close";
 		
-		this.location.appendChild(this.title);
 		this.location.appendChild(close);
+		this.location.appendChild(this.title);
 		this.location.appendChild(this.description);
 		this.location.appendChild(this.users);
 	};
