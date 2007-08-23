@@ -113,7 +113,7 @@ marker image to what is associated to the given type.
   },
   
   clearMarkers: function() {
-  	for(var i=0; i<markers.length; i++)
+  	for(var i=0; i<stalkBook.markers.length; i++)
   		stalkBook.map.removeOverlay(stalkBook.markers[i]);
   	stalkBook.markers = [];
   },
