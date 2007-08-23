@@ -3,7 +3,9 @@ package mwc.facebook;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.ServletException;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
+import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
 import org.apache.commons.io.output.ByteArrayOutputStream;
@@ -41,16 +44,42 @@ public class Async extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String action, name, locName, locDesc, comment,
+				sx, sy, sx2, sy2;
 		
-		String action = request.getParameter("action");
-		String name = request.getParameter("user");
-		String locName = request.getParameter("location");
-		String locDesc = request.getParameter("description");
-	    String comment = request.getParameter("comment");
-		String sx = request.getParameter("x");
-		String sy = request.getParameter("y");
-		String sx2 = request.getParameter("x2");
-		String sy2 = request.getParameter("y2");
+		if (ServletFileUpload.isMultipartContent(request)) {
+			Map<String, String> parameters;
+			try {
+				parameters = getMultipartParameters(request);
+			} catch (IOException e) {
+				e.printStackTrace();
+				System.err.println("No parameters available for nultipart async request, aborting");
+				return;
+			} catch (FileUploadException e) {
+				e.printStackTrace();
+				System.err.println("No parameters available for nultipart async request, aborting");
+				return;
+			}
+			action = parameters.get("action");
+			name = parameters.get("name");
+			locName = parameters.get("location");
+			locDesc = parameters.get("description");
+			comment = parameters.get("comment");
+			sx = parameters.get("x");
+			sy = parameters.get("y");
+			sx2 = parameters.get("x2");
+			sy2 = parameters.get("y2");
+		} else {
+			action = request.getParameter("action");
+			name = request.getParameter("user");
+			locName = request.getParameter("location");
+			locDesc = request.getParameter("description");
+		    comment = request.getParameter("comment");
+			sx = request.getParameter("x");
+			sy = request.getParameter("y");
+			sx2 = request.getParameter("x2");
+			sy2 = request.getParameter("y2");
+		}
 		
 		if (action.equals("setdefault") && name != null && sx != null && sy != null) {
 			if (setDefaultLocation(name, sx, sy)) {
@@ -447,6 +476,29 @@ public class Async extends HttpServlet {
 		}
 
 		return false;
+	}
+	
+	private Map<String,String> getMultipartParameters(HttpServletRequest request) 
+		throws IOException, FileUploadException {
+
+		Map<String, String> parameters = new HashMap<String,String>();;
+		ServletFileUpload upload = new ServletFileUpload();
+		FileItemIterator iter = upload.getItemIterator(request);		
+		
+		while (iter.hasNext()) {
+			FileItemStream item = iter.next();
+			if (item.isFormField()) {
+				// Form field
+				InputStream formStream = item.openStream();					
+				
+				parameters.put(item.getFieldName(), Streams.asString(formStream));
+
+				break;
+			}
+		}
+
+		return parameters;
+		
 	}
 
 }
