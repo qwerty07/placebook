@@ -15,6 +15,7 @@ var stalkBook = {
   map: undefined,
   markerFunc: undefined,
   typeImages: new Array(5),
+  markers: [],
   
   /*
   Loads up the map requires map element. Define interfaces here.
@@ -59,6 +60,9 @@ var stalkBook = {
             if(stalkBook.markerFunc)stalkBook.markerFunc(point);            
         }
       })
+      GEvent.addListener(stalkBook.map, "moveend", function() {       
+        if(stalkBook.moveFunc)stalkBook.moveFunc();                    
+      })
     }
   },
 
@@ -102,7 +106,14 @@ marker image to what is associated to the given type.
 			);
 		});
 	}
+	this.markers[this.markers.length] = marker;
   	stalkBook.map.addOverlay(marker);
+  },
+  
+  clearMarkers: function() {
+  	for(var i=0; i<markers.length; i++)
+  		stalkBook.map.removeOverlay(markers[i]);
+  	this.markers = [];
   },
     
 /*
@@ -146,6 +157,21 @@ for areas with more detail.
   */
   setMarkerFunction: function(func){
   	stalkBook.markerFunc=func;
+  },
+  /*
+  Function that takes a callback function to be executed when a the map is clicked. 
+  i.e. When the view is moved.
+  */
+  moveFunction: function(func){
+  	stalkBook.moveFunc=func;
+  },
+  
+  
+  /*
+  Gets the current view window of the map
+  */
+  getViewWindow: function(){
+  	return stalkBook.map.getBounds();
   }
   
 };
