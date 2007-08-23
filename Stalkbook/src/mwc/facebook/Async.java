@@ -1,6 +1,7 @@
 package mwc.facebook;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,6 +10,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+
+import org.apache.commons.fileupload.FileItemIterator;
+import org.apache.commons.fileupload.FileItemStream;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload.util.Streams;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 
 import mwc.Stalkbook;
 import mwc.facebook.data.CommentContribution;
@@ -75,7 +83,11 @@ public class Async extends HttpServlet {
 			if (getLocationsByRec(sx, sy, sx2, sy2, response.getWriter())) {
 				return;
 			}
-		
+		} else if (action.equals("addphoto")) {
+			if (addPhoto(name, sx, sy, locDesc, request)) {
+				response.getWriter().println("success");
+				return;
+			}
 		}		
 		else if (action.equals("getuserlocrec") && sx != null && sy != null  && sx2 != null && sy2 != null && name !=null) {
 			if (getUserLocationsByRec(sx, sy, sx2, sy2,name, response.getWriter())) {
@@ -87,7 +99,6 @@ public class Async extends HttpServlet {
 			if (addCommentToLocation(name, sx, sy, comment)) {
 				return;
 			}
-		
 		}
 
 		response.getWriter().println("fail");
@@ -348,6 +359,45 @@ public class Async extends HttpServlet {
 		return false;
 	}
 	
+	private boolean addPhoto(String p_user, String sx, String sy,
+							String description,
+							HttpServletRequest request) {
+		try {
+			if (!ServletFileUpload.isMultipartContent(request)) {
+				return false;
+			}
+			
+			Float x = Float.valueOf(sx);
+			Float y = Float.valueOf(sy);
+			
+			DataStore store = ObjectManager.instance().store();
+
+			User user = store.getUserById(p_user);
+			Location location = store.getLocationByPoint(new Point(x,y));
+			
+			ByteArrayOutputStream photoStream = new ByteArrayOutputStream();
+			
+			ServletFileUpload upload = new ServletFileUpload();
+			FileItemIterator iter = upload.getItemIterator(request);
+			while (iter.hasNext()) {
+				FileItemStream item = iter.next();
+				if (!item.isFormField()) {
+					// File field
+					InputStream formStream = item.openStream();					
+					Streams.copy(formStream, photoStream, true);
+					store.addPhotoTo(user, location, photoStream.toByteArray(), description);
+					break;
+				}
+			}
+			
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
 	private boolean getUserLocationsByRec(
 			String sTopLeftx, String sTopLefty, String sBottomRightx, String sBottomRighty, String name,
 			PrintWriter writer) {
@@ -398,5 +448,6 @@ public class Async extends HttpServlet {
 
 		return false;
 	}
+
 }
  
