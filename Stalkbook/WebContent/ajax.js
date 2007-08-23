@@ -24,6 +24,12 @@ var async = {
     	this.doRequest("setdefault",
     				   {user: user, x: point.x, y: point.y},
     				   callback);
+    },  
+    
+    joinLocation: function (user, point, callback) {
+    	this.doRequest("joinlocation",
+    				   {user: user, x: point.x, y: point.y},
+    				   callback);
     },
     
 	/** assumes that the callback function takes one boolean argument

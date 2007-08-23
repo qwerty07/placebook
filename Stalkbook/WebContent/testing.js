@@ -32,3 +32,7 @@ var test = {
 		setResult(false);
 	}
 };
+
+async.sendRequest= function(url,callback,postData) {
+	test.output("post: " + postData);
+}

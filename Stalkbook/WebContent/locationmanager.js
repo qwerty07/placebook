@@ -12,10 +12,16 @@ function LocationManager () {
 		close.href="javascript:locationManager.hide()";
 		close.innerHTML="X";
 		
+		var join = document.createElement("A");
+		join.className="joinButton locationButton";
+		join.href="javascript:locationManager.join()";
+		join.innerHTML="join";
+		
 		this.location.appendChild(close);
 		this.location.appendChild(this.title);
 		this.location.appendChild(this.description);
 		this.location.appendChild(this.users);
+		this.location.appendChild(join);
 	};
 	this.setLocation = function (point) {
 		async.retrieveLocation(point, function (req) { locationManager.callback(req); });
@@ -26,18 +32,17 @@ function LocationManager () {
 		if (window.test) {
 			test.output(request.responseText);
 		}
-		this.title.innerHTML = response.name;
+
+		this.coordinates = response.coordinates;
+		this.title.innerHTML = response.locationName;
 		
-		var descText = response.desc;
-		var htmlText;
+		var descText = response.description;
+		var htmlText = "";
 		var paragraphs = new Array();
 		paragraphs = descText.split("\n");
 		for(var i = 0; i < paragraphs.length; i++){
 			htmlText = htmlText + "<p>" + paragraphs[i] + "</p>";			
-		
 		}
-		
-		
 		this.description.innerHTML = htmlText;
 		
 		if (response.users) {
@@ -52,11 +57,18 @@ function LocationManager () {
 	};
 	this.show = function () {
 		this.location.className="show";
-		document.getElementById("map").className="thin";
+		if (document.getElementById("map")) {
+			document.getElementById("map").className="thin";
+		}
 	}
 	this.hide = function () {
 		this.location.className="";
-		document.getElementById("map").className="";
+		if (document.getElementById("map")) {
+			document.getElementById("map").className="";
+		}
+	}
+	this.join = function () {
+		async.joinLocation(user.user, this.coordinates, function (req) {});
 	}
 };
 

@@ -65,8 +65,8 @@ public class Async extends HttpServlet {
 				return;
 			}
 		}
-		else if (action.equals("addUserToLocation") && name != null && sx != null && sy != null) {
-			if (addUserToLocation(name, sx, sy)) {
+		else if (action.equals("joinlocation") && name != null && sx != null && sy != null) {
+			if (joinLocation(name, sx, sy)) {
 				try { updateProfile(request); } catch (Exception e) {e.printStackTrace();}
 				response.getWriter().println("success");
 				return;
@@ -79,8 +79,7 @@ public class Async extends HttpServlet {
 			}
 		
 		}
-		
-		
+
 		response.getWriter().println("fail");
 	}
 	
@@ -111,8 +110,6 @@ public class Async extends HttpServlet {
 		return false;
 	}
 	
-	
-	
 	private boolean addLocation(String name, String locName, String locDesc, String sx, String sy) {
 		
 		try {
@@ -134,7 +131,6 @@ public class Async extends HttpServlet {
 				location = new Location(point, locName, locDesc);
 				store.addLocation(location);
 			}
-			store.addUserToLocation(user, location);
 			
 			System.out.println("added point: " + locName+ ", " + x + ", " + y);
 
@@ -147,8 +143,8 @@ public class Async extends HttpServlet {
 		return false;
 	}
 	
-	
-	private boolean addUserToLocation(String name, String sx, String sy) {
+	private boolean joinLocation(String u, String sx, String sy) {
+		
 		try {
 			float x = Float.parseFloat(sx);
 			float y = Float.parseFloat(sy);
@@ -157,8 +153,7 @@ public class Async extends HttpServlet {
 
 			DataStore store = ObjectManager.instance().store();
 
-			User user = store.getUserById(name);
-			
+			User user = store.getUserById(u);
 			if (user == null) {
 				return false;
 			}
@@ -166,12 +161,11 @@ public class Async extends HttpServlet {
 			Location location = store.getLocationByPoint(point);
 			if (location == null) {
 				return false;
-				//location = new Location(point, locName, locDesc);
-				//store.addLocation(location);
 			}
+			
 			store.addUserToLocation(user, location);
 			
-			System.out.println("added user to: " + location.getLocationName() + ", " + x + ", " + y);
+			System.out.println("added user to location: " + location.getLocationName() + ", " + user.getName());
 
 			return true;
 		}
@@ -182,9 +176,7 @@ public class Async extends HttpServlet {
 		return false;
 	}
 	
-	
-	
-	public void updateProfile(HttpServletRequest request) throws FacebookException, IOException{
+	private void updateProfile(HttpServletRequest request) throws FacebookException, IOException{
 
 		FacebookRestClient client = Stalkbook.getClient();
 		client.setDebug(true);

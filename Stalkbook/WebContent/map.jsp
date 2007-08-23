@@ -56,7 +56,8 @@ userLocations = db.getLocationsWithin(new Rectangle(new Point(-180, -90), new Po
 
 <script type="text/javascript">
 var user = {
-	username: "<%= uid %>",
+	user: "<%= uid %>",
+	name: "<%= user.getName() %>",
 <% if (userHome != null) { %>
 	homeLocation: <%= userHome.toJSON() %>,
 <% } %>
