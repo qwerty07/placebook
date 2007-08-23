@@ -8,7 +8,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.util.Collection;
 import java.util.Set;
+import java.util.TreeSet;
+import java.util.Vector;
 
 import com.facebook.api.FacebookException;
 import com.facebook.api.FacebookRestClient;
@@ -56,7 +59,7 @@ public class Async extends HttpServlet {
 			}
 		}
 		else if (action.equals("getlocation") && sx != null && sy != null) {
-			if (getLocation(sx, sy, response.getWriter())) {
+			if (getLocationData(sx, sy, response.getWriter())) {
 				return;
 			}
 		}
@@ -79,7 +82,7 @@ public class Async extends HttpServlet {
 		response.getWriter().println("fail");
 	}
 	
-	private boolean setDefaultLocation(String name, String sx, String sy) {
+	private boolean setDefaultLocation(String user, String sx, String sy) {
 		
 		try {
 			float x = Float.parseFloat(sx);
@@ -89,13 +92,14 @@ public class Async extends HttpServlet {
 
 			DataStore store = ObjectManager.instance().store();
 
-			User user = store.getUserByName(name);
-			if (user == null) {
-				user = new User(name, point);
-				store.addUser(user);
+			User u = store.getUserByName(user);
+			if (u == null) {
+				String name = Stalkbook.getUserName(user);
+				u = new User(user, name, point);
+				store.addUser(u);
 			}
 			
-			System.out.println("set default location for " + name + ": " + x + ", " + y);
+			System.out.println("set default location for " + u.getUser() + ": " + x + ", " + y);
 			return true;
 		}
 		catch (NumberFormatException ex) {
@@ -216,7 +220,7 @@ public class Async extends HttpServlet {
 		client.profile_setFBML(text, uid);
 	}
 
-	private boolean getLocation(String sx, String sy, PrintWriter writer) {
+	private boolean getLocationData(String sx, String sy, PrintWriter writer) {
 
 		try {
 			float x = Float.parseFloat(sx);
@@ -232,7 +236,17 @@ public class Async extends HttpServlet {
 				return false;
 			}
 
-			writer.println(location.toJSON());
+			writer.println("{ ");
+			writer.println("coordinates: " +location.getCoordinates().toJSON() + ", ");
+			writer.println("locationName: " + location.getLocationName() + ", ");
+			writer.println("description: " + location.getDescription() + ", ");
+			writer.println("users: [ ");
+			Set<User> users = store.usersAssociatedWith(location);
+			for (User user: users) {
+				writer.println(user.toJSON());
+			}
+			writer.println(" ]");
+			writer.println("}");
 
 			return true;
 		}

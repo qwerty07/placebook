@@ -8,12 +8,19 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URI;
+import java.util.Collection;
 import java.util.Properties;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.Vector;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 
 import com.facebook.api.FacebookRestClient;
 
@@ -68,7 +75,8 @@ public class Stalkbook extends HttpServlet {
 
 		String api_key = props.getProperty("api_key");
 		String secret = props.getProperty("secret");
-		String session = request.getParameter("fb_sig_session_key");
+		String session = null;
+		if (request != null) session = request.getParameter("fb_sig_session_key");
 		
 		if (session == null) {
 			session = props.getProperty("infinite_session_key");
@@ -88,6 +96,29 @@ public class Stalkbook extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();	
 		}
+		return null;
+	}
+	
+	public static String getUserName(String user) {
+		
+		try {
+			Collection<Integer> ids = new Vector<Integer>();
+			ids.add(Integer.parseInt(user));
+			Set<CharSequence> fields = new TreeSet<CharSequence>();
+			fields.add("name");
+			Document document = Stalkbook.getClient(null).users_getInfo(ids, fields);
+			
+			NodeList list = document.getElementsByTagName("name");
+			
+			String name = list.item(0).getNodeValue();
+			
+			return name;
+		}
+		catch (Exception ex) {
+			System.err.println("Error getting username");
+			ex.printStackTrace();
+		}
+		
 		return null;
 	}
 
