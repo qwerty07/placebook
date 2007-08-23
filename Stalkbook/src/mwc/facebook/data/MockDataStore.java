@@ -111,4 +111,10 @@ public class MockDataStore implements DataStore{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public void updateUser(User user)
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -69,6 +69,12 @@ public class DataStoreTest extends TestCase {
 		Assert.assertEquals("123", user.getUser());
 		Assert.assertEquals("Bob", user.getName());
 		Assert.assertEquals(new Point(30f,150f), user.getHomePoint());
+	
+		user.setHomePoint(new Point(40f, 160f));
+		dataStore.updateUser(user);
+		
+		user = dataStore.getUserById("123");
+		Assert.assertEquals(new Point(40f, 160f), user.getHomePoint());
 	}
 	
 	public void testAddLocationToUser() {

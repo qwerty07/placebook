@@ -51,6 +51,7 @@ public class PostgresDataStore implements DataStore {
 	private PreparedStatement getCommentsFromLocation;
 	private PreparedStatement getPhotosForUser;
 	private PreparedStatement getCommentsForUser;
+	private PreparedStatement updateUser;
 	
 	public PostgresDataStore(String server, String database, Properties props) throws SQLException {
 		String url = "jdbc:postgresql://" + server + "/" + database;
@@ -63,6 +64,7 @@ public class PostgresDataStore implements DataStore {
 		
 		// Create prepared statements
 		insertUser = connection.prepareStatement("INSERT INTO Stalker (fb_id, fb_name, home_coord_x, home_coord_y) VALUES (?, ?, ?, ?);");
+		updateUser = connection.prepareStatement("UPDATE stalker SET fb_id = ?, fb_name = ?, home_coord_x = ?, home_coord_y = ?;");
 		insertLocation = connection.prepareStatement("INSERT INTO location (coord_x, coord_y, loc_name, description) VALUES (?, ?, ?, ?);");
 		getUserById = connection.prepareStatement("SELECT fb_id, fb_name, home_coord_x, home_coord_y FROM Stalker WHERE fb_id = ?;");
 		getLocationByPoint = connection.prepareStatement("SELECT loc_name, coord_x, coord_y, description FROM Location WHERE coord_x = ? AND coord_y = ?;");
@@ -109,6 +111,18 @@ public class PostgresDataStore implements DataStore {
 			insertUser.setDouble(3, user.getHomePoint().x);
 			insertUser.setDouble(4, user.getHomePoint().y);
 			insertUser.executeUpdate();
+		} catch (SQLException e) {
+			handleError(e);
+		}
+	}
+	
+	public synchronized void updateUser(User user) {
+		try {
+			updateUser.setString(1, user.getUser());
+			updateUser.setString(2, user.getName());
+			updateUser.setDouble(3, user.getHomePoint().x);
+			updateUser.setDouble(4, user.getHomePoint().y);
+			updateUser.executeUpdate();
 		} catch (SQLException e) {
 			handleError(e);
 		}
@@ -241,7 +255,7 @@ public class PostgresDataStore implements DataStore {
 		return photos;
 	}
 	
-	public Set<PhotoContribution> getPhotosFrom(User user)
+	public synchronized Set<PhotoContribution> getPhotosFrom(User user)
 	{
 		Set<PhotoContribution> photos = new HashSet<PhotoContribution>();
 		
@@ -300,7 +314,7 @@ public class PostgresDataStore implements DataStore {
 		return comments;
 	}
 	
-	public Set<CommentContribution> getCommentsFrom(User user)
+	public synchronized Set<CommentContribution> getCommentsFrom(User user)
 	{
 		Set<CommentContribution> comments = new HashSet<CommentContribution>();
 		try {
@@ -435,7 +449,7 @@ public class PostgresDataStore implements DataStore {
 		}
 	}
 
-	public Set<Location> getLocationsWithin(Point centre, double radius) {
+	public synchronized Set<Location> getLocationsWithin(Point centre, double radius) {
 		Set<Location> locations = new HashSet<Location>();
 		try {
 			findLocationsInCircle.setObject(1, centre);

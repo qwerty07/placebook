@@ -17,6 +17,7 @@ public interface DataStore {
 	public Set<Location> getLocationsWithin(Point centre, double radius);
 	
 	public void addUser(User user);
+	public void updateUser(User user);
 	public void addLocation(Location location);
 	
 	public void addUserToLocation(User user, Location location);

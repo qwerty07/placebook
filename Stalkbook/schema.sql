@@ -8,7 +8,7 @@ DROP TABLE stalker;
 CREATE TABLE location (
   coord_x float8,
   coord_y float8,
-  loc_name VARCHAR(255),
+  loc_name VARCHAR(255) NOT NULL,
   description TEXT,
   PRIMARY KEY (coord_x, coord_y)
 );
@@ -18,7 +18,7 @@ CREATE INDEX location_coords_idx ON location
 
 CREATE TABLE stalker (
   fb_id varchar(255) PRIMARY KEY,
-  fb_name VARCHAR(255),
+  fb_name VARCHAR(255) NOT NULL,
   home_coord_x float8,
   home_coord_y float8
 );
@@ -40,8 +40,8 @@ CREATE TABLE photo (
   coord_y float8,
   stalker_fb_id varchar(255) REFERENCES stalker(fb_id),
   description text,
-  image OID,
-  contributed timestamp with time zone DEFAULT now(),
+  image OID NOT NULL,
+  contributed timestamp with time zone DEFAULT now() NOT NULL,
   PRIMARY KEY (coord_x, coord_y, stalker_fb_id),
   FOREIGN KEY (coord_x, coord_y) REFERENCES location(coord_x, coord_y)
 );
@@ -50,8 +50,8 @@ CREATE TABLE comment (
   coord_x float8,
   coord_y float8,
   stalker_fb_id varchar(255) REFERENCES stalker(fb_id),
-  comment text,
-  contributed timestamp with time zone DEFAULT now(),
+  comment text NOT NULL,
+  contributed timestamp with time zone DEFAULT now() NOT NULL,
   PRIMARY KEY (coord_x, coord_y, stalker_fb_id),
   FOREIGN KEY (coord_x, coord_y) REFERENCES location(coord_x, coord_y)
 );
