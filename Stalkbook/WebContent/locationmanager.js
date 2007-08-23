@@ -10,7 +10,7 @@ function LocationManager () {
 		var close = document.createElement("A");
 		close.className="closeButton";
 		close.href="javascript:locationManager.hide()";
-		close.innerHTML="close";
+		close.innerHTML="X";
 		
 		this.location.appendChild(close);
 		this.location.appendChild(this.title);
@@ -27,7 +27,19 @@ function LocationManager () {
 			test.output(request.responseText);
 		}
 		this.title.innerHTML = response.name;
-		this.description.innerHTML = response.desc;
+		
+		var descText = response.desc;
+		var htmlText;
+		var paragraphs = new Array();
+		paragraphs = descText.split("\n");
+		for(var i = 0; i < paragraphs.length; i++){
+			htmlText = htmlText + "<p>" + paragraph[i] + "</p>";			
+		
+		}
+		
+		
+		this.description.innerHTML = htmlText;
+		
 		if (response.users) {
 			for (var i = 0; i < response.users.length; i++) {
 				var text = document.createTextNode(response.users[i].name);
