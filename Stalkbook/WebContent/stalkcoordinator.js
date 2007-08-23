@@ -34,11 +34,17 @@ function StalkCoordinator() {
 	};
 	
 	this.processMarkers = function(req) {
+		markers = eval(req.responseText);
+		addMarkers(markers);
 		//alert("Now can process markers(just not right now)");		
 	};
 	
 	this.addMarkers = function(markers) {
-	
+		stalkBook.clearMarkers();
+		for (var i = 0; i < markers.length; i++) {
+			var	location = markers[i];
+			stalkBook.addMarkerByXY(location.coordinates.x, location.coordinates.y, location);
+		}
 	};
 	
 	this.setUsername = function(name) {
