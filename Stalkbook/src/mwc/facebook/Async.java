@@ -2,19 +2,12 @@ package mwc.facebook;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import java.util.Collection;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.Vector;
-
-import com.facebook.api.FacebookException;
-import com.facebook.api.FacebookRestClient;
 
 import mwc.Stalkbook;
 import mwc.facebook.data.CommentContribution;
@@ -24,6 +17,9 @@ import mwc.facebook.data.PhotoContribution;
 import mwc.facebook.data.Point;
 import mwc.facebook.data.Rectangle;
 import mwc.facebook.data.User;
+
+import com.facebook.api.FacebookException;
+import com.facebook.api.FacebookRestClient;
 
 public class Async extends HttpServlet {
 
@@ -41,6 +37,7 @@ public class Async extends HttpServlet {
 		String name = request.getParameter("user");
 		String locName = request.getParameter("location");
 		String locDesc = request.getParameter("description");
+	    String comment = request.getParameter("comment");
 		String sx = request.getParameter("x");
 		String sy = request.getParameter("y");
 		String sx2 = request.getParameter("x2");
@@ -75,6 +72,12 @@ public class Async extends HttpServlet {
 		}
 		else if (action.equals("getLocationsByRec") && sx != null && sy != null  && sx2 != null && sy2 != null) {
 			if (getLocationsByRec(sx, sy, sx2, sy2, response.getWriter())) {
+				return;
+			}
+		
+		}
+		else if (action.equals("addcomment") && name !=null &&sx != null && sy != null && comment != null) {
+			if (addCommentToLocation(name, sx, sy, comment)) {
 				return;
 			}
 		
@@ -261,6 +264,38 @@ public class Async extends HttpServlet {
 			ex.printStackTrace();
 		}
 
+		return false;
+	}
+	
+	private boolean addCommentToLocation(String name, String sx, String sy, String comment) {
+		
+		try {
+			float x = Float.parseFloat(sx);
+			float y = Float.parseFloat(sy);
+
+			Point point = new Point(x, y);
+
+			DataStore store = ObjectManager.instance().store();
+
+			User user = store.getUserById(name);
+			
+			if (user == null) {
+				return false;
+			}
+
+			Location location = store.getLocationByPoint(point);
+			if (location == null) {
+				return false;
+			}
+			
+			store.addCommentTo(user, location, comment);
+
+			return true;
+		}
+		catch (NumberFormatException ex) {
+			System.err.println("error parsing point: " + sx + ", " + sy);
+		}
+		
 		return false;
 	}
 	
