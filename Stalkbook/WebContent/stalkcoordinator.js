@@ -34,7 +34,7 @@ function StalkCoordinator() {
 	};
 	
 	this.processMarkers = function(req) {
-		alert("Supposed to procees");		
+		alert("Now can process markers(just not right now)");		
 	};
 	
 	this.addMarkers = function(markers) {
