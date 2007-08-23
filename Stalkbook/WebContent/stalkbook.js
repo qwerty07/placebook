@@ -108,14 +108,14 @@ marker image to what is associated to the given type.
 			);
 		});
 	}
-	this.markers[this.markers.length] = marker;
+	stalkBook.markers[stalkBook.markers.length] = marker;
   	stalkBook.map.addOverlay(marker);
   },
   
   clearMarkers: function() {
   	for(var i=0; i<markers.length; i++)
   		stalkBook.map.removeOverlay(markers[i]);
-  	this.markers = [];
+  	stalkBook.markers = [];
   },
     
 /*
