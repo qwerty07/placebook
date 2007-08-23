@@ -33,7 +33,7 @@ function LocationManager () {
 		var paragraphs = new Array();
 		paragraphs = descText.split("\n");
 		for(var i = 0; i < paragraphs.length; i++){
-			htmlText = htmlText + "<p>" + paragraph[i] + "</p>";			
+			htmlText = htmlText + "<p>" + paragraphs[i] + "</p>";			
 		
 		}
 		
