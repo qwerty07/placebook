@@ -6,6 +6,7 @@ function LocationManager () {
 		this.title = document.createElement("H2");
 		this.description = document.createElement("DIV");
 		this.users = document.createElement("UL");
+		this.comments = document.createElement("UL");
 		
 		var close = document.createElement("A");
 		close.className="closeButton";
@@ -21,17 +22,26 @@ function LocationManager () {
 		content.className = "content";
 		var inner = document.createElement("DIV");
 		inner.className = "inner";
-		var commentsContainer = document.createElement("DIV");
-		commentsContainer.className = "comments";
-		var commentList = document.createElement("UL");
 		
+		var udiv = document.createElement("DIV");
+		udiv.className = "users";
+		udiv.appendChild(document.createElement("H3"));
+		udiv.firstChild.textContent="Users";
+		udiv.appendChild(this.users);
+		
+		var cdiv = document.createElement("DIV");
+		cdiv.className = "comments";
+		cdiv.appendChild(document.createElement("H3"));
+		cdiv.firstChild.textContent="Comments";
+		cdiv.appendChild(this.comments);
 		
 		this.location.appendChild(close);
 		this.location.appendChild(this.title);
 		this.location.appendChild(content);
 		content.appendChild(inner);
 		inner.appendChild(this.description);
-		inner.appendChild(this.users);
+		inner.appendChild(udiv);
+		inner.appendChild(cdiv);
 		inner.appendChild(join);
 	};
 	this.setLocation = function (point) {

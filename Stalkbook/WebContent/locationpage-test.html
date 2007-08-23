@@ -21,7 +21,12 @@ hooks.addHook(function () { locationManager.callback(
 			"  coordinates: { x: 50, y: -3.4 }, "+
 			"  users: [ {user: '0', name: 'Stephen'}, " +
 					"{user: '1', name: 'Andrew'}, " +
-					"{user: '2', name: 'Sam'} ]}"
+					"{user: '2', name: 'Sam'} ], " +
+			"  comments: [" +
+					"{user: {user: '0', name: 'Stephen'}, text: 'Here is a comment'}, " +
+					"{user: {user: '3', name: 'Crispin'}, text: 'And this is another comment'}, " +
+			"  ]," + 
+			"}"
 		}
 	);
 });
