@@ -90,7 +90,7 @@ function StalkCoordinator() {
 		var window=stalkBook.getViewWindow();
 		var pt1=window.getNorthEast();
 		var pt2=window.getSouthWest();
-		async.retrieveLocationsByRec(pt1.lat,pt1.lng,pt2.lat,pt2.lng,this.processMarkers);
+		async.retrieveLocationsByRec(pt1.lat(),pt1.lng(),pt2.lat(),pt2.lng(),stalkCoordinator.processMarkers);
 	}
 };
 
