@@ -242,6 +242,14 @@ public class Async extends HttpServlet {
 				writer.println(user.toJSON());
 			}
 			writer.println(" ]");
+			writer.println("comments: [ ");
+			Set<CommentContribution> comments = store.getCommentsFrom(location);
+			for (CommentContribution comment: comments) {
+				writer.println(comment.contributedBy.toJSON());
+				writer.println(comment.toJSON());
+				
+			}
+			writer.println(" ]");
 			writer.println("}");
 
 			return true;
