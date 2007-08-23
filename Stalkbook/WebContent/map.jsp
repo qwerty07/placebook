@@ -13,7 +13,7 @@ int uid = client.users_getLoggedInUser();
 
 DataStore db = ObjectManager.instance().store();
 
-User user = db.getUserByName(String.valueOf(uid)); // someone will fix this later
+User user = db.getUserById(String.valueOf(uid)); // someone will fix this later
 Point userHome = null;
 Set<Location> userLocations = null;
 
