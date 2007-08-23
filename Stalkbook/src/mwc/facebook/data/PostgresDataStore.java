@@ -49,6 +49,8 @@ public class PostgresDataStore implements DataStore {
 	private PreparedStatement findLocationsInCircle;
 	private PreparedStatement addCommentToLocation;
 	private PreparedStatement getCommentsFromLocation;
+	private PreparedStatement getPhotosForUser;
+	private PreparedStatement getCommentsForUser;
 	
 	public PostgresDataStore(String server, String database, Properties props) throws SQLException {
 		String url = "jdbc:postgresql://" + server + "/" + database;
@@ -71,8 +73,10 @@ public class PostgresDataStore implements DataStore {
 		findLocationsForUser = connection.prepareStatement("SELECT location.coord_x, location.coord_y, location.loc_name, location.description FROM location NATURAL JOIN location_stalker WHERE fb_username = ?;");
 		addPhotoToLocation = connection.prepareStatement("INSERT INTO photo(coord_x, coord_y, fb_username, description, image) VALUES (?, ?, ?, ?, ?);");
 		getPhotosFromLocation = connection.prepareStatement("SELECT fb_username, description, image, contributed FROM photo WHERE coord_x = ? AND coord_y = ?;");
+		getPhotosForUser = connection.prepareStatement("SELECT fb_username, coord_x, coord_y, description, image, contributed FROM photo WHERE fb_username = ?;");
 		addCommentToLocation = connection.prepareStatement("INSERT INTO comment(coord_x, coord_y, fb_username, comment) VALUES (?, ?, ?, ?);");
 		getCommentsFromLocation = connection.prepareStatement("SELECT fb_username, comment, contributed FROM comment WHERE coord_x = ? AND coord_y = ?;");
+		getCommentsForUser = connection.prepareStatement("SELECT coord_x, coord_y, fb_username, comment, contributed FROM comment WHERE fb_username = ?;");
 	}
 	
 	public PostgresDataStore(String server, String database, String username, String password) throws SQLException {
@@ -235,6 +239,28 @@ public class PostgresDataStore implements DataStore {
 		}
 		return photos;
 	}
+	
+	public Set<PhotoContribution> getPhotosFrom(User user)
+	{
+		Set<PhotoContribution> photos = new HashSet<PhotoContribution>();
+		
+		try
+		{
+			getPhotosForUser.setString(1, user.getUserName());
+			ResultSet result = getPhotosForUser.executeQuery();
+			
+			PhotoContribution p = createPhotoFromResult(result);
+			while(p != null) {
+				photos.add(p);
+				p = createPhotoFromResult(result);
+			}
+		}
+		catch (SQLException e)
+		{
+			handleError(e);
+		}
+		return photos;
+	}
 
 	public synchronized void addCommentTo(User user, Location location, String comment) {
 		try
@@ -270,6 +296,27 @@ public class PostgresDataStore implements DataStore {
 		{
 			handleError(e);
 		}
+		return comments;
+	}
+	
+	public Set<CommentContribution> getCommentsFrom(User user)
+	{
+		Set<CommentContribution> comments = new HashSet<CommentContribution>();
+		try {
+			getCommentsForUser.setString(1, user.getUserName());
+			ResultSet result = getCommentsFromLocation.executeQuery();
+			
+			CommentContribution comment = createCommentFromResult(result);
+			while(comment != null) {
+				comments.add(comment);
+				comment = createCommentFromResult(result);
+			}
+		}
+		catch (SQLException e)
+		{
+			handleError(e);
+		}
+		
 		return comments;
 	}
 
@@ -397,4 +444,6 @@ public class PostgresDataStore implements DataStore {
 		}
 		return locations;
 	}
+
+
 }

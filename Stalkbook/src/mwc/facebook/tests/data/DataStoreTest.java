@@ -164,7 +164,7 @@ public class DataStoreTest extends TestCase {
 			}
 			dataStore.addPhotoTo(u, l, image, "Test photo");
 			
-			// Retrieve entry
+			// Check location search
 			Set<PhotoContribution> photos = dataStore.getPhotosFrom(l);
 			Assert.assertEquals(1, photos.size());
 			PhotoContribution p = photos.iterator().next();
@@ -173,13 +173,36 @@ public class DataStoreTest extends TestCase {
 			Assert.assertNotNull(p);
 			Assert.assertNotNull(p.contributedBy);
 			Assert.assertNotNull(p.contributedWhen);
+			//Assert.assertNotNull(p.contributedWhere);
 			Assert.assertNotNull(p.image);
 			Assert.assertNotNull(p.description);
 			
 			// Check data
 			Assert.assertEquals("Test photo", p.description);
 			Assert.assertEquals(u.getUserName(), p.contributedBy);
+			//Assert.assertEquals(l, p.contributedWhere);
 			Assert.assertTrue(Arrays.equals(image, p.image));
+			
+			// Check user search
+			photos = dataStore.getPhotosFrom(u);
+			Assert.assertNotNull(photos);
+			Assert.assertEquals(1, photos.size());
+			p = photos.iterator().next();
+			
+			// Check nulls
+			Assert.assertNotNull(p);
+			Assert.assertNotNull(p.contributedBy);
+			Assert.assertNotNull(p.contributedWhen);
+			//Assert.assertNotNull(p.contributedWhere);
+			Assert.assertNotNull(p.image);
+			Assert.assertNotNull(p.description);
+			
+			// Check data
+			Assert.assertEquals("Test photo", p.description);
+			Assert.assertEquals(u.getUserName(), p.contributedBy);
+			//Assert.assertEquals(l, p.contributedWhere);
+			Assert.assertTrue(Arrays.equals(image, p.image));
+			
 	}
 	
 	public void testComment() {
@@ -189,15 +212,36 @@ public class DataStoreTest extends TestCase {
 		Location l = new Location(new Point(15,15),"Comment monkey", "Why not?");
 		dataStore.addLocation(l);
 		
-		// Add and retrieve comment
+		// Test search by location
 		dataStore.addCommentTo(u, l, "Chew on this!");
 		Set<CommentContribution> comments = dataStore.getCommentsFrom(l);
 		
 		Assert.assertNotNull(comments);
 		Assert.assertEquals(1, comments.size());
 		CommentContribution comment = comments.iterator().next();
-		Assert.assertEquals(u.getUserName(), comment.contributedBy);
-		Assert.assertEquals("Chew on this!", comment.comment);
+		
+		Assert.assertNotNull(comment.comment);
+		Assert.assertNotNull(comment.contributedBy);
 		Assert.assertNotNull(comment.contributedWhen);
+		//Assert.assertNotNull(comment.contributedWhere);
+		
+		Assert.assertEquals(u.getUserName(), comment.contributedBy);
+		//Assert.assertEquals(l, comment.contributedWhere);
+		Assert.assertEquals("Chew on this!", comment.comment);
+		
+		// Test search by user
+		comments = dataStore.getCommentsFrom(u);
+
+		Assert.assertNotNull(comment.comment);
+		Assert.assertNotNull(comment.contributedBy);
+		Assert.assertNotNull(comment.contributedWhen);
+		//Assert.assertNotNull(comment.contributedWhere);
+
+		Assert.assertNotNull(comments);
+		Assert.assertEquals(1, comments.size());
+		comment = comments.iterator().next();
+		Assert.assertEquals(u.getUserName(), comment.contributedBy);
+		//Assert.assertEquals(l, comment.contributedWhere);
+		Assert.assertEquals("Chew on this!", comment.comment);
 	}
 }

@@ -93,4 +93,16 @@ public class MockDataStore implements DataStore{
 		}
 		return result;
 	}
+
+	public Set<CommentContribution> getCommentsFrom(User user)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Set<PhotoContribution> getPhotosFrom(User user)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

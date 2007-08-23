@@ -25,6 +25,8 @@ public interface DataStore {
 	
 	public void addPhotoTo(User user, Location location, byte[] photo, String description);
 	public Set<PhotoContribution> getPhotosFrom(Location location);
+	public Set<PhotoContribution> getPhotosFrom(User user);
 	public void addCommentTo(User user, Location location, String comment);
 	public Set<CommentContribution> getCommentsFrom(Location location);
+	public Set<CommentContribution> getCommentsFrom(User user);
 }

@@ -17,6 +17,7 @@ public class PhotoContribution
 	public String description;
 	public Date contributedWhen;
 	public String contributedBy;
+	//public Location contributedWhere;
 	
 	public PhotoContribution(byte[] image, String description, Date contributedWhen, String contributedBy)
 	{
@@ -24,5 +25,6 @@ public class PhotoContribution
 		this.description = description;
 		this.contributedWhen = contributedWhen;
 		this.contributedBy = contributedBy;
+		//this.contributedWhere = contributedWhere;
 	}
 }
