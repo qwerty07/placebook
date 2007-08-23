@@ -9,6 +9,8 @@ function StalkCoordinator() {
 	this.username = undefined;	// the current user's Facebook name
 	this.homeloc = undefined;	// user's home location -- where the map will centre when loaded
 	this.default_zoom = 15;	// default zoom level
+	
+	this.viewOfConcern = undefined;
 
 	/* Called when webpage first loaded -- sets up the map to the default */
 	this.load = function() {
@@ -23,11 +25,20 @@ function StalkCoordinator() {
 		// Set the callback function for stalkBook to call when adding
 		// a new marker
 		stalkBook.setMarkerFunction(stalkCoordinator.addMarker);
+		//stalkBook.moveFunction(stalkCoordinator.moveView);
 
 		for (var i = 0; i < user.locations.length; i++) {
 			var location = user.locations[i];
 			stalkBook.addMarkerByXY(location.coordinates.x, location.coordinates.y, location);
 		}
+	};
+	
+	this.processMarkers = function(req) {
+		alert("Supposed to procees")
+		
+	};
+	
+	this.addMarkers = function(markers) {
 	};
 	
 	this.setUsername = function(name) {
@@ -41,6 +52,17 @@ function StalkCoordinator() {
 	this.asyncCallback = function(req) {
 		// alert(req.readystate + ", " + req.status);
 	};
+	
+	/*
+	Creates the view of concern for a given window(GLatLngBounds)
+	*/
+/*	this.getViewOfConcern = function(window){
+	  var size=window.toSpan();
+	  var windowTopLeft=new GLatLng(window.getNorthEast().lat-size.lat,window.getNorthWest().lng-size.lng);
+	  var windowBottomRight=new GLatLng(window.getNorthEast().lat+size.lat,window.getNorthEast().lng+size.lng);
+	  var derived=new GLatLngBounds(windowTopLeft-,windowBottomRight);
+ 
+	};*/
 	
 	/* A new marker has been added to the map */
 	this.addMarker = function(latlng) {
@@ -63,6 +85,13 @@ function StalkCoordinator() {
 		
 		// alert("Marker added at " + latlng.lat() + ", " + latlng.lng()); // debugging
 	};
+	
+	this.moveView = function(){
+		var window=stalkBook.getViewWindow();
+		var pt1=window.getNorthEast();
+		var pt2=window.getSouthWest();
+		//async.retrieveLocationsByRec(pt1.lat,pt1.lng,pt2.lat,pt2.lng,function(req) {this.processMarkers(req)});
+	}
 };
 
 function hideForm(){
