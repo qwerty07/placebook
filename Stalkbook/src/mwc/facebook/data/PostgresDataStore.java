@@ -320,7 +320,7 @@ public class PostgresDataStore implements DataStore {
 		Set<CommentContribution> comments = new HashSet<CommentContribution>();
 		try {
 			getCommentsForUser.setString(1, user.getUser());
-			ResultSet result = getCommentsFromLocation.executeQuery();
+			ResultSet result = getCommentsForUser.executeQuery();
 			
 			CommentContribution comment = createCommentFromResult(result);
 			while(comment != null) {
@@ -438,13 +438,13 @@ public class PostgresDataStore implements DataStore {
 	{
 		if(result.next()) {
 			String comment = result.getString("comment");
-			User username = getUserById(result.getString("stalker_fb_id"));
+			User user = getUserById(result.getString("stalker_fb_id"));
 			double x =result.getDouble("coord_x");
 			double y =result.getDouble("coord_y");
 			Location location = getLocationByPoint(new Point(x,y));
 			Date contributed = result.getDate("contributed");
 			
-			return new CommentContribution(comment, contributed, username, location);
+			return new CommentContribution(comment, contributed, user, location);
 		} else {
 			return null;
 		}
