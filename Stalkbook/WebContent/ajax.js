@@ -43,6 +43,13 @@ var async = {
 	retrieveLocation: function (point, callback) {
 		this.doRequest("getlocation", point, callback);
 	},
+	
+	/*
+	Gets all locations within a rectangle defined by the x1,y1(top right) and x2,y2(bottom left)
+	*/
+	retrieveLocationsByRec: function(x1, y1, x2, y2, callback) {
+		this.doRequest("getLocationsByRec", {sx: x1, sy: y1, sx2: x2, sy2: y2}, callback);
+	},
 	sendRequest: function(url,callback,postData) {
 		var req = this.createXMLHTTPObject();
 		if (!req) return;
@@ -80,5 +87,6 @@ var async = {
 			break;
 		}
 		return xmlhttp;
-	}
+	},
+	
 }
