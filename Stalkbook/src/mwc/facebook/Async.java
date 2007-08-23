@@ -17,8 +17,10 @@ import com.facebook.api.FacebookException;
 import com.facebook.api.FacebookRestClient;
 
 import mwc.Stalkbook;
+import mwc.facebook.data.CommentContribution;
 import mwc.facebook.data.DataStore;
 import mwc.facebook.data.Location;
+import mwc.facebook.data.PhotoContribution;
 import mwc.facebook.data.Point;
 import mwc.facebook.data.Rectangle;
 import mwc.facebook.data.User;
@@ -195,6 +197,8 @@ public class Async extends HttpServlet {
 		User user = db.getUserById(username); 
 		Point userHome = null;
 		Set<Location> userLocations = null;
+		Set<PhotoContribution> userPhotos = db.getPhotosFrom(user);
+		Set<CommentContribution> userComments = db.getCommentsFrom(user);
 		String text = "";
 		
 		if (user != null) {
@@ -205,7 +209,7 @@ public class Async extends HttpServlet {
 			String verbField = "<fb:if-is-own-profile> have <fb:else> has </fb:else></fb:if-is-own-profile>";
 			String nameField ="<fb:name uid=\"" + username + "\" firstnameonly=true useyou=true capitalize=true />"; 
 
-			text = nameField + verbField + "posted n comments and added n photos<br>";
+			text = nameField + verbField + "posted " + userComments.size() + " comments and " + userPhotos.size() + " photos<br>";
 			
 			text += "<a href=\"http://apps.facebook.com/stalkbook/\"><fb:name uid=\"" +username + "\" firstnameonly=true useyou=true possessive=true capitalize=true /> home</a>";
 			text += " is at (" + userHome.x + ", " + userHome.y + ")<br>";
