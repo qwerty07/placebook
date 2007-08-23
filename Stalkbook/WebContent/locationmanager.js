@@ -135,10 +135,12 @@ function LocationManager () {
 	}
 	this.addComment = function() {
 		// add a comment to this location
+		alert("If this was working, you could add a comment to this location.");
 	}
 	
 	this.addPhoto = function() {
 		// add a photo to this location
+		alert("If this was working, you could add a photo to this location.");
 	}
 };
 
