@@ -8,8 +8,8 @@ var StalkLocationCreate={
 	createLocation: function(){
 		var form=document.getElementById("addLocationForm");
 		locCreator=form.creator.value;
-		lat=form.pointLat.value;
-		lng=form.pointLng.value;
+		x=form.pointX.value;
+		y=form.pointY.value;
  
 		locName=form.name.value;
 		locTags=form.tags.value;
@@ -20,8 +20,8 @@ var StalkLocationCreate={
 		if(locDesc==""){alert("Location description not defined");return false;}
 				
 		var point={
-			x:lat,
-			y:lng
+			x:x,
+			y:y
 		};
 				
 		var info = {
@@ -29,7 +29,7 @@ var StalkLocationCreate={
 			desc: locDesc
 		};
 		
-		stalkBook.addMarkerByLatLng(point.x, point.y, info);
+		stalkBook.addMarkerByXY(point.x, point.y, info);
 		async.submitPoint(locCreator, info, point, function(req){stalkCoordinator.asyncCallback(req)});
 
 		form.name.value='';

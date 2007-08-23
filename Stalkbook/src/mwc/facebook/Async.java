@@ -228,6 +228,7 @@ public class Async extends HttpServlet {
 
 			Location location = store.getLocationByPoint(point);
 			if (location == null) {
+				System.err.println("request for non-existant location: " + x + ", " + y);
 				return false;
 			}
 
@@ -237,6 +238,9 @@ public class Async extends HttpServlet {
 		}
 		catch (NumberFormatException ex) {
 			System.err.println("error parsing point: " + sx + ", " + sy);
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
 		}
 
 		return false;

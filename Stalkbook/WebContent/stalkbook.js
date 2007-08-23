@@ -70,8 +70,8 @@ as well as an optional type which changes the marker image to what is associated
 given type.
 */
   
-  addMarkerByLatLng: function(lat, lng, info, type){
-    var point= new GLatLng(lat, lng);
+  addMarkerByXY: function(x, y, info, type){
+    var point= new GLatLng(y, x);
 	stalkBook.addMarker(point,info,type);
   },
   
@@ -81,19 +81,25 @@ optional html formated string(str) that will be displayed when the
 marker is clicked, as well as an optional type which changes the 
 marker image to what is associated to the given type.
 */
-  addMarker: function(point, info,type){
-    var marker = new GMarker(point);
+  addMarker: function(latlng, info,type){
+    var marker = new GMarker(latlng);
     if(type){
 	  	for (i=0;i<stalkBook.typeImages.length;i++){	
 	  		if(stalkBook.typeImages[i].type==type){
-  				marker = new GMarker(point, stalkBook.typeImages[i]);
+  				marker = new GMarker(latlng, stalkBook.typeImages[i]);
   				break;
   			}
   		}
   	}
     if(info.name){
 		GEvent.addListener(marker, "click", function(){
-			marker.openInfoWindowHtml("<b>Name:</b> " + info.name + "<br/><br/><b>Description</b><br/>" + info.desc);
+			marker.openInfoWindowHtml(
+				"<dl>" +
+				"<dt>Name:</dt><dd>" + info.name + "</dd>" +
+				"<dt>Description</dt><dd>" + info.desc + "</dd>" +
+				"</dl>" +
+				"<a href='javascript:void(0)' onclick='locationManager.setLocation({x:"+latlng.lng()+", y:"+latlng.lat()+"})'>[view]</a>"
+			);
 		});
 	}
   	stalkBook.map.addOverlay(marker);
@@ -104,9 +110,9 @@ Centers position to a given point, defined by latitude(lat) and longitude(lng).
 This has an optional zoom parameter. This can be between 1-17 possibly more 
 for areas with more detail.
 */  
-  setPositionXY: function(lat, lng, zoom){
+  setPositionXY: function(x, y, zoom){
     if(!zoom){zoom=stalkBook.map.getZoom();}
-    var point=new GLatLng(lat,lng,true);
+    var point=new GLatLng(y, x, true);
   	stalkBook.map.setCenter(point, zoom);
   },
   
@@ -127,8 +133,8 @@ for areas with more detail.
  */ 
   gPointtoPoint: function(latlngpoint) {
   	var point = {
-  	  lat: latlngpoint.lat(),
-  	  lng: latlngpoint.lng()
+  	  y: latlngpoint.lat(),
+  	  x: latlngpoint.lng()
     };
     return point;
   },

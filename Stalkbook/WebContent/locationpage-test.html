@@ -13,7 +13,16 @@
 <script src="userdetails.js" type="text/javascript"></script>
 
 <script type="text/javascript">
-
+hooks.addHook(function () { locationManager.callback(
+		{ responseText:
+			"{ name: 'Location', "+
+			"  desc: 'description is a long string', "+
+			"  users: [ {name: 'Stephen'}, " +
+					"{name: 'Andrew'}, " +
+					"{name: 'Sam'} ]}"
+		}
+	);
+});
 </script>
 
 </head>

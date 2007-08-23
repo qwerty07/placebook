@@ -26,7 +26,7 @@ function StalkCoordinator() {
 
 		for (var i = 0; i < user.locations.length; i++) {
 			var location = user.locations[i];
-			stalkBook.addMarkerByLatLng(location.coordinates.x, location.coordinates.y, location);
+			stalkBook.addMarkerByXY(location.coordinates.x, location.coordinates.y, location);
 		}
 	};
 	
@@ -46,14 +46,14 @@ function StalkCoordinator() {
 	this.addMarker = function(latlng) {
 		// add this new marker to the database under the user name
 		var point = {
-			x: latlng.lat(),
-			y: latlng.lng()
+			x: latlng.lng(),
+			y: latlng.lat()
 		};
 	
 		var form=document.getElementById("addLocationForm");
 		form.creator.value=stalkCoordinator.username; 
-		form.pointLat.value=point.x;	
-		form.pointLng.value=point.y;
+		form.pointX.value=point.x;	
+		form.pointY.value=point.y;
 		form.name.value = '';
 		form.description.value = '';
 		form.tags.value = '';

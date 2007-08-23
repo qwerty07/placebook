@@ -4,8 +4,8 @@ var firstload = function () {
 	
 	stalkCoordinator.addMarker = function (latlng) {
 		var point = {
-			x: latlng.lat(),
-			y: latlng.lng()
+			x: latlng.lng(),
+			y: latlng.lat()
 		};
 			
 		user.homeLocation = point;

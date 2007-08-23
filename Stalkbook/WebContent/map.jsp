@@ -19,8 +19,8 @@ Set<Location> userLocations = null;
 
 if (user != null) {
 	userHome = user.getHomePoint();
-	userLocations = db.getLocationsWithin(new Point(-39.989747,174.177246), 100);
-	//userLocations = db.getLocationsWithin(new Rectangle(new Point(-39.989747,174.177246), new Point(-40.212441,174.320068)));
+	//userLocations = db.getLocationsWithin(new Point(174.177246, -39.989747), 100);
+	userLocations = db.getLocationsWithin(new Rectangle(new Point(-180, -90), new Point(180, 90)));
 }
 
 %>
@@ -39,14 +39,7 @@ if (user != null) {
 <script src="stalkcoordinator.js" type="text/javascript"></script>
 <script src="stalklocationcreate.js" type="text/javascript"></script>
 <script src="locationmanager.js" type="text/javascript"></script>
-<link rel=StyleSheet href="style.css" type="text/css" media=screen />
-
-<style type="text/css">
-#map {
-	width: 100%;
-	height: 500px;
-}
-</style>
+<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
 
 <script type="text/javascript">
 var user = {
@@ -87,15 +80,15 @@ hooks.addHook(
 		<div id="formWrap">
 		<form action="" id="addLocationForm">
 			<input id="creator" name="creator" type="hidden"/>
-			<input id="pointLat" name="pointLat" type="hidden"/>
-			<input id="pointLng" name="pointLng" type="hidden""/>
+			<input id="pointX" name="pointX" type="hidden"/>
+			<input id="pointY" name="pointY" type="hidden""/>
 			
 			<label for="name">Name</label><input type="text" name="name" id="name"/><br/>
 			<label for="description">Description</label><textarea rows="6" cols="40" name="description" id="description"></textarea><br/>
 			<label for="tags">Tags</label><input type="text" name="tags" id="tags"/><br/>		
 			
-			<input class="buttons" type="submit" onClick="StalkLocationCreate.createLocation(); return false" value="Save"/>
-			<input class="buttons" type="button" onClick="hideForm()" value="Cancel"/>	
+			<input class="buttons" type="submit" onclick="StalkLocationCreate.createLocation(); return false" value="Save"/>
+			<input class="buttons" type="button" onclick="hideForm()" value="Cancel"/>	
 		</form>		
 		<br />
 		<br />
