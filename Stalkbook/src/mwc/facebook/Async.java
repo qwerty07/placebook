@@ -183,7 +183,7 @@ public class Async extends HttpServlet {
 	
 	public void updateProfile(HttpServletRequest request) throws FacebookException, IOException{
 
-		FacebookRestClient client = Stalkbook.getClient(request);
+		FacebookRestClient client = Stalkbook.getClient();
 		client.setDebug(true);
 		// int uid = client.users_getLoggedInUser();
 
