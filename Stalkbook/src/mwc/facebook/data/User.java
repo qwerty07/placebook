@@ -34,10 +34,10 @@ public class User {
 		sb.append("{ ");
 		sb.append("user: " + user + ", ");
 		if (home != null) {
-			sb.append("home: " + name + ", ");
+			sb.append("home: \"" + Location.escapeString(name) + "\", ");
 		}
-		sb.append("name: " + name);
-		sb.append("}");
+		sb.append("name: \"" + Location.escapeString(name));
+		sb.append("\"}");
 		return sb.toString();
 	}
 }
