@@ -4,7 +4,7 @@ import java.awt.Image;
 import java.util.Set;
 
 public interface DataStore {
-	public User getUserByName(String name);
+	public User getUserById(String id);
 	public Location getLocationByPoint(Point location);
 	public Set<Location> getLocationsWithin(Rectangle area);
 	

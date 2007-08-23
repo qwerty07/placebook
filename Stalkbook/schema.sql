@@ -17,7 +17,8 @@ CREATE INDEX location_coords_idx ON location
        USING GIST (box(point(coord_x, coord_y),point(coord_x, coord_y)) box_ops);
 
 CREATE TABLE stalker (
-  fb_username VARCHAR(255) PRIMARY KEY,
+  fb_id varchar(255) PRIMARY KEY,
+  fb_name VARCHAR(255),
   home_coord_x float8,
   home_coord_y float8
 );
@@ -28,29 +29,29 @@ CREATE INDEX stalker_home_coords_idx ON stalker
 CREATE TABLE location_stalker (
   coord_x float8,
   coord_y float8,
-  fb_username VARCHAR(255),
-  PRIMARY KEY (coord_x, coord_y, fb_username),
-  FOREIGN KEY (fb_username) REFERENCES stalker ON DELETE CASCADE,
+  stalker_fb_id VARCHAR(255),
+  PRIMARY KEY (coord_x, coord_y, stalker_fb_id),
+  FOREIGN KEY (stalker_fb_id) REFERENCES stalker(fb_id) ON DELETE CASCADE,
   FOREIGN KEY (coord_x, coord_y) REFERENCES location ON DELETE CASCADE
 );
 
 CREATE TABLE photo (
   coord_x float8,
   coord_y float8,
-  fb_username varchar(255) REFERENCES stalker(fb_username),
+  stalker_fb_id varchar(255) REFERENCES stalker(fb_id),
   description text,
   image OID,
   contributed timestamp with time zone DEFAULT now(),
-  PRIMARY KEY (coord_x, coord_y, fb_username),
+  PRIMARY KEY (coord_x, coord_y, stalker_fb_id),
   FOREIGN KEY (coord_x, coord_y) REFERENCES location(coord_x, coord_y)
 );
 
 CREATE TABLE comment (
   coord_x float8,
   coord_y float8,
-  fb_username varchar(255) REFERENCES stalker(fb_username),
+  stalker_fb_id varchar(255) REFERENCES stalker(fb_id),
   comment text,
   contributed timestamp with time zone DEFAULT now(),
-  PRIMARY KEY (coord_x, coord_y, fb_username),
+  PRIMARY KEY (coord_x, coord_y, stalker_fb_id),
   FOREIGN KEY (coord_x, coord_y) REFERENCES location(coord_x, coord_y)
 );

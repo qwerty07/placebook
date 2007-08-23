@@ -32,7 +32,7 @@ public class MockDataStore implements DataStore{
 	}
 
 	public void addUser(User user) {
-		userMap.put(user.getUserName(), user);
+		userMap.put(user.getName(), user);
 	}
 
 	public void addUserToLocation(User user, Location location) {
@@ -101,6 +101,12 @@ public class MockDataStore implements DataStore{
 	}
 
 	public Set<PhotoContribution> getPhotosFrom(User user)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public User getUserById(String id)
 	{
 		// TODO Auto-generated method stub
 		return null;

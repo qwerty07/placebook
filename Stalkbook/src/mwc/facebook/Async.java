@@ -92,7 +92,7 @@ public class Async extends HttpServlet {
 
 			DataStore store = ObjectManager.instance().store();
 
-			User u = store.getUserByName(user);
+			User u = store.getUserById(user);
 			if (u == null) {
 				String name = Stalkbook.getUserName(user);
 				u = new User(user, name, point);
@@ -121,7 +121,7 @@ public class Async extends HttpServlet {
 
 			DataStore store = ObjectManager.instance().store();
 
-			User user = store.getUserByName(name);
+			User user = store.getUserById(name);
 			
 			if (user == null) {
 				return false;
@@ -155,7 +155,7 @@ public class Async extends HttpServlet {
 
 			DataStore store = ObjectManager.instance().store();
 
-			User user = store.getUserByName(name);
+			User user = store.getUserById(name);
 			
 			if (user == null) {
 				return false;
@@ -193,7 +193,7 @@ public class Async extends HttpServlet {
 		
 		DataStore db = ObjectManager.instance().store();
 
-		User user = db.getUserByName(username); 
+		User user = db.getUserById(username); 
 		Point userHome = null;
 		Set<Location> userLocations = null;
 		String text = "";
