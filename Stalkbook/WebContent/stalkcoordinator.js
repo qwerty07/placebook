@@ -25,7 +25,7 @@ function StalkCoordinator() {
 		// Set the callback function for stalkBook to call when adding
 		// a new marker
 		stalkBook.setMarkerFunction(stalkCoordinator.addMarker);
-		//stalkBook.moveFunction(stalkCoordinator.moveView);
+		stalkBook.moveFunction(stalkCoordinator.moveView);
 
 		for (var i = 0; i < user.locations.length; i++) {
 			var location = user.locations[i];
@@ -34,11 +34,11 @@ function StalkCoordinator() {
 	};
 	
 	this.processMarkers = function(req) {
-		alert("Supposed to procees")
-		
+		alert("Supposed to procees");		
 	};
 	
 	this.addMarkers = function(markers) {
+	
 	};
 	
 	this.setUsername = function(name) {
@@ -90,7 +90,7 @@ function StalkCoordinator() {
 		var window=stalkBook.getViewWindow();
 		var pt1=window.getNorthEast();
 		var pt2=window.getSouthWest();
-		//async.retrieveLocationsByRec(pt1.lat,pt1.lng,pt2.lat,pt2.lng,function(req) {this.processMarkers(req)});
+		async.retrieveLocationsByRec(pt1.lat,pt1.lng,pt2.lat,pt2.lng,function(req) {this.processMarkers(req)});
 	}
 };
 
