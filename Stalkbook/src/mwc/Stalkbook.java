@@ -36,6 +36,27 @@ public class Stalkbook extends HttpServlet {
 
 	public static final String CONFIG_FILE = "../settings.conf";
 	
+	private static String SECRET_KEY = null;
+	private static String API_KEY = null;
+	private static String INFINITE_SESSION_KEY = null;
+	
+	static {
+		try {
+			URI config = Stalkbook.class.getResource(CONFIG_FILE).toURI();
+			FileInputStream fis = new FileInputStream(new File(config));
+			Properties props = new Properties();
+			props.load(fis);
+
+			SECRET_KEY = props.getProperty("secret");
+			API_KEY = props.getProperty("api_key");
+			INFINITE_SESSION_KEY = props.getProperty("infinite_session_key");
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("API_KEY and SECRET_KEY not initialized.\n"
+					+ "Facebook client WILL NOT WORK.");
+		}
+	}
+	
 
 	@Override
 	protected void doGet(HttpServletRequest request,
@@ -65,38 +86,29 @@ public class Stalkbook extends HttpServlet {
 		doGet(req,resp);
 	}
 	
-	public static FacebookRestClient getClient(HttpServletRequest request){
-		try {
-		URI config = Stalkbook.class.getResource(CONFIG_FILE).toURI();
-		
-		FileInputStream fis = new FileInputStream(new File(config));
-		Properties props = new Properties();
-		props.load(fis);
+	/** Get a FacebookRestClient from the static infinite session key */
+	public static FacebookRestClient getClient() {
+		return getClient(INFINITE_SESSION_KEY);
+	}
+	
+	/** Get a FacebookRestClient by getting the session key from the given request */
+	public static FacebookRestClient getClient(HttpServletRequest request) {
+		String session = request.getParameter("fb_sig_session_key");
 
-		String api_key = props.getProperty("api_key");
-		String secret = props.getProperty("secret");
-		String session = null;
-		if (request != null) session = request.getParameter("fb_sig_session_key");
-		
-		if (session == null) {
-			session = props.getProperty("infinite_session_key");
-		} else {
-			// Steal a session key, ugh.
-			// http://wiki.developers.facebook.com/index.php/Infinite_session_keys
-			String expires = String.valueOf(request.getParameter("fb_sig_expires"));
-			if (expires.equals("0")) {
-				System.out.println("Infinite-session-key:" + session);
-			}		
+		// Steal a session key, ugh.
+		// http://wiki.developers.facebook.com/index.php/Infinite_session_keys
+		String expires = String.valueOf(request.getParameter("fb_sig_expires"));
+		if (expires.equals("0")) {
+			System.out.println("Infinite-session-key:" + session);
 		}
 
-		
-		return new FacebookRestClient(api_key, secret, session);
-		
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();	
-		}
-		return null;
+		return getClient(session);
+	}
+	
+
+	/** Get a FacbookRestClient from the given session key */
+	public static FacebookRestClient getClient(String session) {
+		return new FacebookRestClient(API_KEY, SECRET_KEY, session);
 	}
 	
 	public static String getUserName(String user) {
@@ -106,7 +118,7 @@ public class Stalkbook extends HttpServlet {
 			ids.add(Integer.parseInt(user));
 			Set<CharSequence> fields = new TreeSet<CharSequence>();
 			fields.add("name");
-			Document document = Stalkbook.getClient(null).users_getInfo(ids, fields);
+			Document document = Stalkbook.getClient().users_getInfo(ids, fields);
 			
 			NodeList list = document.getElementsByTagName("name");
 			
