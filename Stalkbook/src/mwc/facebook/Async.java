@@ -242,8 +242,8 @@ public class Async extends HttpServlet {
 
 			writer.println("{ ");
 			writer.println("coordinates: " +location.getCoordinates().toJSON() + ", ");
-			writer.println("locationName: \"" + location.getLocationName() + "\", ");
-			writer.println("description: \"" + location.getDescription() + "\", ");
+			writer.println("locationName: \"" + Location.escapeString(location.getLocationName()) + "\", ");
+			writer.println("description: \"" + Location.escapeString(location.getDescription()) + "\", ");
 			writer.println("users: [ ");
 			Set<User> users = store.usersAssociatedWith(location);
 			for (User user: users) {
