@@ -38,8 +38,8 @@ function LocationManager () {
 		
 		var addComment = document.createElement("A");
 		addComment.className = "addComment locationButton";
-		addComment.href="javascript:locationManager.addComment()";
-		addComment.innerHTML="Add a Comment";
+		addComment.href = "javascript:locationManager.addComment()";
+		addComment.innerHTML = "Add a Comment";
 		
 		var cdiv = document.createElement("DIV");
 		cdiv.className = "item comments";
@@ -48,12 +48,24 @@ function LocationManager () {
 		cdiv.appendChild(this.comments);
 		cdiv.appendChild(addComment);
 		
+		var addPhoto = document.createElement("A");
+		addPhoto.className = "addPhoto locationButton";
+		addPhoto.href = "javascript:locationManager.addPhoto()";
+		addPhoto.innerHTML = "Add a Photo";
+		
+		var pdiv = document.createElement("DIV");
+		pdiv.className = "item photos";
+		pdiv.appendChild(document.createElement("H5"));
+		pdiv.firstChild.textContent = "Photos";
+		pdiv.appendChild(addPhoto);
+		
 		this.location.appendChild(close);
 		this.location.appendChild(this.title);
 		this.location.appendChild(content);
 		content.appendChild(ddiv);
 		content.appendChild(udiv);
 		content.appendChild(cdiv);
+		content.appendChild(pdiv);
 	};
 	this.setLocation = function (point) {
 		async.retrieveLocation(point, function (req) { locationManager.callback(req); });
@@ -122,7 +134,11 @@ function LocationManager () {
 		async.joinLocation(user.user, this.coordinates, function (req) {});
 	}
 	this.addComment = function() {
-		// add a comment to this locations
+		// add a comment to this location
+	}
+	
+	this.addPhoto = function() {
+		// add a photo to this location
 	}
 };
 

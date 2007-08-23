@@ -109,6 +109,20 @@ body {
 	text-decoration:none;
 }
 
+#location .content .addPhoto {
+	display: block;
+	color:#3B5998;
+	text-decoration:none;
+	margin:0px;
+	padding:2px 3px;
+}
+
+#location .content .addPhoto:hover {
+	background:#3B5998 none repeat scroll 0%;
+	color:white;
+	text-decoration:none;
+}
+
 #location .content .users ul {
 	color: #3B5998;
 	padding: 0;
