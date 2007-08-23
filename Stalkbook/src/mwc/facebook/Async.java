@@ -192,17 +192,28 @@ public class Async extends HttpServlet {
 		User user = db.getUserByName(username); 
 		Point userHome = null;
 		Set<Location> userLocations = null;
-		StringBuffer fbmlMarkup = new StringBuffer();
+		String text = "";
 		
 		if (user != null) {
 			userHome = user.getHomePoint();
 			userLocations = db.locationsFor(user);
-			fbmlMarkup.append("These are the uber places");
+			//fbmlMarkup.append("These are the uber places");
+			
+			String verbField = "<fb:if-is-own-profile> have <fb:else> has </fb:else></fb:if-is-own-profile>";
+			String nameField ="<fb:name uid=\"" +username + "\" firstnameonly=true useyou=true>"; 
+
+			text = nameField + verbField + "posted n comments and added n photos<br>";
+			
+			text += "<a href=\"http://apps.facebook.com/stalkbook/\"><fb:name uid=\"" +username + "\" firstnameonly=true useyou=true possessive=true> home</a>";
+			text += " is at (" + userHome.x + ", " + userHome.y + ")<br>";
+
+			text += nameField + "<fb:if-is-own-profile> are <fb:else> is </fb:else></fb:if-is-own-profile>associated with ";
+			text += userLocations.size() + " locations.<br>";
 		} else {
-			fbmlMarkup.append("You have no places moooo!!!!");
+			text = "You have no places moooo!!!!";
 		}
 
-		client.profile_setFBML(fbmlMarkup.toString(), uid);
+		client.profile_setFBML(text, uid);
 	}
 
 	private boolean getLocation(String sx, String sy, PrintWriter writer) {
