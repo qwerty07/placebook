@@ -25,7 +25,7 @@ function StalkCoordinator() {
 		// Set the callback function for stalkBook to call when adding
 		// a new marker
 		stalkBook.setMarkerFunction(stalkCoordinator.addMarker);
-		//stalkBook.moveFunction(stalkCoordinator.moveView);
+		stalkBook.moveFunction(stalkCoordinator.moveView);
 
 		for (var i = 0; i < user.locations.length; i++) {
 			var location = user.locations[i];
@@ -62,17 +62,6 @@ function StalkCoordinator() {
 		// alert(req.readystate + ", " + req.status);
 	};
 	
-	/*
-	Creates the view of concern for a given window(GLatLngBounds)
-	*/
-/*	this.getViewOfConcern = function(window){
-	  var size=window.toSpan();
-	  var windowTopLeft=new GLatLng(window.getNorthEast().lat-size.lat,window.getNorthWest().lng-size.lng);
-	  var windowBottomRight=new GLatLng(window.getNorthEast().lat+size.lat,window.getNorthEast().lng+size.lng);
-	  var derived=new GLatLngBounds(windowTopLeft-,windowBottomRight);
- 
-	};*/
-	
 	/* A new marker has been added to the map */
 	this.addMarker = function(latlng) {
 		// add this new marker to the database under the user name
@@ -99,7 +88,7 @@ function StalkCoordinator() {
 		var window=stalkBook.getViewWindow();
 		var pt1=window.getNorthEast();
 		var pt2=window.getSouthWest();
-		async.retrieveLocationsByRec(pt1.lat(),pt1.lng(),pt2.lat(),pt2.lng(),stalkCoordinator.processMarkers);
+		async.retrieveLocationsByRec(pt1.lng(),pt1.lat(),pt2.lng(),pt2.lat(),stalkCoordinator.processMarkers);
 	}
 };
 
