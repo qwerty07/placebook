@@ -41,6 +41,7 @@ public class PostgresDataStore implements DataStore {
 	private PreparedStatement addCommentToLocation;
 	private PreparedStatement getCommentsFromLocation;
 	private PreparedStatement getPhotosForUser;
+	private PreparedStatement getPhotoById;
 	private PreparedStatement getCommentsForUser;
 	private PreparedStatement updateUser;
 	
@@ -64,6 +65,7 @@ public class PostgresDataStore implements DataStore {
 		associateUserAndLocation = connection.prepareStatement("INSERT INTO location_stalker (stalker_fb_id, coord_x, coord_y) VALUES (?, ?, ?);");
 		findUsersByLocation = connection.prepareStatement("SELECT stalker.fb_id, stalker.fb_name, home_coord_x, home_coord_y FROM stalker NATURAL JOIN location_stalker WHERE coord_x = ? AND coord_y = ?;");
 		findLocationsForUser = connection.prepareStatement("SELECT location.coord_x, location.coord_y, location.loc_name, location.description FROM location NATURAL JOIN location_stalker WHERE stalker_fb_id = ?;");
+		getPhotoById = connection.prepareStatement("SELECT photo_id, coord_x, coord_y, stalker_fb_id, description, image, contributed FROM photo WHERE photo_id = ?;");
 		addPhotoToLocation = connection.prepareStatement("INSERT INTO photo(coord_x, coord_y, stalker_fb_id, description, image) VALUES (?, ?, ?, ?, ?);");
 		getPhotosFromLocation = connection.prepareStatement("SELECT coord_x, coord_y, stalker_fb_id, description, image, contributed FROM photo WHERE coord_x = ? AND coord_y = ?;");
 		getPhotosForUser = connection.prepareStatement("SELECT stalker_fb_id, coord_x, coord_y, description, image, contributed FROM photo WHERE stalker_fb_id = ?;");
@@ -248,6 +250,20 @@ public class PostgresDataStore implements DataStore {
 		return photos;
 	}
 	
+	public synchronized PhotoContribution getPhotoById(String id){
+		PhotoContribution photo=null;
+		try
+		{
+		this.getPhotoById.setString(1, id);
+		ResultSet result = getPhotosForUser.executeQuery();
+		photo = createPhotoFromResult(result);
+		}catch (SQLException e)
+		{
+			handleError(e);
+		}
+		return photo;
+	}
+	
 	public synchronized Set<PhotoContribution> getPhotosFrom(User user)
 	{
 		Set<PhotoContribution> photos = new HashSet<PhotoContribution>();
@@ -400,7 +416,7 @@ public class PostgresDataStore implements DataStore {
 		if(result.next()) {
 			// fb_username, description, image, contributed 
 			connection.setAutoCommit(false);
-			
+			int photoId=result.getInt("photo_id");
 			User username = getUserById(result.getString("stalker_fb_id"));
 			double x =result.getDouble("coord_x");
 			double y =result.getDouble("coord_y");
@@ -415,7 +431,7 @@ public class PostgresDataStore implements DataStore {
 			byte[] image = l.read(l.size());
 			l.close();
 			
-			PhotoContribution photo = new PhotoContribution(image, description, contributed, username, location);
+			PhotoContribution photo = new PhotoContribution(image,photoId, description, contributed, username, location);
 			
 			connection.commit();
 			connection.setAutoCommit(true);

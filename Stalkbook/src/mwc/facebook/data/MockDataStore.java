@@ -117,4 +117,9 @@ public class MockDataStore implements DataStore{
 		// TODO Auto-generated method stub
 		
 	}
+
+	public PhotoContribution getPhotoById(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

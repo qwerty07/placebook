@@ -36,13 +36,14 @@ CREATE TABLE location_stalker (
 );
 
 CREATE TABLE photo (
+  photo_id serail,
   coord_x float8,
   coord_y float8,
   stalker_fb_id varchar(255) REFERENCES stalker(fb_id),
   description text,
   image OID NOT NULL,
   contributed timestamp with time zone DEFAULT now() NOT NULL,
-  PRIMARY KEY (coord_x, coord_y, stalker_fb_id),
+  PRIMARY KEY (photo_id),
   FOREIGN KEY (coord_x, coord_y) REFERENCES location(coord_x, coord_y)
 );
 

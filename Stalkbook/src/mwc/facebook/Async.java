@@ -286,12 +286,14 @@ public class Async extends HttpServlet {
 			writer.println("coordinates: " +location.getCoordinates().toJSON() + ", ");
 			writer.println("locationName: \"" + Location.escapeString(location.getLocationName()) + "\", ");
 			writer.println("description: \"" + Location.escapeString(location.getDescription()) + "\", ");
+			
 			writer.println("users: [ ");
 			Set<User> users = store.usersAssociatedWith(location);
 			for (User user: users) {
 				writer.println(user.toJSON());
 			}
 			writer.println(" ]");
+			
 			writer.println("comments: [ ");
 			Set<CommentContribution> comments = store.getCommentsFrom(location);
 			for (CommentContribution comment: comments) {
@@ -300,6 +302,15 @@ public class Async extends HttpServlet {
 				
 			}
 			writer.println(" ]");
+			
+			writer.println("photos: [ ");
+			Set<PhotoContribution> photos = store.getPhotosFrom(location);
+			for (PhotoContribution photo: photos) {
+				writer.println(photo.contributedBy.toJSON());
+				writer.println(photo.toJSON());				
+			}
+			writer.println(" ]");
+			
 			writer.println("}");
 
 			return true;
