@@ -98,10 +98,14 @@ public class Stalkbook extends HttpServlet {
 				store.addUser(user);
 			}
 			
+			String iframeLocation = "http://facebook.interface.org.nz/stalkbook/map.jsp";
+			String queryString = request.getQueryString();
+			if (queryString != null) iframeLocation += "?" + queryString;
+
 			PrintWriter writer = response.getWriter();
 			//writer.printf("<h2>Hi <fb:name firstnameonly=\"true\" uid=\"%d\" useyou=\"false\"/>!</h2>", clientId);
 			writer.printf("<h2>Hi %s!</h2>", user.getName());
-			writer.printf("<fb:iframe smartsize=\"true\" src=\"%s\"/>", "http://facebook.interface.org.nz/stalkbook/map.jsp");
+			writer.printf("<fb:iframe frameborder=\"0\" smartsize=\"true\" src=\"%s\"/>", iframeLocation);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();	
