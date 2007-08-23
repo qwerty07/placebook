@@ -35,8 +35,11 @@ function StalkCoordinator() {
 	
 	this.processMarkers = function(req) {
 		var markers = eval(req.responseText);
-		stalkCoordinator.addMarkers(markers);
-		//alert("Now can process markers(just not right now)");		
+		if(markers)stalkCoordinator.addMarkers(markers);
+		else{
+			alert(req.responseText);
+		}
+			
 	};
 	
 	this.addMarkers = function(markers) {
