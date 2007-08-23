@@ -23,6 +23,10 @@ public class User {
 		return home;
 	}
 	
+	public void setHomePoint(Point point) {
+		this.home = point;
+	}
+	
 	public boolean equals(Object other) {
 		if (!(other instanceof User)) return false;
 		User o = (User) other;
