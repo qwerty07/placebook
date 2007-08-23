@@ -5,11 +5,13 @@ package mwc.facebook.data;
 
 import java.util.Date;
 
+import mwc.facebook.JSONable;
+
 /**
  * @author ramsayneil
  *
  */
-public class CommentContribution
+public class CommentContribution implements JSONable
 {
 	public String comment;
 	public Date contributedWhen;
@@ -22,5 +24,16 @@ public class CommentContribution
 		this.contributedWhen = contributedWhen;
 		this.contributedBy = contributedBy;
 		this.contributedWhere = contributedWhere;
+	}
+
+	public String toJSON() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("{ ");
+		sb.append("comment: " + comment + ", ");
+		sb.append("date: " + contributedWhen.toString() + ", ");
+		sb.append("comment: " + comment + ", ");
+		sb.append("location: \"" + Location.escapeString(contributedWhere.getLocationName()));
+		sb.append("\"}");
+		return sb.toString();
 	}
 }
