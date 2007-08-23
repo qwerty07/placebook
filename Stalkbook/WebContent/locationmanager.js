@@ -10,18 +10,25 @@ function LocationManager () {
 		var close = document.createElement("A");
 		close.className="closeButton";
 		close.href="javascript:locationManager.hide()";
-		close.innerHTML="X";
+		close.innerHTML="<span>[close]</span>";
 		
 		var join = document.createElement("A");
 		join.className="joinButton locationButton";
 		join.href="javascript:locationManager.join()";
 		join.innerHTML="join";
 		
+		var content = document.createElement("DIV");
+		content.className = "content";
+		var inner = document.createElement("DIV");
+		inner.className = "inner";
+		
 		this.location.appendChild(close);
 		this.location.appendChild(this.title);
-		this.location.appendChild(this.description);
-		this.location.appendChild(this.users);
-		this.location.appendChild(join);
+		this.location.appendChild(content);
+		content.appendChild(inner);
+		inner.appendChild(this.description);
+		inner.appendChild(this.users);
+		inner.appendChild(join);
 	};
 	this.setLocation = function (point) {
 		async.retrieveLocation(point, function (req) { locationManager.callback(req); });

@@ -27,9 +27,21 @@ hooks.addHook(function () { locationManager.callback(
 });
 </script>
 
+<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
+<style type="text/css">
+#location {
+	position: static;
+}
+#wrapper {
+	width: 644px;
+	height: 500px;
+}
+</style>
 </head>
 <body onload="hooks.onload()">
+<div id="wrapper">
 <div id="location"></div>
+</div>
 <pre id="output"></pre>
 </body>
 </html>

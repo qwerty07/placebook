@@ -19,16 +19,24 @@ body {
 #location {
 	position: absolute;
 	display: none;
-	width: 322px;
+	width: 312px;
+	margin: 5px;
 	top: 0px;
 	left: 322px;
 	border: 1px #bbb solid;
+	height: 100%;
+}
+
+#location .closeButton {
+	background-image: url("images/close.png");
+	width: 24px;
+	height: 24px;
+	float: right;
 	margin: 5px;
 }
 
-#location a.closeButton {
-	font-size: 0.7em;
-	float: right;
+#location .closeButton span {
+	display: none;
 }
 
 #location.show {
@@ -36,15 +44,22 @@ body {
 }
 
 #location h2{
+	/* total height is 35px */
 	background: #7f93bc;
 	color: #fff;
 	margin: 0;
+	border-bottom: solid 1px white;
 	padding: 5px;
+	line-height: 24px;
 }
 
-#location div{
-	margin: 10px;	
-	
+#location .content {
+	height: 465px;
+	overflow: auto;
+}
+
+#location .content .inner {
+	margin: 5px;
 }
 
 #bubbleHead {
