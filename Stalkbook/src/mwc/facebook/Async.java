@@ -203,15 +203,15 @@ public class Async extends HttpServlet {
 			//fbmlMarkup.append("These are the uber places");
 			
 			String verbField = "<fb:if-is-own-profile> have <fb:else> has </fb:else></fb:if-is-own-profile>";
-			String nameField ="<fb:name uid=\"" +username + "\" firstnameonly=true useyou=true>"; 
+			String nameField ="<fb:name uid=\"" + username + "\" firstnameonly=true useyou=true capitalize=true />"; 
 
 			text = nameField + verbField + "posted n comments and added n photos<br>";
 			
-			text += "<a href=\"http://apps.facebook.com/stalkbook/\"><fb:name uid=\"" +username + "\" firstnameonly=true useyou=true possessive=true> home</a>";
+			text += "<a href=\"http://apps.facebook.com/stalkbook/\"><fb:name uid=\"" +username + "\" firstnameonly=true useyou=true possessive=true capitalize=true /> home</a>";
 			text += " is at (" + userHome.x + ", " + userHome.y + ")<br>";
 
 			text += nameField + "<fb:if-is-own-profile> are <fb:else> is </fb:else></fb:if-is-own-profile>associated with ";
-			text += userLocations.size() + " locations.<br>";
+			text += userLocations.size() + " locations<br>";
 		} else {
 			text = "You have no places moooo!!!!";
 		}
