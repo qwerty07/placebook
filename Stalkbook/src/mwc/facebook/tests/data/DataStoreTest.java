@@ -177,14 +177,14 @@ public class DataStoreTest extends TestCase {
 			Assert.assertNotNull(p);
 			Assert.assertNotNull(p.contributedBy);
 			Assert.assertNotNull(p.contributedWhen);
-			//Assert.assertNotNull(p.contributedWhere);
+			Assert.assertNotNull(p.contributedWhere);
 			Assert.assertNotNull(p.image);
 			Assert.assertNotNull(p.description);
 			
 			// Check data
 			Assert.assertEquals("Test photo", p.description);
-			Assert.assertEquals(u.getUser(), p.contributedBy);
-			//Assert.assertEquals(l, p.contributedWhere);
+			Assert.assertEquals(u, p.contributedBy);
+			Assert.assertEquals(l, p.contributedWhere);
 			Assert.assertTrue(Arrays.equals(image, p.image));
 			
 			// Check user search
@@ -197,14 +197,14 @@ public class DataStoreTest extends TestCase {
 			Assert.assertNotNull(p);
 			Assert.assertNotNull(p.contributedBy);
 			Assert.assertNotNull(p.contributedWhen);
-			//Assert.assertNotNull(p.contributedWhere);
+			Assert.assertNotNull(p.contributedWhere);
 			Assert.assertNotNull(p.image);
 			Assert.assertNotNull(p.description);
 			
 			// Check data
 			Assert.assertEquals("Test photo", p.description);
-			Assert.assertEquals(u.getUser(), p.contributedBy);
-			//Assert.assertEquals(l, p.contributedWhere);
+			Assert.assertEquals(u, p.contributedBy);
+			Assert.assertEquals(l, p.contributedWhere);
 			Assert.assertTrue(Arrays.equals(image, p.image));
 			
 	}
@@ -227,10 +227,10 @@ public class DataStoreTest extends TestCase {
 		Assert.assertNotNull(comment.comment);
 		Assert.assertNotNull(comment.contributedBy);
 		Assert.assertNotNull(comment.contributedWhen);
-		//Assert.assertNotNull(comment.contributedWhere);
+		Assert.assertNotNull(comment.contributedWhere);
 		
-		Assert.assertEquals(u.getUser(), comment.contributedBy);
-		//Assert.assertEquals(l, comment.contributedWhere);
+		Assert.assertEquals(u, comment.contributedBy);
+		Assert.assertEquals(l, comment.contributedWhere);
 		Assert.assertEquals("Chew on this!", comment.comment);
 		
 		// Test search by user
@@ -239,13 +239,13 @@ public class DataStoreTest extends TestCase {
 		Assert.assertNotNull(comment.comment);
 		Assert.assertNotNull(comment.contributedBy);
 		Assert.assertNotNull(comment.contributedWhen);
-		//Assert.assertNotNull(comment.contributedWhere);
+		Assert.assertNotNull(comment.contributedWhere);
 
 		Assert.assertNotNull(comments);
 		Assert.assertEquals(1, comments.size());
 		comment = comments.iterator().next();
-		Assert.assertEquals(u.getUser(), comment.contributedBy);
-		//Assert.assertEquals(l, comment.contributedWhere);
+		Assert.assertEquals(u, comment.contributedBy);
+		Assert.assertEquals(l, comment.contributedWhere);
 		Assert.assertEquals("Chew on this!", comment.comment);
 	}
 }

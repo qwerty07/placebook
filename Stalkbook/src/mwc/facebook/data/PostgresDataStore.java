@@ -72,10 +72,10 @@ public class PostgresDataStore implements DataStore {
 		findUsersByLocation = connection.prepareStatement("SELECT stalker.fb_id, stalker.fb_name, home_coord_x, home_coord_y FROM stalker NATURAL JOIN location_stalker WHERE coord_x = ? AND coord_y = ?;");
 		findLocationsForUser = connection.prepareStatement("SELECT location.coord_x, location.coord_y, location.loc_name, location.description FROM location NATURAL JOIN location_stalker WHERE stalker_fb_id = ?;");
 		addPhotoToLocation = connection.prepareStatement("INSERT INTO photo(coord_x, coord_y, stalker_fb_id, description, image) VALUES (?, ?, ?, ?, ?);");
-		getPhotosFromLocation = connection.prepareStatement("SELECT stalker_fb_id, description, image, contributed FROM photo WHERE coord_x = ? AND coord_y = ?;");
+		getPhotosFromLocation = connection.prepareStatement("SELECT coord_x, coord_y, stalker_fb_id, description, image, contributed FROM photo WHERE coord_x = ? AND coord_y = ?;");
 		getPhotosForUser = connection.prepareStatement("SELECT stalker_fb_id, coord_x, coord_y, description, image, contributed FROM photo WHERE stalker_fb_id = ?;");
 		addCommentToLocation = connection.prepareStatement("INSERT INTO comment(coord_x, coord_y, stalker_fb_id, comment) VALUES (?, ?, ?, ?);");
-		getCommentsFromLocation = connection.prepareStatement("SELECT stalker_fb_id, comment, contributed FROM comment WHERE coord_x = ? AND coord_y = ?;");
+		getCommentsFromLocation = connection.prepareStatement("SELECT coord_x, coord_y, stalker_fb_id, comment, contributed FROM comment WHERE coord_x = ? AND coord_y = ?;");
 		getCommentsForUser = connection.prepareStatement("SELECT coord_x, coord_y, stalker_fb_id, comment, contributed FROM comment WHERE stalker_fb_id = ?;");
 	}
 	
@@ -394,9 +394,13 @@ public class PostgresDataStore implements DataStore {
 			// fb_username, description, image, contributed 
 			connection.setAutoCommit(false);
 			
-			String username = result.getString("stalker_fb_id");
+			User username = getUserById(result.getString("stalker_fb_id"));
+			double x =result.getDouble("coord_x");
+			double y =result.getDouble("coord_y");
+			Location location = getLocationByPoint(new Point(x,y));
 			String description = result.getString("description");
 			Date contributed = result.getDate("contributed");
+			
 			long oid = result.getLong("image");
 			
 			LargeObjectManager manager = ((org.postgresql.PGConnection)connection).getLargeObjectAPI();
@@ -404,7 +408,7 @@ public class PostgresDataStore implements DataStore {
 			byte[] image = l.read(l.size());
 			l.close();
 			
-			PhotoContribution photo = new PhotoContribution(image, description, contributed, username);
+			PhotoContribution photo = new PhotoContribution(image, description, contributed, username, location);
 			
 			connection.commit();
 			connection.setAutoCommit(true);
@@ -419,10 +423,13 @@ public class PostgresDataStore implements DataStore {
 	{
 		if(result.next()) {
 			String comment = result.getString("comment");
-			String username = result.getString("stalker_fb_id");
+			User username = getUserById(result.getString("stalker_fb_id"));
+			double x =result.getDouble("coord_x");
+			double y =result.getDouble("coord_y");
+			Location location = getLocationByPoint(new Point(x,y));
 			Date contributed = result.getDate("contributed");
 			
-			return new CommentContribution(comment, contributed, username);
+			return new CommentContribution(comment, contributed, username, location);
 		} else {
 			return null;
 		}
