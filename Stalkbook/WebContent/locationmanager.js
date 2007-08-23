@@ -21,6 +21,10 @@ function LocationManager () {
 		content.className = "content";
 		var inner = document.createElement("DIV");
 		inner.className = "inner";
+		var commentsContainer = document.createElement("DIV");
+		commentsContainer.className = "comments";
+		var commentList = document.createElement("UL");
+		
 		
 		this.location.appendChild(close);
 		this.location.appendChild(this.title);
