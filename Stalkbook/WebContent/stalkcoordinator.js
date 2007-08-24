@@ -148,8 +148,7 @@ function StalkCoordinator() {
 		};
 	
 		// Hide the location pane, if its visible
-		var locpane = document.getElementById("location");
-		if (locpane) { locpane.style.display = 'none'; }
+		locationManager.hide();
 	
 		var form=document.getElementById("addLocationForm");
 		form.creator.value=stalkCoordinator.username; 
