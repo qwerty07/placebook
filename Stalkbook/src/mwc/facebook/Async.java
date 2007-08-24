@@ -292,7 +292,7 @@ public class Async extends HttpServlet {
 			for (User user: users) {
 				writer.println(user.toJSON());
 			}
-			writer.println(" ]");
+			writer.println(" ],");
 			
 			writer.println("comments: [ ");
 			Set<CommentContribution> comments = store.getCommentsFrom(location);
@@ -301,7 +301,7 @@ public class Async extends HttpServlet {
 				writer.println(comment.toJSON());
 				
 			}
-			writer.println(" ]");
+			writer.println(" ],");
 			
 			writer.println("photos: [ ");
 			Set<PhotoContribution> photos = store.getPhotosFrom(location);
@@ -309,7 +309,7 @@ public class Async extends HttpServlet {
 				writer.println(photo.contributedBy.toJSON());
 				writer.println(photo.toJSON());				
 			}
-			writer.println(" ]");
+			writer.println(" ],");
 			
 			writer.println("}");
 
