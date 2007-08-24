@@ -103,14 +103,15 @@ function LocationManager () {
 		if (response.users) {
 			for(var i = 0; i < response.users.length; i++) {
 				this.joinUser(response.users[i]);
+				
 			}
+			this.users.lastChild.className = "last";		
 		}
 		
 		if (response.comments) {
 			for (var i = 0; i < response.comments.length; i++) {
 				this.createComment(response.comments[i]);
 			}
-			this.users.lastChild.className = "last";
 		}
 		
 		if (response.photos) {
