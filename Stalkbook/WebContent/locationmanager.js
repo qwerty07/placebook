@@ -8,16 +8,21 @@ function LocationManager () {
 		this.users = document.createElement("UL");
 		this.comments = document.createElement("UL");
 		this.photos = document.createElement("UL");
+		this.joinButton = document.createElement("A");
 		
 		var close = document.createElement("A");
 		close.className="closeButton";
 		close.href="javascript:locationManager.hide()";
 		close.innerHTML="<span>[close]</span>";
 		
-		var join = document.createElement("A");
-		join.className="join locationButton";
-		join.href="javascript:locationManager.join()";
-		join.innerHTML="Join this Location";
+		this.joinButton.className="join locationButton";
+		this.joinButton.href="javascript:locationManager.join()";
+		this.joinButton.innerHTML = "Join this Location";
+		
+		if (this.alreadyJoined() == true) {
+			alert(this.alreadyJoined());
+			this.joinButton.style.display = 'none';
+		}
 		
 		var content = document.createElement("DIV");
 		content.className = "content";
@@ -29,7 +34,7 @@ function LocationManager () {
 		ddiv.appendChild(document.createElement("H5"));
 		ddiv.firstChild.textContent="Description";
 		ddiv.appendChild(this.description);
-		ddiv.appendChild(join);
+		ddiv.appendChild(this.joinButton);
 		
 		var udiv = document.createElement("DIV");
 		udiv.className = "item users";
@@ -135,8 +140,20 @@ function LocationManager () {
 		this.comments.appendChild(li);
 	};
 	
+	this.alreadyJoined = function() {
+		for (var i = 0; i < this.users.childNodes.length; i++) {
+			if (this.users.childNodes[i].user == user.user) return true;
+		}
+		
+		return false;
+	};
+	
 	this.joinUser = function(u) {
 
+		if (u.user == user.user) {
+			this.joinButton.style.display="none";
+		}
+		
 		var text = document.createTextNode(u.name);
 		var li = document.createElement("LI");
 		li.appendChild(text);
@@ -158,10 +175,7 @@ function LocationManager () {
 		}
 	}
 	this.join = function () {
-		for (var i = 0; i < this.users.childNodes.length; i++) {
-			if (this.users.childNodes[i].user == user.user) return;
-		}
-		
+		if (this.alreadyJoined()) return;
 		async.joinLocation(user.user, this.coordinates, function (req) {});
 		this.joinUser(user);
 	}
