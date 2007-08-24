@@ -164,7 +164,6 @@ function LocationManager () {
 		}
 	}
 	this.join = function () {
-		if (this.alreadyJoined()) return;
 		async.joinLocation(user.user, this.coordinates, function (req) {});
 		this.joinUser(user);
 	}
