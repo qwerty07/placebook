@@ -26,15 +26,12 @@ try {
 
 User user = db.getUserById(String.valueOf(uid)); // someone will fix this later
 Point userHome = null;
-Set<Location> userLocations = null;
 
 userHome = user.getHomePoint();
 
 if (userHome.x == 0 && userHome.y == 0) {
 	userHome = null;
 }
-
-userLocations = db.getLocationsWithin(new Rectangle(new Point(-180, -90), new Point(180, 90)));
 
 %>
 
@@ -61,13 +58,6 @@ var user = {
 <% if (userHome != null) { %>
 	homeLocation: <%= userHome.toJSON() %>,
 <% } %>
-	locations: [
-<% if (userLocations != null) {
-		for (Location location : userLocations) {
-			out.println(location.toJSON() + ",");
-	}
-} %>
-	]
 };
 
 var view = {

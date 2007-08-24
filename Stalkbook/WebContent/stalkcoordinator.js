@@ -27,11 +27,8 @@ function StalkCoordinator() {
 		// a new marker
 		stalkBook.setMarkerFunction(stalkCoordinator.addMarker);
 		stalkBook.moveFunction(stalkCoordinator.moveView);
-
-		for (var i = 0; i < user.locations.length; i++) {
-			var location = user.locations[i];
-			stalkBook.addMarkerByXY(location.coordinates.x, location.coordinates.y, location);
-		}
+		
+		this.moveView();
 	};
 	
 	this.processMarkers = function(req) {
