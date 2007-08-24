@@ -110,16 +110,7 @@ function LocationManager () {
 		if (response.comments) {
 			
 			for (var i = 0; i < response.comments.length; i++) {
-				var container = document.createElement("DL");
-				var user = document.createElement("DT");
-				user.innerHTML=response.comments[i].user.name;
-				var text = document.createElement("DD");
-				text.innerHTML=response.comments[i].text;
-				var li = document.createElement("LI");
-				container.appendChild(user);
-				container.appendChild(text);
-				li.appendChild(container);
-				this.comments.appendChild(li);
+				this.createComment(response.comments[i]);
 			}
 		}
 		
@@ -136,6 +127,18 @@ function LocationManager () {
 		}
 		
 		this.show();
+	};
+	this.createComment = function (comment) {
+		var container = document.createElement("DL");
+		var user = document.createElement("DT");
+		user.innerHTML=comment.user.name;
+		var text = document.createElement("DD");
+		text.innerHTML=comment.text;
+		var li = document.createElement("LI");
+		container.appendChild(user);
+		container.appendChild(text);
+		li.appendChild(container);
+		this.comments.appendChild(li);
 	};
 	this.show = function () {
 		this.location.className="show";
@@ -155,6 +158,7 @@ function LocationManager () {
 	this.addComment = function() {
 		// add a comment to this location
 		var comment = prompt("Enter your comment");
+		this.createComment({user: user, text: comment});
 		if (comment != null) { async.addComment(user.user, this.coordinates, comment, function(req) {}); }
 	}
 	
