@@ -153,7 +153,6 @@ public class DataStoreTest extends TestCase {
 		Assert.assertTrue(temp.contains(point3));
 	}
 	
-	
 	public void testPhoto() {
 			// Add referenced entries
 			User u = new User("789", "Kodak", new Point(30f,150f));
@@ -174,12 +173,12 @@ public class DataStoreTest extends TestCase {
 				e.printStackTrace();
 				Assert.fail();
 			}
-			dataStore.addPhotoTo(u, l, image, "Test photo");
+			int id=dataStore.addPhotoTo(u, l, image, "Test photo");
 			
 			// Check location search
 			Set<PhotoContribution> photos = dataStore.getPhotosFrom(l);
 			Assert.assertEquals(1, photos.size());
-			PhotoContribution p = photos.iterator().next();
+			PhotoContribution p = photos.iterator().next();			
 			
 			// Check nulls
 			Assert.assertNotNull(p);
@@ -214,6 +213,22 @@ public class DataStoreTest extends TestCase {
 			Assert.assertEquals(u, p.contributedBy);
 			Assert.assertEquals(l, p.contributedWhere);
 			Assert.assertTrue(Arrays.equals(image, p.image));
+			
+			PhotoContribution photo = dataStore.getPhotoById(id);
+			
+//			 Check nulls
+			Assert.assertNotNull(photo);
+			Assert.assertNotNull(photo.contributedBy);
+			Assert.assertNotNull(photo.contributedWhen);
+			Assert.assertNotNull(photo.contributedWhere);
+			Assert.assertNotNull(photo.image);
+			Assert.assertNotNull(photo.description);
+			
+			// Check data
+			Assert.assertEquals("Test photo", photo.description);
+			Assert.assertEquals(u, photo.contributedBy);
+			Assert.assertEquals(l, photo.contributedWhere);
+			Assert.assertTrue(Arrays.equals(image, photo.image));	
 			
 	}
 	
