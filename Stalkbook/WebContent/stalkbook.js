@@ -97,11 +97,20 @@ marker image to what is associated to the given type.
   	}
     if(info.name){
 		GEvent.addListener(marker, "click", function(){
+			var length=info.desc.length;
+			var desc="";
+			if(length>500){
+				desc=info.desc.substring(0,497);
+				desc=desc+"...";
+			}else{
+				desc=info.desc;
+			}
+			
 			marker.openInfoWindowHtml(
 				
 				"<h2 id=\"bubbleHead\">" + info.name + "</h2>" +
 				"<div  id=\"bubbleText\">" +
-				"<p>" + info.desc + "</p>" +
+				"<p>" + desc + "</p>" +
 				
 				"<p class=\"openLink\"><a href='javascript:void(0)' onclick='locationManager.setLocation({x:"+latlng.lng()+", y:"+latlng.lat()+"})'>[view]</a></p>" +
 				"</div>"
