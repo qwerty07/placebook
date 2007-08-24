@@ -147,6 +147,10 @@ function StalkCoordinator() {
 			y: latlng.lat()
 		};
 	
+		// Hide the location pane, if its visible
+		var locpane = document.getElementById("location");
+		if (locpane) { locpane.style.display = 'none'; }
+	
 		var form=document.getElementById("addLocationForm");
 		form.creator.value=stalkCoordinator.username; 
 		form.pointX.value=point.x;	
