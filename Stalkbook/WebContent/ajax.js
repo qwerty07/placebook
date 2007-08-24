@@ -33,11 +33,11 @@ var async = {
     },
     
     addComment: function(user, point, comment, callback) {
-    	this.doRequest("addComment", { user: user, x: point.x, y: point.y, comment: comment}, callback);
+    	this.doRequest("addcomment", { user: user, x: point.x, y: point.y, comment: comment}, callback);
     },
     
     addPhoto: function(user, point, photo, callback) {
-     	this.doRequest("addPhoto", { user: user, x: point.x, y: point.y, filename: photo}, callback);
+     	this.doRequest("addphoto", { user: user, x: point.x, y: point.y, filename: photo}, callback);
     },
     
 	/** assumes that the callback function takes one boolean argument
