@@ -63,7 +63,7 @@ public class PostgresDataStore implements DataStore {
 		findLocationsInArea = connection.prepareStatement("SELECT loc_name, coord_x, coord_y, description FROM Location WHERE box(point(coord_x, coord_y),point(coord_x, coord_y)) && ?;");
 		findLocationsInCircle = connection.prepareStatement("SELECT loc_name, coord_x, coord_y, description FROM Location WHERE box(point(coord_x, coord_y),point(coord_x, coord_y)) && box(circle(?,?)) AND (point(coord_x, coord_y) <-> ?) < ?;");
 		associateUserAndLocation = connection.prepareStatement("INSERT INTO location_stalker (stalker_fb_id, coord_x, coord_y) VALUES (?, ?, ?);");
-		findUsersByLocation = connection.prepareStatement("SELECT stalker.fb_id, stalker.fb_name, home_coord_x, home_coord_y FROM stalker NATURAL JOIN location_stalker WHERE coord_x = ? AND coord_y = ?;");
+		findUsersByLocation = connection.prepareStatement("SELECT stalker.fb_id, stalker.fb_name, home_coord_x, home_coord_y FROM stalker INNER JOIN location_stalker ON stalker.fb_id = location_stalker.stalker_fb_id WHERE coord_x = ? AND coord_y = ?;");
 		findLocationsForUser = connection.prepareStatement("SELECT location.coord_x, location.coord_y, location.loc_name, location.description FROM location NATURAL JOIN location_stalker WHERE stalker_fb_id = ?;");
 		getPhotoById = connection.prepareStatement("SELECT photo_id, coord_x, coord_y, stalker_fb_id, description, image, contributed FROM photo WHERE photo_id = ?;");
 		addPhotoToLocation = connection.prepareStatement("INSERT INTO photo(photo_id,coord_x, coord_y, stalker_fb_id, description, image) VALUES (?,?, ?, ?, ?, ?);");
