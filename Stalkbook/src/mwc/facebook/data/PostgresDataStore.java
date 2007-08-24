@@ -255,11 +255,11 @@ public class PostgresDataStore implements DataStore {
 		return photos;
 	}
 	
-	public synchronized PhotoContribution getPhotoById(String id){
+	public synchronized PhotoContribution getPhotoById(int id){
 		PhotoContribution photo=null;
 		try
 		{
-		this.getPhotoById.setString(1, id);
+		this.getPhotoById.setInt(1, id);
 		ResultSet result = getPhotosForUser.executeQuery();
 		photo = createPhotoFromResult(result);
 		}catch (SQLException e)
