@@ -65,9 +65,9 @@ public class MockDataStore implements DataStore{
 		
 	}
 
-	public void addPhotoTo(User user, Location location, byte[] photo, String description)
+	public int addPhotoTo(User user, Location location, byte[] photo, String description)
 	{
-		// TODO Auto-generated method stub
+		return 0;
 		
 	}
 
