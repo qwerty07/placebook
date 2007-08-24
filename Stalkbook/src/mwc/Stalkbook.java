@@ -104,7 +104,7 @@ public class Stalkbook extends HttpServlet {
 
 			PrintWriter writer = response.getWriter();
 			//writer.printf("<h2>Hi <fb:name firstnameonly=\"true\" uid=\"%d\" useyou=\"false\"/>!</h2>", clientId);
-			writer.printf("<h2>Hi %s!</h2>", user.getName());
+			//writer.printf("<h2>Hi %s!</h2>", user.getName());
 			writer.printf("<fb:iframe frameborder=\"0\" smartsize=\"true\" src=\"%s\"/>", iframeLocation);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
