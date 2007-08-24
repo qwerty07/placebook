@@ -19,11 +19,6 @@ function LocationManager () {
 		this.joinButton.href="javascript:locationManager.join()";
 		this.joinButton.innerHTML = "Join this Location";
 		
-		if (this.alreadyJoined() == true) {
-			alert(this.alreadyJoined());
-			this.joinButton.style.display = 'none';
-		}
-		
 		var content = document.createElement("DIV");
 		content.className = "content";
 		var inner = document.createElement("DIV");
@@ -103,9 +98,8 @@ function LocationManager () {
 		if (response.users) {
 			for(var i = 0; i < response.users.length; i++) {
 				this.joinUser(response.users[i]);
-				
 			}
-			this.users.lastChild.className = "last";		
+			this.users.lastChild.className = "last";	
 		}
 		
 		if (response.comments) {
@@ -139,14 +133,6 @@ function LocationManager () {
 		container.appendChild(text);
 		li.appendChild(container);
 		this.comments.appendChild(li);
-	};
-	
-	this.alreadyJoined = function() {
-		for (var i = 0; i < this.users.childNodes.length; i++) {
-			if (this.users.childNodes[i].user == user.user) return true;
-		}
-		
-		return false;
 	};
 	
 	this.joinUser = function(u) {
