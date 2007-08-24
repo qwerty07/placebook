@@ -29,7 +29,7 @@ var StalkLocationCreate={
 			desc: locDesc
 		};
 		
-		stalkBook.addMarkerByXY(point.x, point.y, info, "Home");
+		stalkBook.addMarkerByXY(point.x, point.y, info);
 		async.submitPoint(locCreator, info, point, function(req){stalkCoordinator.asyncCallback(req)});
 
 		form.name.value='';
