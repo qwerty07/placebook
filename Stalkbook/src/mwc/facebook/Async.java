@@ -290,15 +290,14 @@ public class Async extends HttpServlet {
 			writer.println("users: [ ");
 			Set<User> users = store.usersAssociatedWith(location);
 			for (User user: users) {
-				writer.println(user.toJSON());
+				writer.println(user.toJSON() + ", ");
 			}
 			writer.println(" ],");
 			
 			writer.println("comments: [ ");
 			Set<CommentContribution> comments = store.getCommentsFrom(location);
 			for (CommentContribution comment: comments) {
-				writer.println(comment.contributedBy.toJSON());
-				writer.println(comment.toJSON());
+				writer.println(comment.toJSON() + ", ");
 				
 			}
 			writer.println(" ],");
@@ -306,8 +305,7 @@ public class Async extends HttpServlet {
 			writer.println("photos: [ ");
 			Set<PhotoContribution> photos = store.getPhotosFrom(location);
 			for (PhotoContribution photo: photos) {
-				writer.println(photo.contributedBy.toJSON());
-				writer.println(photo.toJSON());				
+				writer.println(photo.toJSON() + ", ");				
 			}
 			writer.println(" ],");
 			

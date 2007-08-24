@@ -33,10 +33,11 @@ public class PhotoContribution implements JSONable
 		StringBuffer sb = new StringBuffer();
 		sb.append("{ ");
 		sb.append("id: " + photoId +",");
+		sb.append("user: " + contributedBy.toJSON() + ", ");
 		sb.append("location: \"" + contributedWhere.getLocationName() + "\", ");
 		sb.append("date: \"" + contributedWhen.toString() + "\", ");
 		sb.append("userid: \"" + contributedBy.getUser() + "\", ");
-		sb.append("description: \"" + Location.escapeString(description)+"\"");		
+		sb.append("description: \"" + Location.escapeString(description)+"\", ");		
 		sb.append("}");
 		return sb.toString();
 	}

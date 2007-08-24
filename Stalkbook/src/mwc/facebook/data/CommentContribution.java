@@ -29,10 +29,11 @@ public class CommentContribution implements JSONable
 	public String toJSON() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("{ ");
+		sb.append("user: " + contributedBy.toJSON() + ", ");
 		sb.append("date: \"" + contributedWhen.toString() + "\", ");
-		sb.append("comment: \"" + Location.escapeString(comment) + "\", ");
-		sb.append("location: \"" + Location.escapeString(contributedWhere.getLocationName())+"\"");
-		sb.append("\"}");
+		sb.append("text: \"" + Location.escapeString(comment) + "\", ");
+		sb.append("location: \"" + Location.escapeString(contributedWhere.getLocationName())+"\", ");
+		sb.append("}");
 		return sb.toString();
 	}
 }
