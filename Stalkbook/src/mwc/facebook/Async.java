@@ -189,6 +189,10 @@ public class Async extends HttpServlet {
 		catch (NumberFormatException ex) {
 			System.err.println("error parsing point: " + sx + ", " + sy);
 		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
 		
 		return false;
 	}
@@ -221,6 +225,9 @@ public class Async extends HttpServlet {
 		}
 		catch (NumberFormatException ex) {
 			System.err.println("error parsing point: " + sx + ", " + sy);
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
 		}
 		
 		return false;
@@ -351,6 +358,10 @@ public class Async extends HttpServlet {
 		catch (NumberFormatException ex) {
 			System.err.println("error parsing point: " + sx + ", " + sy);
 		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
 		
 		return false;
 	}
@@ -393,6 +404,10 @@ public class Async extends HttpServlet {
 		catch (NumberFormatException ex) {
 			System.err.println("error parsing point");
 		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
 
 		return false;
 	}
@@ -483,6 +498,10 @@ public class Async extends HttpServlet {
 		catch (NumberFormatException ex) {
 			System.err.println("error parsing point");
 		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
 
 		return false;
 	}
