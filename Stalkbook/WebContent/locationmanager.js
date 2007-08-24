@@ -95,20 +95,20 @@ function LocationManager () {
 		}
 		this.description.innerHTML = htmlText;
 		
-		if (response.users) {
+		if (response.users && response.users.length > 0) {
 			for(var i = 0; i < response.users.length; i++) {
 				this.joinUser(response.users[i]);
 			}
 			this.users.lastChild.className = "last";	
 		}
 		
-		if (response.comments) {
+		if (response.comments && response.comments.length > 0) {
 			for (var i = 0; i < response.comments.length; i++) {
 				this.createComment(response.comments[i]);
 			}
 		}
 		
-		if (response.photos) {
+		if (response.photos && response.photos.length > 0) {
 			for (var i = 0; i < response.photos.length; i++) {
 				var container = document.createElement("DL");
 				var user = document.createElement("DT");
