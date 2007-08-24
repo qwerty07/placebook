@@ -171,7 +171,6 @@ public class PostgresDataStore implements DataStore {
 	
 	private void handleError(SQLException e) {
 		e.printStackTrace();
-		Assert.fail();
 	}
 
 	protected Connection getConnection() {
