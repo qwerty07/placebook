@@ -24,7 +24,7 @@ var firstload = function () {
 		stalkBook.setMarkerFunction(stalkCoordinator.addMarker);
 		
 		// get the user's Facebook name & home location
-		this.setUsername(user.username);
+		this.setUsername(user.user);
 	};
 	
 	stalkCoordinator.complete = function (req) {
