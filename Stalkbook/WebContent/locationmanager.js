@@ -95,6 +95,8 @@ function LocationManager () {
 		}
 		this.description.innerHTML = htmlText;
 		
+		this.joinButton.style.display="block";
+		
 		if (response.users && response.users.length > 0) {
 			for(var i = 0; i < response.users.length; i++) {
 				this.joinUser(response.users[i]);
