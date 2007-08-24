@@ -196,6 +196,8 @@ body {
 	
 }
 
+/* Styles for Add Location dialog */
+
 #addLocationContainer {
 	position: absolute;
 	top: 100px;
@@ -248,7 +250,28 @@ textarea {
 	float: right;
 }
 
+/* Styles for Add Comment dialog */
+#addCommentContainer {
+	position: absolute;
+	top: 100px;
+	left: 100px;
+	background: url(images/formback.png) transparent ;
+	border: 1px #BBBBBB solid;
+	width: 500px;
+	height: 500px;
+	padding: 0;
+}
 
+#addCommentContainer h4 {
+	/* total height is 35px */
+	background: #6d84b4;
+	color: white;
+	margin: 0;
+	border-bottom: solid 1px white;
+	padding: 5px 10px;
+	line-height: 20px;
+}
+	
 /* facebook imported styles */
 
 .lists .list .list_item { border-top:1px solid #E5E5E5; padding: 10px; }

@@ -1,12 +1,13 @@
 var locationManager;
 
-function LocationManager () {
+function LocationManager () {	
 	this.load = function () {
 		this.location = document.getElementById("location");
 		this.title = document.createElement("H4");
 		this.description = document.createElement("DIV");
 		this.users = document.createElement("UL");
 		this.comments = document.createElement("UL");
+		this.photos = document.createElement("UL");
 		
 		var close = document.createElement("A");
 		close.className="closeButton";
@@ -33,7 +34,7 @@ function LocationManager () {
 		var udiv = document.createElement("DIV");
 		udiv.className = "item users";
 		udiv.appendChild(document.createElement("H5"));
-		udiv.firstChild.textContent="Users";
+		udiv.firstChild.textContent="Locals";
 		udiv.appendChild(this.users);
 		
 		var addComment = document.createElement("A");
@@ -57,6 +58,7 @@ function LocationManager () {
 		pdiv.className = "item photos";
 		pdiv.appendChild(document.createElement("H5"));
 		pdiv.firstChild.textContent = "Photos";
+		pdiv.appendChild(this.photos);
 		pdiv.appendChild(addPhoto);
 		
 		this.location.appendChild(close);
@@ -66,6 +68,7 @@ function LocationManager () {
 		content.appendChild(udiv);
 		content.appendChild(cdiv);
 		content.appendChild(pdiv);
+		
 	};
 	this.setLocation = function (point) {
 		async.retrieveLocation(point, function (req) { locationManager.callback(req); });
@@ -79,6 +82,9 @@ function LocationManager () {
 
 		this.coordinates = response.coordinates;
 		this.title.innerHTML = response.locationName;
+		this.users.innerHTML="";
+		this.comments.innerHTML = "";
+		this.photos.innerHTML = "";
 		
 		var descText = response.description;
 		var htmlText = "";
@@ -102,6 +108,7 @@ function LocationManager () {
 		}
 		
 		if (response.comments) {
+			
 			for (var i = 0; i < response.comments.length; i++) {
 				var container = document.createElement("DL");
 				var user = document.createElement("DT");
@@ -113,6 +120,18 @@ function LocationManager () {
 				container.appendChild(text);
 				li.appendChild(container);
 				this.comments.appendChild(li);
+			}
+		}
+		
+		if (response.photos) {
+			for (var i = 0; i < response.photos.length; i++) {
+				var container = document.createElement("DL");
+				var user = document.createElement("DT");
+				user.innerHTML = response.photos[i].user.name;
+				var date = document.createElement("DD");
+				date.innerHTML = response.photos[i].date;
+				var description = document.createElement;
+				description.innerHTML = response.photos[i].description; 
 			}
 		}
 		
@@ -136,13 +155,13 @@ function LocationManager () {
 	this.addComment = function() {
 		// add a comment to this location
 		var comment = prompt("Enter your comment");
-		async.addComment(user.user, comment, function(req) {});
+		if (comment != null) { async.addComment(user.user, this.coordinates, comment, function(req) {}); }
 	}
 	
 	this.addPhoto = function() {
 		// add a photo to this location
 		var filename = prompt("Enter photo filename");
-		async.addPhoto(user.user, filename, function(req) {});
+		async.addPhoto(user.user, this.coordinates, filename, function(req) {});
 	}
 };
 
