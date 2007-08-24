@@ -1,5 +1,6 @@
 package mwc.facebook.data;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -71,7 +72,7 @@ public class MockDataStore implements DataStore{
 		
 	}
 
-	public Set<CommentContribution> getCommentsFrom(Location location)
+	public ArrayList<CommentContribution> getCommentsFrom(Location location)
 	{
 		// TODO Auto-generated method stub
 		return null;
@@ -94,7 +95,7 @@ public class MockDataStore implements DataStore{
 		return result;
 	}
 
-	public Set<CommentContribution> getCommentsFrom(User user)
+	public ArrayList<CommentContribution> getCommentsFrom(User user)
 	{
 		// TODO Auto-generated method stub
 		return null;

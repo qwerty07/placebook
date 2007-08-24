@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.Set;
@@ -241,7 +242,7 @@ public class DataStoreTest extends TestCase {
 		
 		// Test search by location
 		dataStore.addCommentTo(u, l, "Chew on this!");
-		Set<CommentContribution> comments = dataStore.getCommentsFrom(l);
+		ArrayList<CommentContribution> comments = dataStore.getCommentsFrom(l);
 		
 		Assert.assertNotNull(comments);
 		Assert.assertEquals(1, comments.size());

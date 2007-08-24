@@ -3,6 +3,7 @@ package mwc.facebook;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -248,7 +249,7 @@ public class Async extends HttpServlet {
 		Point userHome = null;
 		Set<Location> userLocations = null;
 		Set<PhotoContribution> userPhotos = db.getPhotosFrom(user);
-		Set<CommentContribution> userComments = db.getCommentsFrom(user);
+		ArrayList<CommentContribution> userComments = db.getCommentsFrom(user);
 		String text = "";
 		
 		if (user != null) {
@@ -302,7 +303,7 @@ public class Async extends HttpServlet {
 			writer.println(" ],");
 			
 			writer.println("comments: [ ");
-			Set<CommentContribution> comments = store.getCommentsFrom(location);
+			ArrayList<CommentContribution> comments = store.getCommentsFrom(location);
 			for (CommentContribution comment: comments) {
 				writer.println(comment.toJSON() + ", ");
 				

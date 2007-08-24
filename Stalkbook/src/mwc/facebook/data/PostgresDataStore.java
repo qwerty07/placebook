@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Properties;
@@ -70,7 +71,7 @@ public class PostgresDataStore implements DataStore {
 		getPhotosFromLocation = connection.prepareStatement("SELECT coord_x, coord_y, stalker_fb_id, description, image, contributed FROM photo WHERE coord_x = ? AND coord_y = ?;");
 		getPhotosForUser = connection.prepareStatement("SELECT stalker_fb_id, coord_x, coord_y, description, image, contributed FROM photo WHERE stalker_fb_id = ?;");
 		addCommentToLocation = connection.prepareStatement("INSERT INTO comment(coord_x, coord_y, stalker_fb_id, comment) VALUES (?, ?, ?, ?);");
-		getCommentsFromLocation = connection.prepareStatement("SELECT coord_x, coord_y, stalker_fb_id, comment, contributed FROM comment WHERE coord_x = ? AND coord_y = ?;");
+		getCommentsFromLocation = connection.prepareStatement("SELECT coord_x, coord_y, stalker_fb_id, comment, contributed FROM comment WHERE coord_x = ? AND coord_y = ? ORDER BY contributed;");
 		getCommentsForUser = connection.prepareStatement("SELECT coord_x, coord_y, stalker_fb_id, comment, contributed FROM comment WHERE stalker_fb_id = ?;");
 	}
 	
@@ -307,8 +308,8 @@ public class PostgresDataStore implements DataStore {
 		
 	}
 	
-	public synchronized Set<CommentContribution> getCommentsFrom(Location location) {
-		Set<CommentContribution> comments = new HashSet<CommentContribution>();
+	public synchronized ArrayList<CommentContribution> getCommentsFrom(Location location) {
+		ArrayList<CommentContribution> comments = new ArrayList<CommentContribution>();
 		try
 		{
 			getCommentsFromLocation.setDouble(1, location.getCoordinates().x);
@@ -328,9 +329,9 @@ public class PostgresDataStore implements DataStore {
 		return comments;
 	}
 	
-	public synchronized Set<CommentContribution> getCommentsFrom(User user)
+	public synchronized ArrayList<CommentContribution> getCommentsFrom(User user)
 	{
-		Set<CommentContribution> comments = new HashSet<CommentContribution>();
+		ArrayList<CommentContribution> comments = new ArrayList<CommentContribution>();
 		try {
 			getCommentsForUser.setString(1, user.getUser());
 			ResultSet result = getCommentsForUser.executeQuery();
