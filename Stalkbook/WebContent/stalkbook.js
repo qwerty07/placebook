@@ -174,7 +174,13 @@ for areas with more detail.
   */
   getViewWindow: function(){
   	return stalkBook.map.getBounds();
-  }
+  },
+  /*
+  Gets the current window zoom
+  */
+  getWindowZoom: function(){
+  	return stalkBook.map.getZoom();
+  },
   
 };
 //]]>

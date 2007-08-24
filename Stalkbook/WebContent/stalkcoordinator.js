@@ -168,7 +168,11 @@ function StalkCoordinator() {
 		var window=stalkBook.getViewWindow();
 		var pt1=window.getNorthEast();
 		var pt2=window.getSouthWest();
-		async.retrieveLocationsByRec(pt1.lng(),pt1.lat(),pt2.lng(),pt2.lat(),stalkCoordinator.processMarkers);
+		if (stalkBook.getWindowZoom < 10){
+			async.getUserLocationsByRec(pt1.lng(),pt1.lat(),pt2.lng(),pt2.lat(),stalkCoordinator.processMarkers);	
+		} else {
+			async.retrieveLocationsByRec(pt1.lng(),pt1.lat(),pt2.lng(),pt2.lat(),stalkCoordinator.processMarkers);
+		}
 	}
 };
 
