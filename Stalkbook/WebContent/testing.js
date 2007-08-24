@@ -26,12 +26,32 @@ var test = {
 	},
 	output: function (text) {
 		var out = document.getElementById("output");
+		text = this.out(text);
 		if (out) out.appendChild(document.createTextNode(text + "\n"));
+	},
+	out: function (text) {
+		var out = document.getElementById("output");
+		if (text.isArray) {
+			var t = "[ ";
+			for (var i = 0; i < text.length; i++) {
+				t += this.out(text[i]) + ", ";
+			}
+			t+="]";
+			return t;
+		}
+		else if (text.coordinates) {
+			return "{x: " + text.coordinates.x + ",y: " + text.coordinates.y + "}";
+		}
+		else {
+			return text;
+		}
 	},
 	fail: function() {
 		setResult(false);
 	}
 };
+
+Array.prototype.isArray = function(){return true;}
 
 async.sendRequest= function(url,callback,postData) {
 	test.output("post: " + postData);

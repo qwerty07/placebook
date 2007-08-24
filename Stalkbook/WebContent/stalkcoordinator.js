@@ -9,6 +9,7 @@ function StalkCoordinator() {
 	this.username = undefined;	// the current user's Facebook name
 	this.homeloc = undefined;	// user's home location -- where the map will centre when loaded
 	this.default_zoom = 15;	// default zoom level
+	this.markers = []; //markers on the map
 	
 	this.viewOfConcern = undefined;
 
@@ -43,11 +44,90 @@ function StalkCoordinator() {
 	};
 	
 	this.addMarkers = function(markers) {
-		stalkBook.clearMarkers();
-		for (var i = 0; i < markers.length; i++) {
+		//stalkBook.clearMarkers(); --don't do this anymore
+		
+		//sort markers
+		markers = this.sort(markers);
+		var result = [];
+		
+		var i = 0;
+		var j = 0;
+		while (i < markers.length && j < this.markers.length) {
+			if (this.compare(markers[i], this.markers[j]) < 0) {
+				result.push(markers[i]);
+				var	location = markers[i];
+				stalkBook.addMarkerByXY(location.coordinates.x, location.coordinates.y, location);
+				i++;
+			}
+			else if (this.compare(markers[i], this.markers[j]) > 0) {
+				result.push(this.markers[j]);
+				j++;
+			}
+			else {
+				result.push(this.markers[j]);
+				i++;
+				j++;
+			}
+		}
+		while (i < markers.length) {
+			result.push(markers[i]);
 			var	location = markers[i];
 			stalkBook.addMarkerByXY(location.coordinates.x, location.coordinates.y, location);
+			i++;
 		}
+		while (j < this.markers.length) {
+			result.push(this.markers[j]);
+			j++;
+		}
+		
+		this.markers = result;
+	};
+	
+	this.sort = function(list) {
+		if (list.length <= 1) {
+			return list;
+		}
+		else {
+			var l1 = list.splice(0,list.length/2);
+			var l2 = list;
+			var result = [];
+			l1 = this.sort(l1);
+			l2 = this.sort(l2);
+			var i = 0;
+			var j = 0;
+			while (i < l1.length && j < l2.length) {
+				if (this.compare(l1[i], l2[j]) < 0) {
+					result.push(l1[i]);
+					i++;
+				}
+				else if (this.compare(l1[i], l2[j]) > 0) {
+					result.push(l2[j]);
+					j++;
+				}
+				else {
+					result.push(l1[i]);
+					result.push(l2[j]);
+					i++;
+					j++;
+				}
+			}
+			while (i < l1.length) {
+				result.push(l1[i]);
+				i++;
+			}
+			while (j < l2.length) {
+				result.push(l2[j]);
+				j++;
+			}
+			return result;
+		}
+	};
+	
+	this.compare = function (a, b) {
+		if (a.coordinates.x == b.coordinates.x) {
+			return a.coordinates.y - b.coordinates.y;
+		}
+		else return a.coordinates.x - b.coordinates.x;
 	};
 	
 	this.setUsername = function(name) {
