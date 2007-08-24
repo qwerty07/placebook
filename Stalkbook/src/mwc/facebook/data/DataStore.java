@@ -24,7 +24,7 @@ public interface DataStore {
 	public Set<Location> locationsFor(User user);
 	public Set<User> usersAssociatedWith(Location location);
 	
-	public void addPhotoTo(User user, Location location, byte[] photo, String description);
+	public int addPhotoTo(User user, Location location, byte[] photo, String description);
 	public Set<PhotoContribution> getPhotosFrom(Location location);
 	public PhotoContribution getPhotoById(String id);
 	public Set<PhotoContribution> getPhotosFrom(User user);
