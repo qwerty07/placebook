@@ -158,8 +158,10 @@ function LocationManager () {
 	this.addComment = function() {
 		// add a comment to this location
 		var comment = prompt("Enter your comment");
-		this.createComment({user: user, text: comment});
-		if (comment != null) { async.addComment(user.user, this.coordinates, comment, function(req) {}); }
+		if (comment != null) {
+			async.addComment(user.user, this.coordinates, comment, function(req) {});
+			this.createComment({user: user, text: comment});
+		}
 	}
 	
 	this.addPhoto = function() {
