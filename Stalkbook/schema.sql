@@ -37,9 +37,9 @@ CREATE TABLE location_stalker (
 
 CREATE TABLE photo (
   photo_id serial,
-  coord_x float8,
-  coord_y float8,
-  stalker_fb_id varchar(255) REFERENCES stalker(fb_id),
+  coord_x float8 NOT NULL,
+  coord_y float8 NOT NULL,
+  stalker_fb_id varchar(255) REFERENCES stalker(fb_id) NOT NULL,
   description text,
   image OID NOT NULL,
   contributed timestamp with time zone DEFAULT now() NOT NULL,
@@ -47,9 +47,9 @@ CREATE TABLE photo (
 );
 
 CREATE TABLE comment (
-  coord_x float8,
-  coord_y float8,
-  stalker_fb_id varchar(255) REFERENCES stalker(fb_id),
+  coord_x float8 NOT NULL,
+  coord_y float8 NOT NULL,
+  stalker_fb_id varchar(255) REFERENCES stalker(fb_id) NOT NULL,
   comment text NOT NULL,
   contributed timestamp with time zone DEFAULT now() NOT NULL,
   FOREIGN KEY (coord_x, coord_y) REFERENCES location(coord_x, coord_y)
