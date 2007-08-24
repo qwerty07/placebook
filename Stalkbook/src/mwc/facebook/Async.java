@@ -501,10 +501,10 @@ public class Async extends HttpServlet {
 			if (item.isFormField()) {
 				// Form field
 				InputStream formStream = item.openStream();					
+				String field = item.getFieldName();
 				
-				parameters.put(item.getFieldName(), Streams.asString(formStream));
-
-				break;
+				parameters.put(field, Streams.asString(formStream));
+				System.out.printf("%s -> %s\n", field, parameters.get(field));
 			}
 		}
 
