@@ -96,22 +96,16 @@ function LocationManager () {
 		this.description.innerHTML = htmlText;
 		
 		if (response.users) {
-			for (var i = 0; i < response.users.length; i++) {
-				var text = document.createTextNode(response.users[i].name);
-				var li = document.createElement("LI");
-				li.appendChild(text);
-				this.users.appendChild(li);
-				if (i == response.users.length-1) {
-					li.className = "last";
-				}
+			for(var i = 0; i < response.users.length; i++) {
+				this.joinUser(response.users[i]);
 			}
 		}
 		
 		if (response.comments) {
-			
 			for (var i = 0; i < response.comments.length; i++) {
 				this.createComment(response.comments[i]);
 			}
+			this.users.lastChild.className = "last";
 		}
 		
 		if (response.photos) {
@@ -140,6 +134,17 @@ function LocationManager () {
 		li.appendChild(container);
 		this.comments.appendChild(li);
 	};
+	
+	this.joinUser = function(u) {
+
+		var text = document.createTextNode(u.name);
+		var li = document.createElement("LI");
+		li.appendChild(text);
+		li.user = u.user;
+		this.users.insertBefore(li, this.users.firstChild);
+
+	};
+	
 	this.show = function () {
 		this.location.className="show";
 		if (document.getElementById("map")) {
@@ -153,7 +158,12 @@ function LocationManager () {
 		}
 	}
 	this.join = function () {
+		for (var i = 0; i < this.users.childNodes.length; i++) {
+			if (this.users.childNodes[i].user == user.user) return;
+		}
+		
 		async.joinLocation(user.user, this.coordinates, function (req) {});
+		this.joinUser(user);
 	}
 	this.addComment = function() {
 		// add a comment to this location
