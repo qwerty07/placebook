@@ -136,8 +136,8 @@ public class Async extends HttpServlet {
 	private boolean setDefaultLocation(String user, String sx, String sy) {
 		
 		try {
-			float x = Float.parseFloat(sx);
-			float y = Float.parseFloat(sy);
+			double x = Double.parseDouble(sx);
+			double y = Double.parseDouble(sy);
 
 			Point point = new Point(x, y);
 
@@ -163,9 +163,9 @@ public class Async extends HttpServlet {
 	private boolean addLocation(String name, String locName, String locDesc, String sx, String sy) {
 		
 		try {
-			float x = Float.parseFloat(sx);
-			float y = Float.parseFloat(sy);
-
+			double x = Double.parseDouble(sx);
+			double y = Double.parseDouble(sy);
+			
 			Point point = new Point(x, y);
 
 			DataStore store = ObjectManager.instance().store();
@@ -196,8 +196,8 @@ public class Async extends HttpServlet {
 	private boolean joinLocation(String u, String sx, String sy) {
 		
 		try {
-			float x = Float.parseFloat(sx);
-			float y = Float.parseFloat(sy);
+			double x = Double.parseDouble(sx);
+			double y = Double.parseDouble(sy);
 
 			Point point = new Point(x, y);
 
@@ -269,8 +269,8 @@ public class Async extends HttpServlet {
 	private boolean getLocationData(String sx, String sy, PrintWriter writer) {
 
 		try {
-			float x = Float.parseFloat(sx);
-			float y = Float.parseFloat(sy);
+			double x = Double.parseDouble(sx);
+			double y = Double.parseDouble(sy);
 
 			Point point = new Point(x, y);
 
@@ -328,8 +328,8 @@ public class Async extends HttpServlet {
 	private boolean addCommentToLocation(String name, String sx, String sy, String comment) {
 		
 		try {
-			float x = Float.parseFloat(sx);
-			float y = Float.parseFloat(sy);
+			double x = Double.parseDouble(sx);
+			double y = Double.parseDouble(sy);
 
 			Point point = new Point(x, y);
 
@@ -363,11 +363,11 @@ public class Async extends HttpServlet {
 			PrintWriter writer) {
 
 		try {
-			float tlx = Float.parseFloat(sTopLeftx);
-			float tly = Float.parseFloat(sTopLefty);
+			double tlx = Double.parseDouble(sTopLeftx);
+			double tly = Double.parseDouble(sTopLefty);
 			
-			float brx = Float.parseFloat(sBottomRightx);
-			float bry = Float.parseFloat(sBottomRighty);
+			double brx = Double.parseDouble(sBottomRightx);
+			double bry = Double.parseDouble(sBottomRighty);
 
 			Point tlPoint = new Point(tlx, tly);
 			Point brPoint = new Point(brx, bry);
@@ -443,11 +443,11 @@ public class Async extends HttpServlet {
 			PrintWriter writer) {
 
 		try {
-			float tlx = Float.parseFloat(sTopLeftx);
-			float tly = Float.parseFloat(sTopLefty);
+			double tlx = Double.parseDouble(sTopLeftx);
+			double tly = Double.parseDouble(sTopLefty);
 			
-			float brx = Float.parseFloat(sBottomRightx);
-			float bry = Float.parseFloat(sBottomRighty);
+			double brx = Double.parseDouble(sBottomRightx);
+			double bry = Double.parseDouble(sBottomRighty);
 
 			Point tlPoint = new Point(tlx, tly);
 			Point brPoint = new Point(brx, bry);
