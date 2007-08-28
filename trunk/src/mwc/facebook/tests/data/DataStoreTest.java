@@ -26,6 +26,7 @@ import com.sun.imageio.plugins.common.ImageUtil;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
+import mwc.facebook.ObjectManager;
 import mwc.facebook.data.CommentContribution;
 import mwc.facebook.data.DataStore;
 import mwc.facebook.data.Location;
@@ -42,9 +43,7 @@ public class DataStoreTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception
 	{
-		Properties connectionProps = new Properties();
-		connectionProps.setProperty("user", "ramsayneil");
-		dataStore = new TestPGDataStore("localhost", "stalkbook", connectionProps);
+		dataStore = ObjectManager.instance().store();
 	}
 
 	public void testUserNotFound(){

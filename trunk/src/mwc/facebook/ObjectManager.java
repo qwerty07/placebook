@@ -22,8 +22,7 @@ public class ObjectManager {
 			store = new PostgresDataStore("localhost:5433", "stalkbook", "facebook", "everybreathyoutake");
 		}
 		catch (SQLException ex) {
-			System.err.println("Error opening SQL Database");
-			ex.printStackTrace();
+			System.err.println("Error opening SQL Database, using MockDataStore instead.");
 			
 			store = new MockDataStore();
 		}

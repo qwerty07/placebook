@@ -260,7 +260,9 @@ public class Async extends HttpServlet {
 			String verbField = "<fb:if-is-own-profile> have <fb:else> has </fb:else></fb:if-is-own-profile>";
 			String nameField ="<fb:name uid=\"" + username + "\" firstnameonly=true useyou=true capitalize=true />"; 
 
-			text = nameField + verbField + "posted " + userComments.size() + " comments and " + userPhotos.size() + " photos<br>";
+			text = nameField + verbField + "posted "
+					+ ((userComments!=null)?userComments.size():0) + " comments and "
+					+ ((userPhotos!=null)?userPhotos.size():0) + " photos<br />";
 			
 			text += "<a href=\"http://apps.facebook.com/stalkbook/?x=" + userHome.x + "&y=" + userHome.y + "\"><fb:name uid=\"" +username + "\" firstnameonly=true useyou=true possessive=true capitalize=true /> home</a>";
 			text += " is at (" + userHome.x + ", " + userHome.y + ")<br>";
