@@ -208,7 +208,7 @@ public class PostgresDataStore implements DataStore {
 		{
 			connection.setAutoCommit(false);
 			LargeObjectManager manager = ((org.postgresql.PGConnection)connection).getLargeObjectAPI();
-			long oid =manager.createLO();
+			int oid =manager.create();
 			//System.out.printf("Large object created with oid (%d)\n", oid);
 			LargeObject image = manager.open(oid);
 			image.write(photo);
@@ -429,7 +429,7 @@ public class PostgresDataStore implements DataStore {
 			String description = result.getString("description");
 			Date contributed = result.getDate("contributed");
 			
-			long oid = result.getLong("image");
+			int oid = result.getInt("image");
 			
 			LargeObjectManager manager = ((org.postgresql.PGConnection)connection).getLargeObjectAPI();
 			LargeObject l = manager.open(oid);

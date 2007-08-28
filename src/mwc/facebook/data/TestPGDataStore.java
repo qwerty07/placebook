@@ -28,7 +28,7 @@ public class TestPGDataStore extends PostgresDataStore {
 			LargeObjectManager manager = ((org.postgresql.PGConnection)connection).getLargeObjectAPI();
 			
 			while(result.next()) {
-				long oid = result.getLong("image");
+				int oid = result.getInt("image");
 				System.out.printf("Photo with oid (%d) deleted\n", oid);
 				manager.delete(oid);
 			}
