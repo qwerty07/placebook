@@ -9,7 +9,7 @@
 
 <%
 FacebookRestClient client = Stalkbook.getClient(request);
-int uid = client.users_getLoggedInUser();
+String uid = String.valueOf(client.users_getLoggedInUser());
 
 DataStore db = ObjectManager.instance().store();
 
@@ -24,8 +24,15 @@ try {
 	viewLocationY = null;
 }
 
-User user = db.getUserById(String.valueOf(uid)); // someone will fix this later
+//TODO error handling for non-existent users
+//Useful to pretend that they exist for testing
+User user = db.getUserById(uid);
 Point userHome = null;
+
+if (user == null) {
+	user = new User(uid, "unknown", new Point(0,0));
+	db.addUser(user);
+}
 
 userHome = user.getHomePoint();
 
@@ -43,7 +50,18 @@ if (userHome.x == 0 && userHome.y == 0) {
 
 <script src="onload.js"></script>
 
-<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAjLUGBU2KYPSE-QiX4gc3nhQaIaxgZFO_HyGm4sK6rU1DjshnHBQZEhZXdK-FSkrkhldgO6eTm6dXRw"></script>
+<%
+String path = request.getServerName() + ":" + request.getServerPort() + request.getRequestURI();
+System.out.println(path);
+String key = "ABQIAAAAjLUGBU2KYPSE-QiX4gc3nhQaIaxgZFO_HyGm4sK6rU1DjshnHBQZEhZXdK-FSkrkhldgO6eTm6dXRw"; //facebook.interface.org.nz/stalkbook/
+if (path.equals("localhost:8080/placebook/map.jsp")) {
+	key = "ABQIAAAAGVkkPzriDJzr0as5paOJcBTe7Eifd_iXjBDgwTzHgEAyw0l-yRSwY9tPLh5FJ3SvC0a3ctsADcxt1A";
+}
+else if (path.equals("facebook.interface.org.nz:80/placebook/map.jsp")) {
+	key = "ABQIAAAAGVkkPzriDJzr0as5paOJcBSer5cQCzSoMRgPT_f-szwyoknspxTtWg-aP7mG6y39p9SouMiN1sPy-Q";
+}
+%>
+<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=<%= key %>"></script>
 <script src="stalkbook.js" type="text/javascript"></script>
 <script src="ajax.js" type="text/javascript"></script>
 <script src="stalkcoordinator.js" type="text/javascript"></script>

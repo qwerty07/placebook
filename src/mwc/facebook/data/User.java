@@ -33,6 +33,10 @@ public class User {
 		return o.getUser().equals(user);
 	}
 	
+	public int hashCode() {
+		return user.hashCode();
+	}
+	
 	public String toJSON() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("{ ");

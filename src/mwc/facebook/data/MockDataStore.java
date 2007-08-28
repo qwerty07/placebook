@@ -1,6 +1,7 @@
 package mwc.facebook.data;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -10,7 +11,13 @@ public class MockDataStore implements DataStore{
 
 	private Map<String, User> userMap = new HashMap<String, User>();
 	private Map<Point, Location> locationMap = new HashMap<Point, Location>();
-	private Set<Pair<User, Location>> userLocations = new HashSet<Pair<User,Location>>(); 
+	private Set<Pair<User, Location>> userLocations = new HashSet<Pair<User,Location>>();
+	private Map<Location, ArrayList<CommentContribution>> comments = new HashMap<Location, ArrayList<CommentContribution>>();
+	private Map<User, ArrayList<CommentContribution>> userComments = new HashMap<User, ArrayList<CommentContribution>>();
+	private Map<Location, Set<PhotoContribution>> photos = new HashMap<Location, Set<PhotoContribution>>();
+	private Map<User, Set<PhotoContribution>> userPhotos = new HashMap<User, Set<PhotoContribution>>();
+	private Map<Integer, PhotoContribution> photoIds = new HashMap<Integer, PhotoContribution>();
+	private int photoCount = 0;
 	
 	public Location getLocationByPoint(Point point) {
 		return locationMap.get(point);
@@ -24,16 +31,12 @@ public class MockDataStore implements DataStore{
 		return locations;
 	}
 
-	public User getUserByName(String name) {
-		return userMap.get(name); 
-	}
-
 	public void addLocation(Location location) {
 		locationMap.put(location.getCoordinates(), location);
 	}
 
 	public void addUser(User user) {
-		userMap.put(user.getName(), user);
+		userMap.put(user.getUser(), user);
 	}
 
 	public void addUserToLocation(User user, Location location) {
@@ -62,26 +65,57 @@ public class MockDataStore implements DataStore{
 
 	public void addCommentTo(User user, Location location, String comment)
 	{
-		// TODO Auto-generated method stub
+		ArrayList<CommentContribution> lList = comments.get(location);
+		ArrayList<CommentContribution> uList = userComments.get(user);
 		
+		if (lList == null) {
+			lList = new ArrayList<CommentContribution>();
+			comments.put(location, lList);
+		}
+		if (uList == null) {
+			uList = new ArrayList<CommentContribution>();
+			userComments.put(user, lList);
+		}
+		
+		CommentContribution c = new CommentContribution(comment, new Date(), user, location);
+		
+		lList.add(c);
+		uList.add(c);
 	}
 
 	public int addPhotoTo(User user, Location location, byte[] photo, String description)
 	{
-		return 0;
+		Set<PhotoContribution> lList = photos.get(location);
+		Set<PhotoContribution> uList = userPhotos.get(user);
 		
+		if (lList == null) {
+			lList = new HashSet<PhotoContribution>();
+			photos.put(location, lList);
+		}
+		if (uList == null) {
+			uList = new HashSet<PhotoContribution>();
+			userPhotos.put(user, lList);
+		}
+		
+		int id = photoCount++;
+		
+		PhotoContribution c = new PhotoContribution(photo, id, description, new Date(), user, location);
+		
+		lList.add(c);
+		uList.add(c);
+		photoIds.put(id,c);
+		
+		return id;
 	}
 
 	public ArrayList<CommentContribution> getCommentsFrom(Location location)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return comments.get(location);
 	}
 
 	public Set<PhotoContribution> getPhotosFrom(Location location)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return photos.get(location);
 	}
 
 	public Set<Location> getLocationsWithin(Point centre, double radius) {
@@ -97,30 +131,27 @@ public class MockDataStore implements DataStore{
 
 	public ArrayList<CommentContribution> getCommentsFrom(User user)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return userComments.get(user);
 	}
 
 	public Set<PhotoContribution> getPhotosFrom(User user)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return userPhotos.get(user);
 	}
 
 	public User getUserById(String id)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		System.out.println(id);
+		return userMap.get(id);
 	}
 
 	public void updateUser(User user)
 	{
-		// TODO Auto-generated method stub
-		
+		userMap.remove(user.getUser());
+		userMap.put(user.getUser(), user);
 	}
 
 	public PhotoContribution getPhotoById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return photoIds.get(id);
 	}
 }
