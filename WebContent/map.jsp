@@ -57,7 +57,7 @@ String key = "ABQIAAAAjLUGBU2KYPSE-QiX4gc3nhQaIaxgZFO_HyGm4sK6rU1DjshnHBQZEhZXdK
 if (path.equals("localhost:8080/placebook/map.jsp")) {
 	key = "ABQIAAAAGVkkPzriDJzr0as5paOJcBTe7Eifd_iXjBDgwTzHgEAyw0l-yRSwY9tPLh5FJ3SvC0a3ctsADcxt1A";
 }
-else if (path.equals("facebook.interface.org.nz:80/placebook/map.jsp")) {
+else if (path.equals("facebook.interface.org.nz:8080/placebook/map.jsp")) {
 	key = "ABQIAAAAGVkkPzriDJzr0as5paOJcBSer5cQCzSoMRgPT_f-szwyoknspxTtWg-aP7mG6y39p9SouMiN1sPy-Q";
 }
 %>
