@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Location Test</title>
+
+<script src="onload.js"></script>
+
+<script src="ajax.js" type="text/javascript"></script>
+<script src="stalkcoordinator.js" type="text/javascript"></script>
+<script src="locationmanager.js" type="text/javascript"></script>
+<script src="userdetails.js" type="text/javascript"></script>
+
+<script src="testing.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+hooks.addHook(function () { locationManager.callback(
+		{ responseText:
+			"{ locationName: 'Location', "+
+			"  description: 'description is a long string\\nhello', "+
+			"  coordinates: { x: 50, y: -3.4 }, "+
+			"  users: [ {user: '0', name: 'Stephen'}, " +
+					"{user: '1', name: 'Andrew'}, " +
+					"{user: '2', name: 'MWC'} ], " +
+			"  comments: [" +
+					"{user: {user: '0', name: 'Stephen'}, text: 'Here is a comment'}, " +
+					"{user: {user: '3', name: 'Crispin'}, text: 'And this is another comment'} " +
+			"  ]," + 
+			"  photos: [" +
+					" {user: {user: '0', name: 'Stephen'}, photo: {id: '123', date: '24-08-2007', descripton: 'My photo'}}, "+
+					" {user: {user: '3', name: 'Crispin'}, photo: {id: '321', date: '18-06-2007', descripton: 'This is my photo'}} "+
+		    "  ] " +  
+			"}"
+		}
+	);
+});
+
+</script>
+
+<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
+<style type="text/css">
+#location {
+	position: static;
+}
+#wrapper {
+	width: 644px;
+	height: 500px;
+}
+</style>
+</head>
+<body onload="hooks.onload()">
+<div id="wrapper">
+<div id="location"></div>
+</div>
+<pre id="output"></pre>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Location Test</title>
+
+<script src="onload.js"></script>
+
+<script src="ajax.js" type="text/javascript"></script>
+<script src="stalkcoordinator.js" type="text/javascript"></script>
+<script src="userdetails.js" type="text/javascript"></script>
+
+<script src="testing.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+var stalkBook;
+hooks.addHook(function () {
+	stalkCoordinator = new StalkCoordinator();
+	stalkBook = {
+	addMarkerByXY: function (x,y,loc) {
+		test.output(["add ",{x:x,y:y}]);
+	}
+};
+});
+hooks.addHook(function () { test.run() });
+
+test.add(function () {
+	
+	var data = [
+		{coordinates:{x:3,y:0}},
+		{coordinates:{x:1,y:0}},
+		{coordinates:{x:2,y:3}},
+		{coordinates:{x:1,y:2}},
+		{coordinates:{x:0,y:0}}
+	];
+	var sorted = [
+		{coordinates:{x:0,y:0}},
+		{coordinates:{x:1,y:0}},
+		{coordinates:{x:1,y:2}},
+		{coordinates:{x:2,y:3}},
+		{coordinates:{x:3,y:0}}
+	];
+
+	data = stalkCoordinator.sort(data);
+	test.output(data);
+	for (var i = 0; i < 5; i++) {
+		if (data[i].x != sorted[i].x) return false;
+		if (data[i].y != sorted[i].y) return false;
+	}
+	return true;
+});
+
+test.add(function () {
+	var data = [
+		{coordinates:{x:3,y:0}},
+		{coordinates:{x:1,y:0}},
+		{coordinates:{x:2,y:3}},
+		{coordinates:{x:1,y:2}},
+		{coordinates:{x:0,y:0}}
+	];
+	stalkCoordinator.addMarkers(data);
+	var len = stalkCoordinator.markers.length;
+	
+	data = [
+		{coordinates:{x:5,y:0}},
+		{coordinates:{x:4,y:2}},
+		{coordinates:{x:2,y:3}},
+		{coordinates:{x:1,y:3}},
+		{coordinates:{x:1,y:0}}
+	];
+	stalkCoordinator.addMarkers(data);
+	test.output(stalkCoordinator.markers);
+	
+	return stalkCoordinator.markers.length == (len+3);
+});
+
+</script>
+
+</head>
+<body onload="hooks.onload()">
+<pre id="output"></pre>
+</body>
+</html>

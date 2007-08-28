@@ -1,0 +1,288 @@
+body {
+	font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+	margin: 5px 0;
+	padding: 0;
+	width: 644px;
+	font-size: 1.0em;
+}
+
+#map {
+	position: absolute;
+	width: 644px;
+	height: 500px;
+}
+
+#map.thin {
+	width: 322px;
+}
+
+/* 10px between map and location, 10 px around all */
+
+#location {
+	position: absolute;
+	display: none;
+	width: 297px;
+	margin: 0 5px;
+	top: 0px;
+	left: 322px;
+	height: 100%;
+}
+
+#location .closeButton {
+	background-image: url("images/close.png");
+	width: 20px;
+	height: 20px;
+	float: right;
+	margin: 5px;
+}
+
+#location .closeButton span {
+	display: none;
+}
+
+#location.show {
+	display: block;
+}
+
+#location h4 {
+	/* total height is 35px */
+	background: #6d84b4;
+	color: white;
+	margin: 0;
+	border-bottom: solid 1px white;
+	padding: 5px 10px;
+	line-height: 20px;
+}
+
+#location .content {
+	height: 465px;
+	overflow: auto;
+    border: solid 1px #bbb;
+    border-top: none;
+    font-size: 11px;
+}
+
+#location .content .item {
+	border-top: 1px solid #E5E5E5;
+	padding: 10px;
+}
+
+#location .content .item.first {
+	border-top: none;
+}
+
+#location .content .item h5 {
+	background: #D8DFEA none repeat scroll 0%;
+	border-top: 1px solid #3B5998;
+	margin: 0px;
+	padding: 2px 8px;
+	color:#3B5998;
+	font-size:11px;
+	font-weight:bold;
+}
+
+#location .content .join {
+	display: block;
+	color:#3B5998;
+	text-decoration:none;
+	margin:0px;
+	padding:2px 3px;
+}
+
+#location .content .join:hover {
+	background:#3B5998 none repeat scroll 0%;
+	color:white;
+	text-decoration:none;
+}
+
+#location .content .addComment {
+	display: block;
+	color:#3B5998;
+	text-decoration:none;
+	margin:0px;
+	padding:2px 3px;
+}
+
+#location .content .addComment:hover {
+	background:#3B5998 none repeat scroll 0%;
+	color:white;
+	text-decoration:none;
+}
+
+#location .content .addPhoto {
+	display: block;
+	color:#3B5998;
+	text-decoration:none;
+	margin:0px;
+	padding:2px 3px;
+}
+
+#location .content .addPhoto:hover {
+	background:#3B5998 none repeat scroll 0%;
+	color:white;
+	text-decoration:none;
+}
+
+#location .content .users ul {
+	color: #3B5998;
+	padding: 0;
+}
+
+#location .content .users li {
+	display: inline;
+	padding: 0 5px;
+	list-style: none;
+}
+
+#location .content .users li:after {
+	content: ",";
+}
+
+#location .content .users li.last:after {
+	content: "";
+}
+
+#location .content .comments ul {
+	display: block;
+	margin: 0;
+	padding: 0;
+}
+
+#location .content .comments li {
+	display: block;
+	margin: 0;
+	text-decoration: none;
+	list-style: none;
+	padding: 10px;
+}
+
+#location .content .comments li dl {
+	border-top: 1px solid #3B5998;
+	border-bottom: 1px solid #E5E5E5;
+	padding-bottom: 2ex;
+}
+
+#location .content .comments li dt {
+	background:#F7F7F7 none repeat scroll 0%;
+	border-bottom:1px solid #D8DFEA;
+	padding:3px 5px;
+}
+
+#location .content .comments li dd {
+	margin: 0;
+	padding: 5px;
+}
+
+#bubbleHead {
+	font-size: 0.9em;
+	color: #3b5998;	
+}
+
+#bubbleText {
+	width: 200px;	
+}
+
+#bubbleText p {
+	padding: 0px;
+	margin: 10px;	
+	font-size: 0.7em;
+}
+
+#bubbleText p.openLink {
+	float: right;
+	font-size: 0.7em;
+	padding:0;
+	margin: 2px;
+	
+}
+
+/* Styles for Add Location dialog */
+
+#addLocationContainer {
+	position: absolute;
+	top: 100px;
+	left: 100px;
+	background: url(images/formback.png) transparent ;
+	border: 1px #BBBBBB solid;
+	width: 500px;
+	padding: 0;
+}
+
+#addLocationContainer h2 {
+	background: #7f93bc;
+	color: #fff;
+	margin: 0;
+	padding: 5px;
+}
+
+#formWrap {
+	padding: 20px;
+}
+
+#blocker {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 629px;
+	height: 500px;
+}
+
+label {
+	padding-top: 15px;
+	float: left;
+	font-weight: bold;
+	width: 100px;
+}
+
+input {
+	margin-top: 15px;
+	margin-left: 10px;
+	padding-left: 0px;
+}
+
+textarea {
+	margin-top: 15px;
+	margin-left: 10px;
+	padding-left: 0px;
+}
+
+.buttons {
+	float: right;
+}
+
+/* Styles for Add Comment dialog */
+#addCommentContainer {
+	position: absolute;
+	top: 100px;
+	left: 100px;
+	background: url(images/formback.png) transparent ;
+	border: 1px #BBBBBB solid;
+	width: 500px;
+	height: 500px;
+	padding: 0;
+}
+
+#addCommentContainer h4 {
+	/* total height is 35px */
+	background: #6d84b4;
+	color: white;
+	margin: 0;
+	border-bottom: solid 1px white;
+	padding: 5px 10px;
+	line-height: 20px;
+}
+	
+/* facebook imported styles */
+
+.lists .list .list_item { border-top:1px solid #E5E5E5; padding: 10px; }
+.lists .list .list_item.first { border-top: none; }
+
+.lists .see_all {
+     background:white none repeat scroll 0%;
+     border-color:-moz-use-text-color #BBBBBB rgb(187, 187, 187);
+     border-style:none solid solid;
+     border-width:medium 1px 1px;
+     text-align:left;
+}
+
+.lists .see_all div { border-top:1px solid #E5E5E5; padding:5px 10px; }
