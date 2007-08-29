@@ -81,7 +81,7 @@ body {
 	font-weight:bold;
 }
 
-#location .content .join {
+#location .content .locationButton {
 	display: block;
 	color:#3B5998;
 	text-decoration:none;
@@ -89,38 +89,20 @@ body {
 	padding:2px 3px;
 }
 
-#location .content .join:hover {
+#location .content .locationButton:hover {
 	background:#3B5998 none repeat scroll 0%;
 	color:white;
 	text-decoration:none;
 }
 
-#location .content .addComment {
-	display: block;
-	color:#3B5998;
-	text-decoration:none;
-	margin:0px;
-	padding:2px 3px;
-}
-
-#location .content .addComment:hover {
-	background:#3B5998 none repeat scroll 0%;
-	color:white;
-	text-decoration:none;
-}
-
-#location .content .addPhoto {
-	display: block;
-	color:#3B5998;
-	text-decoration:none;
-	margin:0px;
-	padding:2px 3px;
-}
-
-#location .content .addPhoto:hover {
-	background:#3B5998 none repeat scroll 0%;
-	color:white;
-	text-decoration:none;
+#location .content textarea {
+	width: 240px;
+	margin: 0 10px;
+	padding: 5px 0;
+	height: 5ex;
+	border: solid 1px #D8DFEA;
+	border-left: none;
+	border-right: none;
 }
 
 #location .content .users ul {
@@ -163,7 +145,7 @@ body {
 }
 
 #location .content .comments li dt {
-	background:#F7F7F7 none repeat scroll 0%;
+	background-color: #f7f7f7;
 	border-bottom:1px solid #D8DFEA;
 	padding:3px 5px;
 }
@@ -171,6 +153,23 @@ body {
 #location .content .comments li dd {
 	margin: 0;
 	padding: 5px;
+}
+
+#location .content .comments .form .title {
+	background-color: #f7f7f7;
+	border-top: 1px solid #3B5998;
+	font-size: 11px;
+	margin: 10px;
+	margin-bottom: 0;
+	padding: 3px 5px;
+}
+
+#location .content .show {
+	display: block;
+}
+
+#location .content .hide {
+	display: none;
 }
 
 #bubbleHead {
