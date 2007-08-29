@@ -2,73 +2,131 @@ var locationManager;
 
 function LocationManager () {	
 	this.load = function () {
+		/* get location element from document */
 		this.location = document.getElementById("location");
-		this.title = document.createElement("H4");
-		this.description = document.createElement("DIV");
-		this.users = document.createElement("UL");
-		this.comments = document.createElement("UL");
-		this.photos = document.createElement("UL");
-		this.joinButton = document.createElement("A");
 		
+		/* add close button to location */
 		var close = document.createElement("A");
 		close.className="closeButton";
 		close.href="javascript:locationManager.hide()";
 		close.innerHTML="<span>[close]</span>";
-		
-		this.joinButton.className="join locationButton";
-		this.joinButton.href="javascript:locationManager.join()";
-		this.joinButton.innerHTML = "Join this Location";
-		
-		var content = document.createElement("DIV");
-		content.className = "content";
-		var inner = document.createElement("DIV");
-		inner.className = "inner";
-		
-		var ddiv = document.createElement("DIV");
-		ddiv.className = "item first";
-		ddiv.appendChild(document.createElement("H5"));
-		ddiv.firstChild.textContent="Description";
-		ddiv.appendChild(this.description);
-		ddiv.appendChild(this.joinButton);
-		
-		var udiv = document.createElement("DIV");
-		udiv.className = "item users";
-		udiv.appendChild(document.createElement("H5"));
-		udiv.firstChild.textContent="Locals";
-		udiv.appendChild(this.users);
-		
-		var addComment = document.createElement("A");
-		addComment.className = "addComment locationButton";
-		addComment.href = "javascript:locationManager.addComment()";
-		addComment.innerHTML = "Add a Comment";
-		
-		var cdiv = document.createElement("DIV");
-		cdiv.className = "item comments";
-		cdiv.appendChild(document.createElement("H5"));
-		cdiv.firstChild.textContent="Comments";
-		cdiv.appendChild(this.comments);
-		cdiv.appendChild(addComment);
-		
-		var addPhoto = document.createElement("A");
-		addPhoto.className = "addPhoto locationButton";
-		addPhoto.href = "javascript:locationManager.addPhoto()";
-		addPhoto.innerHTML = "Add a Photo";
-		
-		var pdiv = document.createElement("DIV");
-		pdiv.className = "item photos";
-		pdiv.appendChild(document.createElement("H5"));
-		pdiv.firstChild.textContent = "Photos";
-		pdiv.appendChild(this.photos);
-		pdiv.appendChild(addPhoto);
-		
 		this.location.appendChild(close);
-		this.location.appendChild(this.title);
-		this.location.appendChild(content);
-		content.appendChild(ddiv);
-		content.appendChild(udiv);
-		content.appendChild(cdiv);
-		content.appendChild(pdiv);
 		
+		/* add title to location */
+		this.title = document.createElement("H4");
+		this.location.appendChild(this.title);
+		
+		/* create location pane content */
+		var content = document.createElement("DIV");
+		{
+			content.className = "content";
+			
+			/* create description etc */
+			this.description = document.createElement("DIV");
+			this.joinButton = document.createElement("A");
+			{
+				/* initialise div */
+				var div = document.createElement("DIV");
+				div.className = "item first";
+				div.appendChild(document.createElement("H5"));
+				div.firstChild.textContent="Description";
+				
+				/* add description field */
+				div.appendChild(this.description);
+				
+				/* add join button */
+				this.joinButton.className="join locationButton";
+				this.joinButton.href="javascript:locationManager.join()";
+				this.joinButton.innerHTML = "Join this Location";
+				div.appendChild(this.joinButton);
+				content.appendChild(div);
+			}
+			
+			/* create user component */
+			this.users = document.createElement("UL");
+			{
+				/* initialise div */
+				var div = document.createElement("DIV");
+				div.className = "item users";
+				div.appendChild(document.createElement("H5"));
+				div.firstChild.textContent="Locals";
+				
+				/* add users element */
+				div.appendChild(this.users);
+				
+				/* add to location pane */
+				content.appendChild(div);
+			}
+			
+			/* create comment component */
+			this.comments = document.createElement("UL");
+			this.addCommentButton = document.createElement("A");
+			this.addCommentForm = document.createElement("DIV");
+			{
+				/* initialise div */
+				var div = document.createElement("DIV");
+				div.className = "item comments";
+				div.appendChild(document.createElement("H5"));
+				div.firstChild.textContent="Comments";
+				
+				div.appendChild(this.comments);
+				
+				this.addCommentButton.className = "addComment locationButton";
+				this.addCommentButton.href = "javascript:locationManager.addComment()";
+				this.addCommentButton.innerHTML = "Add a Comment";
+				this.showElement(this.addCommentButton);
+				div.appendChild(this.addCommentButton);
+				
+				this.addCommentForm.className = "locationForm form";
+				var title = document.createElement("H5");
+				title.className = "title";
+				title.innerHTML = user.name;
+				this.addCommentForm.appendChild(title);
+				
+				var text = document.createElement("TEXTAREA");
+				text.className = "locationPane comments";
+				text.onblur = function () {
+					window.setTimeout(
+						function () {locationManager.clearComment();},
+						100
+					);
+				};
+				this.addCommentForm.appendChild(text);
+				
+				var button = document.createElement("A");
+				button.className = "locationButton submitComment";
+				button.href = "javascript:locationManager.submitComment()";
+				button.innerHTML = "Submit Comment";
+				this.addCommentForm.appendChild(button);
+
+				this.hideElement(this.addCommentForm);
+				div.appendChild(this.addCommentForm);
+				
+				/* add to location pane */
+				content.appendChild(div);
+			}
+			
+			this.photos = document.createElement("UL");
+			{
+				var div = document.createElement("DIV");
+				div.className = "item photos";
+				div.appendChild(document.createElement("H5"));
+				div.firstChild.textContent = "Photos";
+				
+				div.appendChild(this.photos);
+				
+				var addPhoto = document.createElement("A");
+				addPhoto.className = "addPhoto locationButton";
+				addPhoto.href = "javascript:locationManager.addPhoto()";
+				addPhoto.innerHTML = "Add a Photo";
+				div.appendChild(addPhoto);
+				
+				/* add to location pane */
+				content.appendChild(div);
+			}
+		}
+		/* add content to location pane */
+		this.location.appendChild(content);
 	};
 	this.setLocation = function (point) {
 		async.retrieveLocation(point, function (req) { locationManager.callback(req); });
@@ -152,13 +210,13 @@ function LocationManager () {
 	};
 	
 	this.show = function () {
-		this.location.className="show";
+		this.showElement(this.location);
 		if (document.getElementById("map")) {
 			document.getElementById("map").className="thin";
 		}
 	}
 	this.hide = function () {
-		this.location.className="";
+		this.hideElement(this.location);
 		if (document.getElementById("map")) {
 			document.getElementById("map").className="";
 		}
@@ -169,17 +227,36 @@ function LocationManager () {
 	}
 	this.addComment = function() {
 		// add a comment to this location
-		var comment = prompt("Enter your comment");
+		this.hideElement(this.addCommentButton);
+		this.showElement(this.addCommentForm);
+		this.addCommentForm.childNodes[1].focus();
+	}
+	this.submitComment = function() {
+		// send comment to the server
+		var comment = this.addCommentForm.childNodes[1].value;
 		if (comment != null) {
 			async.addComment(user.user, this.coordinates, comment, function(req) {});
 			this.createComment({user: user, text: comment});
 		}
+		this.clearComment();
 	}
-	
+	this.clearComment = function() {
+		this.hideElement(this.addCommentForm);
+		this.addCommentForm.childNodes[1].value = "";
+		this.showElement(this.addCommentButton);
+	}
 	this.addPhoto = function() {
 		// add a photo to this location
 		var filename = prompt("Enter photo filename");
 		async.addPhoto(user.user, this.coordinates, filename, function(req) {});
+	}
+	this.showElement = function(element) {
+		element.className += " show";
+		element.className = element.className.replace(/hide/g,'');
+	}
+	this.hideElement = function(element, class) {
+		element.className += " hide";
+		element.className = element.className.replace(/show/g,'');
 	}
 };
 
