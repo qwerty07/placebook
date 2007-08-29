@@ -98,7 +98,7 @@ public class Stalkbook extends HttpServlet {
 				store.addUser(user);
 			}
 			
-			String iframeLocation = "http://facebook.interface.org.nz/stalkbook/map.jsp";
+			String iframeLocation = "http://facebook.interface.org.nz/placebook/map.jsp";
 			String queryString = request.getQueryString();
 			if (queryString != null) iframeLocation += "?" + queryString;
 

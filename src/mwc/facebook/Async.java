@@ -306,16 +306,19 @@ public class Async extends HttpServlet {
 			
 			writer.println("comments: [ ");
 			ArrayList<CommentContribution> comments = store.getCommentsFrom(location);
-			for (CommentContribution comment: comments) {
-				writer.println(comment.toJSON() + ", ");
-				
+			if (comments != null) {
+				for (CommentContribution comment: comments) {
+					writer.println(comment.toJSON() + ", ");
+				}
 			}
 			writer.println(" ],");
 			
 			writer.println("photos: [ ");
 			Set<PhotoContribution> photos = store.getPhotosFrom(location);
-			for (PhotoContribution photo: photos) {
-				writer.println(photo.toJSON() + ", ");				
+			if (photos != null) {
+				for (PhotoContribution photo: photos) {
+					writer.println(photo.toJSON() + ", ");				
+				}
 			}
 			writer.println(" ],");
 			
