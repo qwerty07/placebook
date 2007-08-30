@@ -56,7 +56,7 @@ public class PostgresDataStore implements DataStore {
 	private void prepareStatements() throws SQLException {
 		
 		// Create prepared statements
-		insertUser = connection.prepareStatement("INSERT INTO Stalker (fb_id, fb_name, fbpic, home_coord_x, home_coord_y) VALUES (?, ?, ?, ?, ?);");
+		insertUser = connection.prepareStatement("INSERT INTO Stalker (fb_id, fb_name, fb_pic, home_coord_x, home_coord_y) VALUES (?, ?, ?, ?, ?);");
 		updateUser = connection.prepareStatement("UPDATE stalker SET fb_id = ?, fb_name = ?, fb_pic = ?, home_coord_x = ?, home_coord_y = ? WHERE fb_id = ?;");
 		insertLocation = connection.prepareStatement("INSERT INTO location (coord_x, coord_y, loc_name, description) VALUES (?, ?, ?, ?);");
 		getUserById = connection.prepareStatement("SELECT fb_id, fb_name, fb_pic, home_coord_x, home_coord_y FROM Stalker WHERE fb_id = ?;");
