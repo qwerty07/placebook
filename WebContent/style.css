@@ -116,6 +116,15 @@ body {
 	list-style: none;
 }
 
+#location .content .users li a {
+	color: #3B5998;
+	text-decoration: none;
+}
+
+#location .content .users li a:hover {
+	text-decoration: underline;
+}
+
 #location .content .users li:after {
 	content: ",";
 }
@@ -136,6 +145,7 @@ body {
 	text-decoration: none;
 	list-style: none;
 	padding: 10px;
+	padding-left: 60px;
 }
 
 #location .content .comments li dl {
@@ -148,6 +158,23 @@ body {
 	background-color: #f7f7f7;
 	border-bottom:1px solid #D8DFEA;
 	padding:3px 5px;
+}
+
+#location .content .comments a {
+	display: block;
+	font-weight: bold;
+	text-decoration: none;
+	color: #3B5998;
+}
+
+#location .content .comments a:hover {
+	text-decoration: underline;
+}
+
+#location .content .comments .profilePic {
+	float: left;
+	margin-left: -60px;
+	margin-top: -6px;
 }
 
 #location .content .comments li dd {

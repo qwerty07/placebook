@@ -185,8 +185,15 @@ function LocationManager () {
 	this.createComment = function (comment) {
 		var container = document.createElement("DL");
 		var head = document.createElement("DT");
-		var user = document.createElement("DIV");
+		if (comment.user.pic) {
+			var pic = document.createElement("IMG");
+			pic.className = "profilePic";
+			pic.src = comment.user.pic;
+			head.appendChild(pic);
+		} 
+		var user = document.createElement("A");
 		user.innerHTML=comment.user.name;
+		user.href="http://www.facebook.com/profile.php?id="+comment.user.user;
 		user.className="user";
 		head.appendChild(user);
 		var date = document.createElement("SMALL");
@@ -208,7 +215,9 @@ function LocationManager () {
 			this.joinButton.style.display="none";
 		}
 		
-		var text = document.createTextNode(u.name);
+		var text = document.createElement("A");
+		text.innerHTML = u.name;
+		text.href = "http://www.facebook.com/profile?id="+u.user;
 		var li = document.createElement("LI");
 		li.appendChild(text);
 		li.user = u.user;
