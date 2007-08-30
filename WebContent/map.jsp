@@ -100,6 +100,17 @@ var view = {
 <% } %>	
 };
 
+window.addEventListener(
+	"resize",
+	function () { stalkBook.resize(); },
+	false
+);
+hooks.addHook(
+	function () {
+		stalkBook.resize();
+	}
+);
+
 </script>
 <% if (userHome == null) { %>
 <script type="text/javascript" src="firstload.js"></script>
