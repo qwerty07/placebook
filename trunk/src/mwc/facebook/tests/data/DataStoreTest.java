@@ -43,7 +43,7 @@ public class DataStoreTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception
 	{
-		dataStore = ObjectManager.instance().store();
+		dataStore = new TestPGDataStore("localhost:5433", "stalkbook", "facebook", "everybreathyoutake");
 	}
 
 	public void testUserNotFound(){
@@ -80,6 +80,7 @@ public class DataStoreTest extends TestCase {
 	}
 	
 	public void testSetDefaultLocation(){
+		dataStore.addUser(new User("123", "Bob", "http://some.host/pic.png", new Point(30f,150f)));
 		User user = dataStore.getUserById("123");
 		user.setHomePoint(new Point(12.4f, 0.234f));
 		dataStore.updateUser(user);
