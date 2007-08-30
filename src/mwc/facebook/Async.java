@@ -299,7 +299,7 @@ public class Async extends HttpServlet {
 					+ ((userComments!=null)?userComments.size():0) + " comments and "
 					+ ((userPhotos!=null)?userPhotos.size():0) + " photos<br />";
 			
-			text += "<a href=\"http://apps.facebook.com/stalkbook/?x=" + userHome.x + "&y=" + userHome.y + "\"><fb:name uid=\"" +username + "\" firstnameonly=true useyou=true possessive=true capitalize=true /> home</a>";
+			text += "<a href=\"http://apps.facebook.com/place-book/?x=" + userHome.x + "&y=" + userHome.y + "\"><fb:name uid=\"" +username + "\" firstnameonly=true useyou=true possessive=true capitalize=true /> home</a>";
 			text += " is at (" + userHome.x + ", " + userHome.y + ")<br>";
 
 			text += nameField + "<fb:if-is-own-profile> are <fb:else> is </fb:else></fb:if-is-own-profile>associated with ";

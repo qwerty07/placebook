@@ -19,6 +19,16 @@ public class TestPGDataStore extends PostgresDataStore {
 		connection.createStatement().executeUpdate("DELETE FROM location;");
 	}
 
+	public TestPGDataStore(String server, String database, String user, String pass) throws SQLException
+	{
+		super(server, database, user, pass);
+		deletePhotos();
+
+		connection.createStatement().executeUpdate("DELETE FROM comment;");
+		connection.createStatement().executeUpdate("DELETE FROM location_stalker;");
+		connection.createStatement().executeUpdate("DELETE FROM stalker;");
+		connection.createStatement().executeUpdate("DELETE FROM location;");
+	}
 	
 	
 	private synchronized void deletePhotos() {
