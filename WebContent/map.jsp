@@ -46,7 +46,7 @@ Point userHome = null;
 		db.addUser(user);
 	}
 	else if (!name.equals(user.getName()) || !pic.equals(user.getPic())) {
-		user = new User(uid, name, pic, new Point(0,0));
+		user = new User(uid, name, pic, user.getHomePoint());
 		db.updateUser(user);
 	}
 }
