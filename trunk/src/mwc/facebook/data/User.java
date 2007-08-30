@@ -48,7 +48,7 @@ public class User {
 		sb.append("{ ");
 		sb.append("user: " + user + ", ");
 		if (home != null) {
-			sb.append("home: \"" + Location.escapeString(name) + "\", ");
+			sb.append("home: " + home.toJSON() + ", ");
 		}
 		if (pic != null) {
 			sb.append("pic: \"" + Location.escapeString(pic) + "\", ");

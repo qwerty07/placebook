@@ -67,7 +67,7 @@ public class PostgresDataStore implements DataStore {
 		findUsersByLocation = connection.prepareStatement("SELECT stalker.fb_id, stalker.fb_name, stalker.fb_pic, home_coord_x, home_coord_y FROM stalker INNER JOIN location_stalker ON stalker.fb_id = location_stalker.stalker_fb_id WHERE coord_x = ? AND coord_y = ?;");
 		findLocationsForUser = connection.prepareStatement("SELECT location.coord_x, location.coord_y, location.loc_name, location.description FROM location NATURAL JOIN location_stalker WHERE stalker_fb_id = ?;");
 		getPhotoById = connection.prepareStatement("SELECT photo_id, coord_x, coord_y, stalker_fb_id, description, image, contributed FROM photo WHERE photo_id = ?;");
-		addPhotoToLocation = connection.prepareStatement("INSERT INTO photo(photo_id,coord_x, coord_y, stalker_fb_id, description, image) VALUES (?,?, ?, ?, ?, ?);");
+		addPhotoToLocation = connection.prepareStatement("INSERT INTO photo(coord_x, coord_y, stalker_fb_id, description, image) VALUES (?, ?, ?, ?, ?);");
 		getPhotosFromLocation = connection.prepareStatement("SELECT coord_x, coord_y, stalker_fb_id, description, image, contributed FROM photo WHERE coord_x = ? AND coord_y = ?;");
 		getPhotosForUser = connection.prepareStatement("SELECT stalker_fb_id, coord_x, coord_y, description, image, contributed FROM photo WHERE stalker_fb_id = ?;");
 		addCommentToLocation = connection.prepareStatement("INSERT INTO comment(coord_x, coord_y, stalker_fb_id, comment) VALUES (?, ?, ?, ?);");
@@ -216,14 +216,14 @@ public class PostgresDataStore implements DataStore {
 			image.write(photo);
 			image.close();
 			
-			addPhotoToLocation.setString(1, "DEFAULT");
-			addPhotoToLocation.setDouble(2, location.getCoordinates().x);
-			addPhotoToLocation.setDouble(3, location.getCoordinates().y);
-			addPhotoToLocation.setString(4, user.getUser());
-			addPhotoToLocation.setString(5, description);
-			addPhotoToLocation.setLong(6, oid);
+			addPhotoToLocation.setDouble(1, location.getCoordinates().x);
+			addPhotoToLocation.setDouble(2, location.getCoordinates().y);
+			addPhotoToLocation.setString(3, user.getUser());
+			addPhotoToLocation.setString(4, description);
+			addPhotoToLocation.setLong(5, oid);
 			addPhotoToLocation.executeUpdate();
 			ResultSet key=addPhotoToLocation.getGeneratedKeys();
+			System.out.println(key.next());
 			photoId=key.getInt(1);
 			connection.commit();
 			connection.setAutoCommit(true);

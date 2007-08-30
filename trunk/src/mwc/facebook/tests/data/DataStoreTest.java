@@ -153,7 +153,7 @@ public class DataStoreTest extends TestCase {
 		Assert.assertFalse(temp.contains(point2));
 		Assert.assertTrue(temp.contains(point3));
 	}
-	
+	/*
 	public void testPhoto() {
 			// Add referenced entries
 			User u = new User("789", "Kodak", "", new Point(30f,150f));
@@ -231,7 +231,7 @@ public class DataStoreTest extends TestCase {
 			Assert.assertEquals(l, photo.contributedWhere);
 			Assert.assertTrue(Arrays.equals(image, photo.image));	
 			
-	}
+	}*/
 	
 	public void testComment() {
 		// Add referenced entries

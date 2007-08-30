@@ -23,7 +23,7 @@ public class ObjectManager {
 		}
 		catch (SQLException ex) {
 			System.err.println("Error opening SQL Database, using MockDataStore instead.");
-			
+			ex.printStackTrace();
 			store = new MockDataStore();
 		}
 	}
