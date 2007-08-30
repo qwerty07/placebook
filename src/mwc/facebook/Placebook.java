@@ -1,7 +1,7 @@
 /**
  * 
  */
-package mwc;
+package mwc.facebook;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import mwc.facebook.ObjectManager;
 import mwc.facebook.data.DataStore;
 import mwc.facebook.data.Point;
 import mwc.facebook.data.User;
@@ -33,7 +32,7 @@ import com.facebook.api.FacebookRestClient;
  * @author bergerwill
  * 
  */
-public class Stalkbook extends HttpServlet {
+public class Placebook extends HttpServlet {
 	/**
 	 * 
 	 */
@@ -47,7 +46,7 @@ public class Stalkbook extends HttpServlet {
 	
 	static {
 		try {
-			URI config = Stalkbook.class.getResource(CONFIG_FILE).toURI();
+			URI config = Placebook.class.getResource(CONFIG_FILE).toURI();
 			FileInputStream fis = new FileInputStream(new File(config));
 			Properties props = new Properties();
 			props.load(fis);
@@ -91,7 +90,7 @@ public class Stalkbook extends HttpServlet {
 				Set<CharSequence> fields = new TreeSet<CharSequence>();
 				fields.add("name");
 				fields.add("pic_small");
-				Document document = Stalkbook.getClient(request).users_getInfo(ids, fields);
+				Document document = Placebook.getClient(request).users_getInfo(ids, fields);
 				NodeList list = document.getElementsByTagName("name");
 				String name = list.item(0).getTextContent();
 				list = document.getElementsByTagName("pic_small");
