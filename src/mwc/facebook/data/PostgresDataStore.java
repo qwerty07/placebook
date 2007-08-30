@@ -56,15 +56,15 @@ public class PostgresDataStore implements DataStore {
 	private void prepareStatements() throws SQLException {
 		
 		// Create prepared statements
-		insertUser = connection.prepareStatement("INSERT INTO Stalker (fb_id, fb_name, home_coord_x, home_coord_y) VALUES (?, ?, ?, ?);");
-		updateUser = connection.prepareStatement("UPDATE stalker SET fb_id = ?, fb_name = ?, home_coord_x = ?, home_coord_y = ? WHERE fb_id = ?;");
+		insertUser = connection.prepareStatement("INSERT INTO Stalker (fb_id, fb_name, fbpic, home_coord_x, home_coord_y) VALUES (?, ?, ?, ?, ?);");
+		updateUser = connection.prepareStatement("UPDATE stalker SET fb_id = ?, fb_name = ?, fb_pic = ?, home_coord_x = ?, home_coord_y = ? WHERE fb_id = ?;");
 		insertLocation = connection.prepareStatement("INSERT INTO location (coord_x, coord_y, loc_name, description) VALUES (?, ?, ?, ?);");
-		getUserById = connection.prepareStatement("SELECT fb_id, fb_name, home_coord_x, home_coord_y FROM Stalker WHERE fb_id = ?;");
+		getUserById = connection.prepareStatement("SELECT fb_id, fb_name, fb_pic, home_coord_x, home_coord_y FROM Stalker WHERE fb_id = ?;");
 		getLocationByPoint = connection.prepareStatement("SELECT loc_name, coord_x, coord_y, description FROM Location WHERE coord_x = ? AND coord_y = ?;");
 		findLocationsInArea = connection.prepareStatement("SELECT loc_name, coord_x, coord_y, description FROM Location WHERE box(point(coord_x, coord_y),point(coord_x, coord_y)) && ?;");
 		findLocationsInCircle = connection.prepareStatement("SELECT loc_name, coord_x, coord_y, description FROM Location WHERE box(point(coord_x, coord_y),point(coord_x, coord_y)) && box(circle(?,?)) AND (point(coord_x, coord_y) <-> ?) < ?;");
 		associateUserAndLocation = connection.prepareStatement("INSERT INTO location_stalker (stalker_fb_id, coord_x, coord_y) VALUES (?, ?, ?);");
-		findUsersByLocation = connection.prepareStatement("SELECT stalker.fb_id, stalker.fb_name, home_coord_x, home_coord_y FROM stalker INNER JOIN location_stalker ON stalker.fb_id = location_stalker.stalker_fb_id WHERE coord_x = ? AND coord_y = ?;");
+		findUsersByLocation = connection.prepareStatement("SELECT stalker.fb_id, stalker.fb_name, stalker.fb_pic, home_coord_x, home_coord_y FROM stalker INNER JOIN location_stalker ON stalker.fb_id = location_stalker.stalker_fb_id WHERE coord_x = ? AND coord_y = ?;");
 		findLocationsForUser = connection.prepareStatement("SELECT location.coord_x, location.coord_y, location.loc_name, location.description FROM location NATURAL JOIN location_stalker WHERE stalker_fb_id = ?;");
 		getPhotoById = connection.prepareStatement("SELECT photo_id, coord_x, coord_y, stalker_fb_id, description, image, contributed FROM photo WHERE photo_id = ?;");
 		addPhotoToLocation = connection.prepareStatement("INSERT INTO photo(photo_id,coord_x, coord_y, stalker_fb_id, description, image) VALUES (?,?, ?, ?, ?, ?);");
@@ -102,8 +102,9 @@ public class PostgresDataStore implements DataStore {
 		try {
 			insertUser.setString(1, user.getUser());
 			insertUser.setString(2, user.getName());
-			insertUser.setDouble(3, user.getHomePoint().x);
-			insertUser.setDouble(4, user.getHomePoint().y);
+			insertUser.setString(3, user.getPic());
+			insertUser.setDouble(4, user.getHomePoint().x);
+			insertUser.setDouble(5, user.getHomePoint().y);
 			insertUser.executeUpdate();
 		} catch (SQLException e) {
 			handleError(e);
@@ -114,9 +115,10 @@ public class PostgresDataStore implements DataStore {
 		try {
 			updateUser.setString(1, user.getUser());
 			updateUser.setString(2, user.getName());
-			updateUser.setDouble(3, user.getHomePoint().x);
-			updateUser.setDouble(4, user.getHomePoint().y);
-			updateUser.setString(5, user.getUser());
+			updateUser.setString(3, user.getPic());
+			updateUser.setDouble(4, user.getHomePoint().x);
+			updateUser.setDouble(5, user.getHomePoint().y);
+			updateUser.setString(6, user.getUser());
 			updateUser.executeUpdate();
 		} catch (SQLException e) {
 			handleError(e);
@@ -394,12 +396,13 @@ public class PostgresDataStore implements DataStore {
 		if (result.next()) {
 			String id = result.getString("fb_id");
 			String username = result.getString("fb_name");
+			String pic = result.getString("fb_pic");
 			double home_x = result.getDouble("home_coord_x");
 			boolean xWasNull = result.wasNull();
 			double home_y = result.getDouble("home_coord_y");
 			boolean yWasNull = result.wasNull();
-			if (xWasNull || yWasNull) return new User(id, username, null);
-			return new User(id, username, new Point(home_x, home_y));
+			if (xWasNull || yWasNull) return new User(id, username, pic, null);
+			return new User(id, username, pic, new Point(home_x, home_y));
 		} else {
 			return null;
 		}

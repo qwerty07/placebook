@@ -184,12 +184,19 @@ function LocationManager () {
 	};
 	this.createComment = function (comment) {
 		var container = document.createElement("DL");
-		var user = document.createElement("DT");
+		var head = document.createElement("DT");
+		var user = document.createElement("DIV");
 		user.innerHTML=comment.user.name;
+		user.className="user";
+		head.appendChild(user);
+		var date = document.createElement("SMALL");
+		var d = new Date(Date.parse(comment.date));
+		date.innerHTML = DateFormat.format(d);
+		head.appendChild(date);
+		container.appendChild(head);
 		var text = document.createElement("DD");
 		text.innerHTML=comment.text;
 		var li = document.createElement("LI");
-		container.appendChild(user);
 		container.appendChild(text);
 		li.appendChild(container);
 		this.comments.appendChild(li);
@@ -236,7 +243,7 @@ function LocationManager () {
 		var comment = this.addCommentForm.childNodes[1].value;
 		if (comment != null) {
 			async.addComment(user.user, this.coordinates, comment, function(req) {});
-			this.createComment({user: user, text: comment});
+			this.createComment({user: user, text: comment, date: new Date()});
 		}
 		this.clearComment();
 	}
@@ -257,6 +264,33 @@ function LocationManager () {
 	this.hideElement = function(element, class) {
 		element.className += " hide";
 		element.className = element.className.replace(/show/g,'');
+	}
+};
+
+var DateFormat = {
+	months: ["January", "Febuary", "March", "April", "May", "June", "July",
+				"August", "September", "October", "November", "December" ],
+	days: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+	format: function(date) {
+		var str = "at " + date.getHours()%12 + ":" + date.getMinutes();
+		str += (date.getHours()>12)?"pm":"am";
+		str += " on " + this.months[date.getMonth()];
+		str += " " + date.getDate();
+		var d = date.getDate();
+		if (d%10 == 1) {
+			str+="st";
+		}
+		else if (d%10 == 2) {
+			str+="nd";
+		}
+		else if (d%10 == 3) {
+			str+="rd";
+		}
+		else {
+			str+="th";
+		}
+		str += ", " + date.getFullYear();
+		return str;
 	}
 };
 

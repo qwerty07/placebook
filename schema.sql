@@ -19,6 +19,7 @@ CREATE INDEX location_coords_idx ON location
 CREATE TABLE stalker (
   fb_id varchar(255) PRIMARY KEY,
   fb_name VARCHAR(255) NOT NULL,
+  fb_pic VARCHAR(255),
   home_coord_x float8,
   home_coord_y float8
 );

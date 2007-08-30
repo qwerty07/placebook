@@ -90,11 +90,14 @@ public class Stalkbook extends HttpServlet {
 			if (user == null) {
 				Set<CharSequence> fields = new TreeSet<CharSequence>();
 				fields.add("name");
+				fields.add("pic_small");
 				Document document = Stalkbook.getClient(request).users_getInfo(ids, fields);
 				NodeList list = document.getElementsByTagName("name");
 				String name = list.item(0).getTextContent();
+				list = document.getElementsByTagName("pic_small");
+				String pic = list.item(0).getTextContent();
 				
-				user = new User(""+clientId, name, new Point(0,0));
+				user = new User(""+clientId, name, pic, new Point(0,0));
 				store.addUser(user);
 			}
 			
@@ -103,8 +106,6 @@ public class Stalkbook extends HttpServlet {
 			if (queryString != null) iframeLocation += "?" + queryString;
 
 			PrintWriter writer = response.getWriter();
-			//writer.printf("<h2>Hi <fb:name firstnameonly=\"true\" uid=\"%d\" useyou=\"false\"/>!</h2>", clientId);
-			//writer.printf("<h2>Hi %s!</h2>", user.getName());
 			writer.printf("<fb:iframe frameborder=\"0\" smartsize=\"true\" src=\"%s\"/>", iframeLocation);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

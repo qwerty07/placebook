@@ -3,11 +3,13 @@ package mwc.facebook.data;
 public class User {
 	private String user;
 	private String name;
+	private String pic;
 	private Point home;
 	
-	public User(String user, String name, Point home){
+	public User(String user, String name, String pic, Point home){
 		this.user = user;
 		this.name = name;
+		this.pic = pic;
 		this.home = home;
 	}
 	
@@ -17,6 +19,10 @@ public class User {
 	
 	public String getName(){
 		return name;
+	}
+	
+	public String getPic() {
+		return pic;
 	}
 	
 	public Point getHomePoint() {
@@ -44,8 +50,11 @@ public class User {
 		if (home != null) {
 			sb.append("home: \"" + Location.escapeString(name) + "\", ");
 		}
-		sb.append("name: \"" + Location.escapeString(name));
-		sb.append("\"}");
+		if (pic != null) {
+			sb.append("pic: \"" + Location.escapeString(pic) + "\", ");
+		}
+		sb.append("name: \"" + Location.escapeString(name) + "\", ");
+		sb.append("}");
 		return sb.toString();
 	}
 }

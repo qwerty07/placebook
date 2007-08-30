@@ -61,7 +61,7 @@ public class DataStoreTest extends TestCase {
 	}
 
 	public void testAddUser(){
-		dataStore.addUser(new User("123", "Bob", new Point(30f,150f)));
+		dataStore.addUser(new User("123", "Bob", "http://some.host/pic.png", new Point(30f,150f)));
 		User user = dataStore.getUserById("123");
 		Assert.assertNotNull(user);
 		Assert.assertNotNull(user.getUser());
@@ -69,6 +69,7 @@ public class DataStoreTest extends TestCase {
 		Assert.assertNotNull(user.getHomePoint());
 		Assert.assertEquals("123", user.getUser());
 		Assert.assertEquals("Bob", user.getName());
+		Assert.assertEquals("http://some.host/pic.png", user.getPic());
 		Assert.assertEquals(new Point(30f,150f), user.getHomePoint());
 	
 		user.setHomePoint(new Point(40f, 160f));
@@ -79,7 +80,7 @@ public class DataStoreTest extends TestCase {
 	}
 	
 	public void testAddLocationToUser() {
-		dataStore.addUser(new User("456", "Jim", new Point(30f,150f)));
+		dataStore.addUser(new User("456", "Jim", "http://some.host/pic2.png", new Point(30f,150f)));
 		User user = dataStore.getUserById("456");
 		Assert.assertNotNull(user);
 		Location l1 = new Location(new Point(14.4f, 11.2f), "Location 1");
@@ -155,7 +156,7 @@ public class DataStoreTest extends TestCase {
 	
 	public void testPhoto() {
 			// Add referenced entries
-			User u = new User("789", "Kodak", new Point(30f,150f));
+			User u = new User("789", "Kodak", "", new Point(30f,150f));
 			dataStore.addUser(u);
 			Location l = new Location(new Point(15,15),"Photo probe", "Photo test");
 			dataStore.addLocation(l);
@@ -234,7 +235,7 @@ public class DataStoreTest extends TestCase {
 	
 	public void testComment() {
 		// Add referenced entries
-		User u = new User("1011", "Commenter", new Point(32f,154f));
+		User u = new User("1011", "Commenter", "", new Point(32f,154f));
 		dataStore.addUser(u);
 		Location l = new Location(new Point(15,15),"Comment monkey", "Why not?");
 		dataStore.addLocation(l);

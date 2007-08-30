@@ -30,7 +30,7 @@ User user = db.getUserById(uid);
 Point userHome = null;
 
 if (user == null) {
-	user = new User(uid, "unknown", new Point(0,0));
+	user = new User(uid, "unknown", "", new Point(0,0));
 	db.addUser(user);
 }
 
