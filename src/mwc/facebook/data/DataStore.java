@@ -22,6 +22,8 @@ public interface DataStore {
 	public void addLocation(Location location);
 	
 	public void addUserToLocation(User user, Location location);
+	public void removeUserFromLocation(User user, Location location);
+	
 	public Set<Location> locationsFor(User user);
 	public Set<User> usersAssociatedWith(Location location);
 	

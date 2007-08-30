@@ -24,6 +24,7 @@ function LocationManager () {
 			/* create description etc */
 			this.description = document.createElement("DIV");
 			this.joinButton = document.createElement("A");
+			this.leaveButton = document.createElement("A");
 			{
 				/* initialise div */
 				var div = document.createElement("DIV");
@@ -39,6 +40,16 @@ function LocationManager () {
 				this.joinButton.href="javascript:locationManager.join()";
 				this.joinButton.innerHTML = "Join this Location";
 				div.appendChild(this.joinButton);
+				this.hideElement(this.leaveButton);
+				
+				/* add join button */
+				this.leaveButton.className="leave locationButton";
+				this.leaveButton.href="javascript:locationManager.leave()";
+				this.leaveButton.innerHTML = "Leave this Location";
+				div.appendChild(this.leaveButton);
+				this.hideElement(this.leaveButton);
+				
+				/* append div to content */
 				content.appendChild(div);
 			}
 			
@@ -153,13 +164,15 @@ function LocationManager () {
 		}
 		this.description.innerHTML = htmlText;
 		
-		this.joinButton.style.display="block";
+		this.showElement(this.joinButton);
 		
 		if (response.users && response.users.length > 0) {
 			for(var i = 0; i < response.users.length; i++) {
 				this.joinUser(response.users[i]);
 			}
-			this.users.lastChild.className = "last";	
+			if (this.users.lastChild) {
+				this.users.lastChild.className = "last";
+			}	
 		}
 		
 		if (response.comments && response.comments.length > 0) {
@@ -212,7 +225,8 @@ function LocationManager () {
 	this.joinUser = function(u) {
 
 		if (u.user == user.user) {
-			this.joinButton.style.display="none";
+			this.hideElement(this.joinButton);
+			this.showElement(this.leaveButton);
 		}
 		
 		var text = document.createElement("A");
@@ -222,31 +236,49 @@ function LocationManager () {
 		li.appendChild(text);
 		li.user = u.user;
 		this.users.insertBefore(li, this.users.firstChild);
-
 	};
+	
+	this.removeUser = function(u) {
+		if (u.user == user.user) {
+			this.hideElement(this.leaveButton);
+			this.showElement(this.joinButton);
+		}
+		
+		for (var i = 0; i < this.users.childNodes.length; i++) {
+			var li = this.users.childNodes[i];
+			if (li.user == u.user) {
+				this.users.removeChild(li);
+				break;
+			}
+		}
+	};	
 	
 	this.show = function () {
 		this.showElement(this.location);
 		if (document.getElementById("map")) {
 			document.getElementById("map").className="thin";
 		}
-	}
+	};
 	this.hide = function () {
 		this.hideElement(this.location);
 		if (document.getElementById("map")) {
 			document.getElementById("map").className="";
 		}
-	}
+	};
 	this.join = function () {
 		async.joinLocation(user.user, this.coordinates, function (req) {});
 		this.joinUser(user);
-	}
+	};
+	this.leave = function () {
+		async.leaveLocation(user.user, this.coordinates, function (req) {});
+		this.removeUser(user);
+	};
 	this.addComment = function() {
 		// add a comment to this location
 		this.hideElement(this.addCommentButton);
 		this.showElement(this.addCommentForm);
 		this.addCommentForm.childNodes[1].focus();
-	}
+	};
 	this.submitComment = function() {
 		// send comment to the server
 		var comment = this.addCommentForm.childNodes[1].value;
@@ -255,25 +287,25 @@ function LocationManager () {
 			this.createComment({user: user, text: comment, date: new Date()});
 		}
 		this.clearComment();
-	}
+	};
 	this.clearComment = function() {
 		this.hideElement(this.addCommentForm);
 		this.addCommentForm.childNodes[1].value = "";
 		this.showElement(this.addCommentButton);
-	}
+	};
 	this.addPhoto = function() {
 		// add a photo to this location
 		var filename = prompt("Enter photo filename");
 		async.addPhoto(user.user, this.coordinates, filename, function(req) {});
-	}
+	};
 	this.showElement = function(element) {
 		element.className += " show";
 		element.className = element.className.replace(/hide/g,'');
-	}
+	};
 	this.hideElement = function(element, class) {
 		element.className += " hide";
 		element.className = element.className.replace(/show/g,'');
-	}
+	};
 };
 
 var DateFormat = {
