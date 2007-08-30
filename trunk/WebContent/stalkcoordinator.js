@@ -18,7 +18,7 @@ function StalkCoordinator() {
 		
 		// get the user's Facebook name & home location
 		this.setUsername(user.user);
-		this.setHomeLocation(view.location || user.homeLocation);
+		this.setHomeLocation(view.location || user.home);
 		
 		// load the map
 		stalkBook.load();
