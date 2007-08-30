@@ -2,13 +2,13 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"
     import="com.facebook.api.*"
-    import="mwc.*"
+    import="mwc.facebook.*"
     import="mwc.facebook.data.*"
     import="mwc.facebook.ObjectManager"
     import="java.util.Set"%>
 
 <%
-FacebookRestClient client = Stalkbook.getClient(request);
+FacebookRestClient client = Placebook.getClient(request);
 String uid = String.valueOf(client.users_getLoggedInUser());
 
 DataStore db = ObjectManager.instance().store();
@@ -35,7 +35,7 @@ Point userHome = null;
 	fields.add("pic_small");
 	Collection<Integer> ids = new Vector<Integer>();
 	ids.add(Integer.parseInt(uid));
-	Document document = Stalkbook.getClient(request).users_getInfo(ids, fields);
+	Document document = Placebook.getClient(request).users_getInfo(ids, fields);
 	NodeList list = document.getElementsByTagName("name");
 	String name = list.item(0).getTextContent();
 	list = document.getElementsByTagName("pic_small");
