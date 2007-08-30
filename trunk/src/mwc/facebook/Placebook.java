@@ -38,7 +38,7 @@ public class Placebook extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public static final String CONFIG_FILE = "../settings.conf";
+	public static final String CONFIG_FILE = "../../settings.conf";
 	
 	private static String SECRET_KEY = null;
 	private static String API_KEY = null;
