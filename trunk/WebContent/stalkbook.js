@@ -191,5 +191,9 @@ for areas with more detail.
   	return stalkBook.map.getZoom();
   },
   
+  resize: function() {
+  	var map = document.getElementById("map");
+  	map.style.height = window.innerHeight - 10 + "px";
+  }
 };
 //]]>

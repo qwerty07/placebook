@@ -33,7 +33,7 @@ CREATE TABLE location_stalker (
   stalker_fb_id VARCHAR(255),
   PRIMARY KEY (coord_x, coord_y, stalker_fb_id),
   FOREIGN KEY (stalker_fb_id) REFERENCES stalker(fb_id) ON DELETE CASCADE,
-  FOREIGN KEY (coord_x, coord_y) REFERENCES location ON DELETE CASCADE
+  FOREIGN KEY (coord_x, coord_y) REFERENCES location ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE photo (
@@ -45,7 +45,7 @@ CREATE TABLE photo (
   image OID NOT NULL,
   contributed timestamp with time zone DEFAULT now() NOT NULL,
   FOREIGN KEY (stalker_fb_id) REFERENCES stalker(fb_id) ON DELETE CASCADE,
-  FOREIGN KEY (coord_x, coord_y) REFERENCES location ON DELETE CASCADE
+  FOREIGN KEY (coord_x, coord_y) REFERENCES location ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE comment (
@@ -55,5 +55,5 @@ CREATE TABLE comment (
   comment text NOT NULL,
   contributed timestamp with time zone DEFAULT now() NOT NULL,
   FOREIGN KEY (stalker_fb_id)  REFERENCES stalker(fb_id) ON DELETE CASCADE,
-  FOREIGN KEY (coord_x, coord_y) REFERENCES location ON DELETE CASCADE
+  FOREIGN KEY (coord_x, coord_y) REFERENCES location ON UPDATE CASCADE ON DELETE CASCADE
 );
