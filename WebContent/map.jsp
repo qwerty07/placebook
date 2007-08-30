@@ -29,9 +29,26 @@ try {
 User user = db.getUserById(uid);
 Point userHome = null;
 
-if (user == null) {
-	user = new User(uid, "unknown", "", new Point(0,0));
-	db.addUser(user);
+{
+	Set<CharSequence> fields = new TreeSet<CharSequence>();
+	fields.add("name");
+	fields.add("pic_small");
+	Collection<Integer> ids = new Vector<Integer>();
+	ids.add(Integer.parseInt(uid));
+	Document document = Stalkbook.getClient(request).users_getInfo(ids, fields);
+	NodeList list = document.getElementsByTagName("name");
+	String name = list.item(0).getTextContent();
+	list = document.getElementsByTagName("pic_small");
+	String pic = list.item(0).getTextContent();
+	
+	if (user == null) {
+		user = new User(uid, name, pic, new Point(0,0));
+		db.addUser(user);
+	}
+	else if (!name.equals(user.getName()) || !pic.equals(user.getPic())) {
+		user = new User(uid, name, pic, new Point(0,0));
+		db.updateUser(user);
+	}
 }
 
 userHome = user.getHomePoint();
@@ -43,6 +60,11 @@ if (userHome.x == 0 && userHome.y == 0) {
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@page import="org.w3c.dom.Document"%>
+<%@page import="org.w3c.dom.NodeList"%>
+<%@page import="java.util.Collection"%>
+<%@page import="java.util.Vector"%>
+<%@page import="java.util.TreeSet"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -70,13 +92,7 @@ else if (path.equals("facebook.interface.org.nz:8080/placebook/map.jsp")) {
 <link rel="stylesheet" href="style.css" type="text/css" media="screen" />
 
 <script type="text/javascript">
-var user = {
-	user: "<%= uid %>",
-	name: "<%= user.getName() %>",
-<% if (userHome != null) { %>
-	homeLocation: <%= userHome.toJSON() %>,
-<% } %>
-};
+var user = <%= user.toJSON() %>;
 
 var view = {
 <% if (viewLocationX != null && viewLocationY != null) { %>
