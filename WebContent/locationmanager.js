@@ -208,6 +208,7 @@ function LocationManager () {
 		var user = document.createElement("A");
 		user.innerHTML=comment.user.name;
 		user.href="http://www.facebook.com/profile.php?id="+comment.user.user;
+		user.target="_parent";
 		user.className="user";
 		head.appendChild(user);
 		var date = document.createElement("SMALL");
@@ -233,6 +234,7 @@ function LocationManager () {
 		var text = document.createElement("A");
 		text.innerHTML = u.name;
 		text.href = "http://www.facebook.com/profile.php?id="+u.user;
+		text.target="_parent";
 		var li = document.createElement("LI");
 		li.appendChild(text);
 		li.user = u.user;
