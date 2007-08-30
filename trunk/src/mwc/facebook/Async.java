@@ -83,7 +83,7 @@ public class Async extends HttpServlet {
 		else if (action.equals("addlocation") && name != null && locName != null && locDesc != null
 					&& sx != null && sy != null) {
 			if (addLocation(name, locName, locDesc, sx, sy)) {
-				try { updateProfile(request); } catch (Exception e) {e.printStackTrace();}
+				updateProfile(request);
 				response.getWriter().println("success");
 				return;
 			}
@@ -95,11 +95,17 @@ public class Async extends HttpServlet {
 		}
 		else if (action.equals("joinlocation") && name != null && sx != null && sy != null) {
 			if (joinLocation(name, sx, sy)) {
-				try { updateProfile(request); } catch (Exception e) {e.printStackTrace();}
+				updateProfile(request);
 				response.getWriter().println("success");
 				return;
 			}
-		
+		}
+		else if (action.equals("leavelocation") && name != null && sx != null && sy != null) {
+			if (leaveLocation(name, sx, sy)) {
+				updateProfile(request);
+				response.getWriter().println("success");
+				return;
+			}
 		}
 		else if (action.equals("getLocationsByRec") && sx != null && sy != null  && sx2 != null && sy2 != null) {
 			if (getLocationsByRec(sx, sy, sx2, sy2, response.getWriter())) {
@@ -226,7 +232,45 @@ public class Async extends HttpServlet {
 		return false;
 	}
 	
-	private void updateProfile(HttpServletRequest request) throws FacebookException, IOException{
+	private boolean leaveLocation(String u, String sx, String sy) {
+		
+		try {
+			double x = Double.parseDouble(sx);
+			double y = Double.parseDouble(sy);
+
+			Point point = new Point(x, y);
+
+			DataStore store = ObjectManager.instance().store();
+
+			User user = store.getUserById(u);
+			if (user == null) {
+				return false;
+			}
+
+			Location location = store.getLocationByPoint(point);
+			if (location == null) {
+				return false;
+			}
+			
+			store.removeUserFromLocation(user, location);
+			
+			System.out.println("removed user from location: " + location.getLocationName() + ", " + user.getName());
+
+			return true;
+		}
+		catch (NumberFormatException ex) {
+			System.err.println("error parsing point: " + sx + ", " + sy);
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+	private void updateProfile(HttpServletRequest request) {
+		
+		try {
 
 		FacebookRestClient client = Stalkbook.getClient();
 		client.setDebug(true);
@@ -266,6 +310,11 @@ public class Async extends HttpServlet {
 		}
 
 		client.profile_setFBML(text, uid);
+		
+		}
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	private boolean getLocationData(String sx, String sy, PrintWriter writer) {

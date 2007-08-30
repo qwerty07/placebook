@@ -32,6 +32,12 @@ var async = {
     				   callback);
     },
     
+    leaveLocation: function (user, point, callback) {
+    	this.doRequest("leavelocation",
+    					{user: user, x: point.x, y: point.y},
+    					callback);
+	},
+    
     addComment: function(user, point, comment, callback) {
     	this.doRequest("addcomment", { user: user, x: point.x, y: point.y, comment: comment}, callback);
     },

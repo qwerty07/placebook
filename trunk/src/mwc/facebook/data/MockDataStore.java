@@ -42,6 +42,16 @@ public class MockDataStore implements DataStore{
 	public void addUserToLocation(User user, Location location) {
 		userLocations.add(new Pair<User, Location>(user, location));
 	}
+	
+	public void removeUserFromLocation(User user, Location location) {
+
+		for(Pair<User, Location> pair : userLocations) {
+			if(pair.a.equals(user) && pair.b.equals(location)) {
+				userLocations.remove(pair);
+				break;
+			}
+		}
+	}
 
 	public Set<Location> locationsFor(User user) {
 		Set<Location> result = new HashSet<Location>();

@@ -34,6 +34,7 @@ public class PostgresDataStore implements DataStore {
 	private PreparedStatement getLocationByPoint;
 	private PreparedStatement findLocationsInArea;
 	private PreparedStatement associateUserAndLocation;
+	private PreparedStatement dissociateUserAndLocation;
 	private PreparedStatement findUsersByLocation;
 	private PreparedStatement findLocationsForUser;
 	private PreparedStatement addPhotoToLocation;
@@ -64,6 +65,7 @@ public class PostgresDataStore implements DataStore {
 		findLocationsInArea = connection.prepareStatement("SELECT loc_name, coord_x, coord_y, description FROM Location WHERE box(point(coord_x, coord_y),point(coord_x, coord_y)) && ?;");
 		findLocationsInCircle = connection.prepareStatement("SELECT loc_name, coord_x, coord_y, description FROM Location WHERE box(point(coord_x, coord_y),point(coord_x, coord_y)) && box(circle(?,?)) AND (point(coord_x, coord_y) <-> ?) < ?;");
 		associateUserAndLocation = connection.prepareStatement("INSERT INTO location_stalker (stalker_fb_id, coord_x, coord_y) VALUES (?, ?, ?);");
+		dissociateUserAndLocation = connection.prepareStatement("DELETE FROM location_stalker WHERE stalker_fb_id = ? AND coord_x = ? AND coord_y = ?;");
 		findUsersByLocation = connection.prepareStatement("SELECT stalker.fb_id, stalker.fb_name, stalker.fb_pic, home_coord_x, home_coord_y FROM stalker INNER JOIN location_stalker ON stalker.fb_id = location_stalker.stalker_fb_id WHERE coord_x = ? AND coord_y = ?;");
 		findLocationsForUser = connection.prepareStatement("SELECT location.coord_x, location.coord_y, location.loc_name, location.description FROM location NATURAL JOIN location_stalker WHERE stalker_fb_id = ?;");
 		getPhotoById = connection.prepareStatement("SELECT photo_id, coord_x, coord_y, stalker_fb_id, description, image, contributed FROM photo WHERE photo_id = ?;");
@@ -72,7 +74,7 @@ public class PostgresDataStore implements DataStore {
 		getPhotosForUser = connection.prepareStatement("SELECT stalker_fb_id, coord_x, coord_y, description, image, contributed FROM photo WHERE stalker_fb_id = ?;");
 		addCommentToLocation = connection.prepareStatement("INSERT INTO comment(coord_x, coord_y, stalker_fb_id, comment) VALUES (?, ?, ?, ?);");
 		getCommentsFromLocation = connection.prepareStatement("SELECT coord_x, coord_y, stalker_fb_id, comment, contributed FROM comment WHERE coord_x = ? AND coord_y = ? ORDER BY contributed;");
-		getCommentsForUser = connection.prepareStatement("SELECT coord_x, coord_y, stalker_fb_id, comment, contributed FROM comment WHERE stalker_fb_id = ?;");
+		getCommentsForUser = connection.prepareStatement("SELECT coord_x, coord_y, stalker_fb_id, comment, contributed FROM comment WHERE stalker_fb_id = ? ORDER BY contributed;");
 	}
 	
 	public PostgresDataStore(String server, String database, String username, String password) throws SQLException {
@@ -201,6 +203,27 @@ public class PostgresDataStore implements DataStore {
 			} else {
 				handleError(e);
 			}
+		}
+	}
+	
+	public synchronized void removeUserFromLocation(User user, Location location) {
+		try
+		{
+			dissociateUserAndLocation.setString(1, user.getUser());
+			dissociateUserAndLocation.setDouble(2, location.getCoordinates().x);
+			dissociateUserAndLocation.setDouble(3, location.getCoordinates().y);
+		}
+		catch (SQLException e)
+		{
+			handleError(e);
+		}
+		try
+		{
+			dissociateUserAndLocation.executeUpdate();
+		}
+		catch (SQLException e)
+		{
+			handleError(e);
 		}
 	}
 	
@@ -458,7 +481,7 @@ public class PostgresDataStore implements DataStore {
 			double x =result.getDouble("coord_x");
 			double y =result.getDouble("coord_y");
 			Location location = getLocationByPoint(new Point(x,y));
-			Date contributed = result.getDate("contributed");
+			Date contributed = result.getTimestamp("contributed");
 			
 			return new CommentContribution(comment, contributed, user, location);
 		} else {

@@ -79,7 +79,16 @@ public class DataStoreTest extends TestCase {
 		Assert.assertEquals(new Point(40f, 160f), user.getHomePoint());
 	}
 	
-	public void testAddLocationToUser() {
+	public void testSetDefaultLocation(){
+		User user = dataStore.getUserById("123");
+		user.setHomePoint(new Point(12.4f, 0.234f));
+		dataStore.updateUser(user);
+		user = dataStore.getUserById("123");
+		
+		Assert.assertEquals(new Point(12.4f, 0.234f), user.getHomePoint());
+	}
+	
+	public void testAddRemoveLocationToUser() {
 		dataStore.addUser(new User("456", "Jim", "http://some.host/pic2.png", new Point(30f,150f)));
 		User user = dataStore.getUserById("456");
 		Assert.assertNotNull(user);
@@ -95,6 +104,14 @@ public class DataStoreTest extends TestCase {
 		Assert.assertEquals(1, users.size());
 		Assert.assertEquals(user, users.iterator().next());
 		
+		//test remove
+		dataStore.removeUserFromLocation(user, l1);
+		locations = dataStore.locationsFor(user);
+		
+		Assert.assertEquals(0, locations.size());
+		
+		users = dataStore.usersAssociatedWith(l1);
+		Assert.assertEquals(0, users.size());
 	}
 	
 	public void testAddLocation(){
