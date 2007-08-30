@@ -40,9 +40,9 @@ function LocationManager () {
 				this.joinButton.href="javascript:locationManager.join()";
 				this.joinButton.innerHTML = "Join this Location";
 				div.appendChild(this.joinButton);
-				this.hideElement(this.leaveButton);
+				this.hideElement(this.joinButton);
 				
-				/* add join button */
+				/* add leave button */
 				this.leaveButton.className="leave locationButton";
 				this.leaveButton.href="javascript:locationManager.leave()";
 				this.leaveButton.innerHTML = "Leave this Location";
@@ -165,6 +165,7 @@ function LocationManager () {
 		this.description.innerHTML = htmlText;
 		
 		this.showElement(this.joinButton);
+		this.hideElement(this.leaveButton);
 		
 		if (response.users && response.users.length > 0) {
 			for(var i = 0; i < response.users.length; i++) {
@@ -231,7 +232,7 @@ function LocationManager () {
 		
 		var text = document.createElement("A");
 		text.innerHTML = u.name;
-		text.href = "http://www.facebook.com/profile?id="+u.user;
+		text.href = "http://www.facebook.com/profile.php?id="+u.user;
 		var li = document.createElement("LI");
 		li.appendChild(text);
 		li.user = u.user;
