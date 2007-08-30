@@ -22,7 +22,6 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
-import mwc.Stalkbook;
 import mwc.facebook.data.CommentContribution;
 import mwc.facebook.data.DataStore;
 import mwc.facebook.data.Location;
@@ -272,7 +271,7 @@ public class Async extends HttpServlet {
 		
 		try {
 
-		FacebookRestClient client = Stalkbook.getClient();
+		FacebookRestClient client = Placebook.getClient();
 		client.setDebug(true);
 		// int uid = client.users_getLoggedInUser();
 
