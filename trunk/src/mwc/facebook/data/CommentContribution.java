@@ -3,6 +3,7 @@
  */
 package mwc.facebook.data;
 
+import java.text.DateFormat;
 import java.util.Date;
 
 import mwc.facebook.JSONable;
@@ -30,7 +31,7 @@ public class CommentContribution implements JSONable
 		StringBuffer sb = new StringBuffer();
 		sb.append("{ ");
 		sb.append("user: " + contributedBy.toJSON() + ", ");
-		sb.append("date: \"" + contributedWhen.toString() + "\", ");
+		sb.append("date: \"" + DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.MEDIUM).format(contributedWhen) + "\", ");
 		sb.append("text: \"" + Location.escapeString(comment) + "\", ");
 		sb.append("location: \"" + Location.escapeString(contributedWhere.getLocationName())+"\", ");
 		sb.append("}");

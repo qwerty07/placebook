@@ -45,6 +45,7 @@ public class Async extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		String action, name, locName, locDesc, comment,
 				sx, sy, sx2, sy2;
 		
@@ -54,33 +55,24 @@ public class Async extends HttpServlet {
 				parameters = getMultipartParameters(request);
 			} catch (IOException e) {
 				e.printStackTrace();
-				System.err.println("No parameters available for nultipart async request, aborting");
+				System.err.println("No parameters available for multipart async request, aborting");
 				return;
 			} catch (FileUploadException e) {
 				e.printStackTrace();
-				System.err.println("No parameters available for nultipart async request, aborting");
+				System.err.println("No parameters available for multipart async request, aborting");
 				return;
 			}
-			action = parameters.get("action");
-			name = parameters.get("name");
-			locName = parameters.get("location");
-			locDesc = parameters.get("description");
-			comment = parameters.get("comment");
-			sx = parameters.get("x");
-			sy = parameters.get("y");
-			sx2 = parameters.get("x2");
-			sy2 = parameters.get("y2");
-		} else {
-			action = request.getParameter("action");
-			name = request.getParameter("user");
-			locName = request.getParameter("location");
-			locDesc = request.getParameter("description");
-		    comment = request.getParameter("comment");
-			sx = request.getParameter("x");
-			sy = request.getParameter("y");
-			sx2 = request.getParameter("x2");
-			sy2 = request.getParameter("y2");
 		}
+
+		action = request.getParameter("action");
+		name = request.getParameter("user");
+		locName = request.getParameter("location");
+		locDesc = request.getParameter("description");
+		comment = request.getParameter("comment");
+		sx = request.getParameter("x");
+		sy = request.getParameter("y");
+		sx2 = request.getParameter("x2");
+		sy2 = request.getParameter("y2");
 		
 		if (action.equals("setdefault") && name != null && sx != null && sy != null) {
 			if (setDefaultLocation(name, sx, sy)) {
@@ -341,7 +333,7 @@ public class Async extends HttpServlet {
 		try {
 			double x = Double.parseDouble(sx);
 			double y = Double.parseDouble(sy);
-
+			
 			Point point = new Point(x, y);
 
 			DataStore store = ObjectManager.instance().store();
