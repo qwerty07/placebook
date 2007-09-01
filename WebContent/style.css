@@ -1,19 +1,30 @@
 body {
 	font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
-	margin: 5px 0;
+	margin: 0;
 	padding: 0;
-	width: 644px;
+	width: 100%;
 	font-size: 1.0em;
 }
 
 #map {
-	position: absolute;
 	width: 644px;
 	height: 500px;
 }
 
 #map.thin {
-	width: 322px;
+	/*width: 322px;*/
+}
+
+#help {
+	height: 15px;
+	font-size: 11px;
+	background-color: #D8DFEA;
+	color: #3B5998;
+	font-weight: bold;
+	padding: 2px 8px;
+	margin: 4px 0;
+	border-bottom: 1px solid #E5E5E5;
+	border-top: 1px solid #E5E5E5;
 }
 
 /* 10px between map and location, 10 px around all */
@@ -23,9 +34,8 @@ body {
 	display: none;
 	width: 297px;
 	margin: 0 5px;
-	top: 0px;
-	left: 322px;
-	height: 100%;
+	top: 5px;
+	right: 5px;
 }
 
 #location .closeButton {
@@ -55,11 +65,12 @@ body {
 }
 
 #location .content {
-	height: 465px;
+	height: 400px;
 	overflow: auto;
     border: solid 1px #bbb;
     border-top: none;
     font-size: 11px;
+    background: url(images/formback.png) transparent ;
 }
 
 #location .content .item {
@@ -89,20 +100,18 @@ body {
 	padding:2px 3px;
 }
 
+#location .content .locationButton.show{
+	display: block;
+}
+
+#location .content .locationButton.hide{
+	display: none;
+}
+
 #location .content .locationButton:hover {
 	background:#3B5998 none repeat scroll 0%;
 	color:white;
 	text-decoration:none;
-}
-
-#location .content textarea {
-	width: 240px;
-	margin: 0 10px;
-	padding: 5px 0;
-	height: 5ex;
-	border: solid 1px #D8DFEA;
-	border-left: none;
-	border-right: none;
 }
 
 #location .content .users ul {
@@ -134,12 +143,11 @@ body {
 }
 
 #location .content .comments ul {
-	display: block;
 	margin: 0;
 	padding: 0;
 }
 
-#location .content .comments li {
+#location .content .comment {
 	display: block;
 	margin: 0;
 	text-decoration: none;
@@ -148,47 +156,46 @@ body {
 	padding-left: 60px;
 }
 
-#location .content .comments li dl {
+#location .content .comment dl {
 	border-top: 1px solid #3B5998;
 	border-bottom: 1px solid #E5E5E5;
 	padding-bottom: 2ex;
+	background-color: white;
 }
 
-#location .content .comments li dt {
+#location .content .comment dt {
 	background-color: #f7f7f7;
 	border-bottom:1px solid #D8DFEA;
 	padding:3px 5px;
 }
 
-#location .content .comments a {
+#location .content .comment a {
 	display: block;
 	font-weight: bold;
 	text-decoration: none;
 	color: #3B5998;
 }
 
-#location .content .comments a:hover {
+#location .content .comment a:hover {
 	text-decoration: underline;
 }
 
-#location .content .comments .profilePic {
+#location .content .comment .profilePic {
 	float: left;
 	margin-left: -60px;
 	margin-top: -4px;
 }
 
-#location .content .comments li dd {
+#location .content .comment dd {
 	margin: 0;
 	padding: 5px;
 }
 
-#location .content .comments .form .title {
-	background-color: #f7f7f7;
-	border-top: 1px solid #3B5998;
-	font-size: 11px;
-	margin: 10px;
-	margin-bottom: 0;
-	padding: 3px 5px;
+#location .content .comment textarea {
+	width: 100%;
+	padding: 5px 0;
+	height: 5ex;
+	border: none;
 }
 
 #location .content .show {
@@ -253,26 +260,26 @@ body {
 	height: 500px;
 }
 
-label {
+#addLocationContainer label {
 	padding-top: 15px;
 	float: left;
 	font-weight: bold;
 	width: 100px;
 }
 
-input {
+#addLocationContainer input {
 	margin-top: 15px;
 	margin-left: 10px;
 	padding-left: 0px;
 }
 
-textarea {
+#addLocationContainer textarea {
 	margin-top: 15px;
 	margin-left: 10px;
 	padding-left: 0px;
 }
 
-.buttons {
+#addLocationContainer .buttons {
 	float: right;
 }
 

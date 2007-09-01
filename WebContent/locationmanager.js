@@ -70,52 +70,80 @@ function LocationManager () {
 			}
 			
 			/* create comment component */
-			this.comments = document.createElement("UL");
-			this.addCommentButton = document.createElement("A");
-			this.addCommentForm = document.createElement("DIV");
+			var commentDiv = document.createElement("DIV");
 			{
-				/* initialise div */
-				var div = document.createElement("DIV");
-				div.className = "item comments";
-				div.appendChild(document.createElement("H5"));
-				div.firstChild.textContent="Comments";
+				commentDiv.className = "item comments";
+				commentDiv.appendChild(document.createElement("H5"));
+				commentDiv.firstChild.textContent="Comments";
 				
-				div.appendChild(this.comments);
+				this.comments = document.createElement("UL");
+				commentDiv.appendChild(this.comments);
 				
-				this.addCommentButton.className = "addComment locationButton";
-				this.addCommentButton.href = "javascript:locationManager.addComment()";
-				this.addCommentButton.innerHTML = "Add a Comment";
-				this.showElement(this.addCommentButton);
-				div.appendChild(this.addCommentButton);
+				this.addCommentButton = document.createElement("A");
+				{
+					this.addCommentButton.className = "addComment locationButton";
+					this.addCommentButton.href = "javascript:locationManager.addComment()";
+					this.addCommentButton.innerHTML = "Add a Comment";
+					this.showElement(this.addCommentButton);
+				}
+				commentDiv.appendChild(this.addCommentButton);
 				
-				this.addCommentForm.className = "locationForm form";
-				var title = document.createElement("H5");
-				title.className = "title";
-				title.innerHTML = user.name;
-				this.addCommentForm.appendChild(title);
-				
-				var text = document.createElement("TEXTAREA");
-				text.className = "locationPane comments";
-				text.onblur = function () {
-					window.setTimeout(
-						function () {locationManager.clearComment();},
-						100
-					);
-				};
-				this.addCommentForm.appendChild(text);
-				
-				var button = document.createElement("A");
-				button.className = "locationButton submitComment";
-				button.href = "javascript:locationManager.submitComment()";
-				button.innerHTML = "Submit Comment";
-				this.addCommentForm.appendChild(button);
-
-				this.hideElement(this.addCommentForm);
-				div.appendChild(this.addCommentForm);
-				
-				/* add to location pane */
-				content.appendChild(div);
+				this.addCommentForm = document.createElement("DIV");
+				{
+					this.addCommentForm.className = "locationForm form comment";
+					this.hideElement(this.addCommentForm);
+					
+					var dl = document.createElement("DL");
+					{
+						var dt = document.createElement("DT");
+						{
+							var title = document.createElement("A");
+							{
+								title.className = "title";
+								title.innerHTML = user.name;
+								title.href = "http://www.facebook.com/profile.php?id="+user.user;
+								title.target = "_parent";
+							}
+							dt.appendChild(title);
+							
+							var date = document.createElement("SMALL");
+							{
+								date.innerHTML = "&nbsp;";
+							}
+							dt.appendChild(date);
+						}
+						dl.appendChild(dt);
+						
+						var dd = document.createElement("DD");
+						{
+							var text = document.createElement("TEXTAREA");
+							{
+								text.className = "locationPane comments";
+								text.onblur = function (e) {
+									window.setTimeout(
+										function () {locationManager.clearComment();},
+										200
+									);
+								};
+							}
+							dd.appendChild(text);
+						}
+						dl.appendChild(dd);
+					}
+					this.addCommentForm.appendChild(dl);
+					
+					var button = document.createElement("A");
+					{
+						button.className = "locationButton submitComment";
+						button.href = "javascript:locationManager.submitComment()";
+						button.innerHTML = "Submit Comment";
+						this.addCommentForm.appendChild(button);
+					}
+					this.addCommentForm.appendChild(button);
+				}
+				commentDiv.appendChild(this.addCommentForm);
 			}
+			content.appendChild(commentDiv);
 			
 			this.photos = document.createElement("UL");
 			{
@@ -197,30 +225,48 @@ function LocationManager () {
 		this.show();
 	};
 	this.createComment = function (comment) {
-		var container = document.createElement("DL");
-		var head = document.createElement("DT");
-		if (comment.user.pic) {
-			var pic = document.createElement("IMG");
-			pic.className = "profilePic";
-			pic.src = comment.user.pic;
-			head.appendChild(pic);
-		} 
-		var user = document.createElement("A");
-		user.innerHTML=comment.user.name;
-		user.href="http://www.facebook.com/profile.php?id="+comment.user.user;
-		user.target="_parent";
-		user.className="user";
-		head.appendChild(user);
-		var date = document.createElement("SMALL");
-		var d = new Date(Date.parse(comment.date));
-		date.innerHTML = DateFormat.format(d);
-		head.appendChild(date);
-		container.appendChild(head);
-		var text = document.createElement("DD");
-		text.innerHTML=comment.text;
+	
 		var li = document.createElement("LI");
-		container.appendChild(text);
-		li.appendChild(container);
+		{
+			li.className = "comment";
+			
+			var container = document.createElement("DL");
+			{
+				var head = document.createElement("DT");
+				{
+					if (comment.user.pic) {
+						var pic = document.createElement("IMG");
+						pic.className = "profilePic";
+						pic.src = comment.user.pic;
+						head.appendChild(pic);
+					}
+				
+					var user = document.createElement("A");
+					{
+						user.innerHTML=comment.user.name;
+						user.href="http://www.facebook.com/profile.php?id="+comment.user.user;
+						user.target="_parent";
+						user.className="user";
+					}
+					head.appendChild(user);
+					
+					var date = document.createElement("SMALL");
+					{
+						var d = new Date(Date.parse(comment.date));
+						date.innerHTML = DateFormat.format(d);
+					}
+					head.appendChild(date);
+				}
+				container.appendChild(head);
+				
+				var text = document.createElement("DD");
+				{
+					text.innerHTML=comment.text;
+				}
+				container.appendChild(text);
+			}
+			li.appendChild(container);
+		}
 		this.comments.appendChild(li);
 	};
 	
@@ -238,7 +284,13 @@ function LocationManager () {
 		var li = document.createElement("LI");
 		li.appendChild(text);
 		li.user = u.user;
-		this.users.insertBefore(li, this.users.firstChild);
+		if (this.users.childNodes.length == 0) {
+			li.className += " last";
+			this.users.appendChild(li);
+		}
+		else {
+			this.users.insertBefore(li, this.users.firstChild);
+		}
 	};
 	
 	this.removeUser = function(u) {
@@ -280,20 +332,23 @@ function LocationManager () {
 		// add a comment to this location
 		this.hideElement(this.addCommentButton);
 		this.showElement(this.addCommentForm);
-		this.addCommentForm.childNodes[1].focus();
+		this.addCommentForm.getElementsByTagName("TEXTAREA")[0].focus();
 	};
 	this.submitComment = function() {
 		// send comment to the server
-		var comment = this.addCommentForm.childNodes[1].value;
-		if (comment != null) {
+		this.busy = true;
+		var comment = this.addCommentForm.getElementsByTagName("TEXTAREA")[0].value;
+		if (comment != null && comment != "") {
 			async.addComment(user.user, this.coordinates, comment, function(req) {});
 			this.createComment({user: user, text: comment, date: new Date()});
 		}
+		this.busy = false;
 		this.clearComment();
 	};
 	this.clearComment = function() {
+		if (this.busy) return;
 		this.hideElement(this.addCommentForm);
-		this.addCommentForm.childNodes[1].value = "";
+		this.addCommentForm.getElementsByTagName("TEXTAREA")[0].value = "";
 		this.showElement(this.addCommentButton);
 	};
 	this.addPhoto = function() {
@@ -316,7 +371,11 @@ var DateFormat = {
 				"August", "September", "October", "November", "December" ],
 	days: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
 	format: function(date) {
-		var str = "at " + date.getHours()%12 + ":" + date.getMinutes();
+		var str = "at " + date.getHours()%12 + ":";
+		if (date.getMinutes() < 10) {
+			str += "0";
+		}
+		str += date.getMinutes();
 		str += (date.getHours()>12)?"pm":"am";
 		str += " on " + this.months[date.getMonth()];
 		str += " " + date.getDate();

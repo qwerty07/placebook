@@ -59,10 +59,15 @@ var stalkBook = {
         if (stalkBook.map.getZoom() > stalkBook.minZoom){
             if(stalkBook.markerFunc)stalkBook.markerFunc(point);            
         }
-      })
+      });
       GEvent.addListener(stalkBook.map, "moveend", function() {       
         if(stalkBook.moveFunc)stalkBook.moveFunc();                    
-      })
+      });
+      GEvent.addListener(stalkBook.map, "zoomend", function(newLevel, oldLevel) {
+      	if (help.setZoom) {
+      		help.setZoom(newLevel > stalkBook.minZoom);
+      	}
+      });
     }
   },
 
@@ -193,7 +198,10 @@ for areas with more detail.
   
   resize: function() {
   	var map = document.getElementById("map");
-  	map.style.height = window.innerHeight - 10 + "px";
+  	var height = window.innerHeight - 30;
+  	height = (height < 450)?450:height;
+  	map.style.height = height + "px";
+  	map.style.width = window.innerWidth + "px";
   }
 };
 //]]>

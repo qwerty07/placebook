@@ -25,6 +25,10 @@ var firstload = function () {
 		
 		// get the user's Facebook name & home location
 		this.setUsername(user.user);
+		
+		if (help) {
+			help.setDefaultLocation(false);
+		}
 	};
 	
 	stalkCoordinator.complete = function (req) {
