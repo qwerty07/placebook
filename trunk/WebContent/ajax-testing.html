@@ -11,14 +11,17 @@ function () {
 	var callback = function (response) {
 		test.output("callback returned");
 		test.output(response);
+		if (response != "action=addlocation&user=test-user&location=undefined&description=undefined&x=0.1&y=3") {
+			test.fail();
+		}
 	};
 	async.submitPoint("test-user",
+		{location: "name", description: "description"},
 		{ x: 0.1, y: 3 },
 		callback
 	);
 	return true;
 });
-test.add(function () { test.output("test succeeded");  return true; });
 </script>
 </head>
 <body onload="test.run()">

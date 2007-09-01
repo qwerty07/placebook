@@ -55,4 +55,5 @@ Array.prototype.isArray = function(){return true;}
 
 async.sendRequest= function(url,callback,postData) {
 	test.output("post: " + postData);
+	callback(postData);
 }

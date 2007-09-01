@@ -89,6 +89,8 @@ else if (path.equals("facebook.interface.org.nz:8080/placebook/map.jsp")) {
 <script src="stalkcoordinator.js" type="text/javascript"></script>
 <script src="stalklocationcreate.js" type="text/javascript"></script>
 <script src="locationmanager.js" type="text/javascript"></script>
+<script src="contextualhelp.js" type="text/javascript"></script>
+
 <link rel="stylesheet" href="style.css" type="text/css" media="screen" />
 
 <script type="text/javascript">
@@ -128,6 +130,7 @@ hooks.addHook(
 
 <body onload="hooks.onload()" onunload="GUnload()">
 	<div id="map"></div>
+	<div id="help"></div>
 	
 <div style="display: none;" id="blocker">
 	<div id="addLocationContainer">	

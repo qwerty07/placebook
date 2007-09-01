@@ -20,6 +20,10 @@ function StalkCoordinator() {
 		this.setUsername(user.user);
 		this.setHomeLocation(view.location || user.home);
 		
+		if (help) {
+			help.setDefaultLocation(true);
+		}
+		
 		// load the map
 		stalkBook.load();
 		
